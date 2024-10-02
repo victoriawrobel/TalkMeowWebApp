@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  talkMeow:
+    container_name: talkMeowDB
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=talkMeowDatabase'
+      - 'POSTGRES_PASSWORD=VeryStrongPassword'
+      - 'POSTGRES_USER=VeryHardLogin'
+    ports:
+      - '5432:5432'
