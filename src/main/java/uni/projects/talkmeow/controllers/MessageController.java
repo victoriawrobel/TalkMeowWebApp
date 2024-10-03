@@ -1,6 +1,8 @@
 package uni.projects.talkmeow.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +10,7 @@ import uni.projects.talkmeow.components.Message;
 import uni.projects.talkmeow.components.MessageStatus;
 import uni.projects.talkmeow.components.StrippedUser;
 import uni.projects.talkmeow.components.User;
+import uni.projects.talkmeow.repositories.MessageRepository;
 import uni.projects.talkmeow.services.CustomUserDetailsService;
 import uni.projects.talkmeow.services.MessageService;
 
@@ -30,6 +33,12 @@ public class MessageController {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
+
+    @Autowired
+    private MessageRepository messageRepository;
+
     @GetMapping("/send")
     public String send(Model model, @RequestParam(required = false) String error) {
         if (error != null) {
@@ -48,16 +57,18 @@ public class MessageController {
         return "conversations/sendMessage";
     }
 
-    // Send message to another user by ID or username
+
+
     @PostMapping("/send")
-    public String sendMessage(
+    @ResponseBody
+    public ResponseEntity<String> sendMessage(
             @RequestParam(required = false) Long id,
             @RequestParam(required = false) String username,
             @RequestParam String messageContent) {
 
         // Check if either ID or username is provided
         if (id == null && (username == null || username.isEmpty())) {
-            return "redirect:/api/messages/send?error=no_user";
+            return ResponseEntity.badRequest().body("No user provided");
         }
 
         Optional<User> receiverOptional;
@@ -70,10 +81,10 @@ public class MessageController {
         }
 
         if (!receiverOptional.isPresent()) {
-            return "redirect:/api/messages/send?error=user_not_found";
+            return ResponseEntity.badRequest().body("User not found");
         }
         if (messageContent.isEmpty()) {
-            return "redirect:/api/messages/send?error=empty_message";
+            return ResponseEntity.badRequest().body("Message cannot be empty");
         }
 
         // Get the currently authenticated user as the sender (this assumes you have security context)
@@ -81,9 +92,14 @@ public class MessageController {
         User receiver = receiverOptional.get();
 
         // Send the message
-        messageService.sendMessage(sender, receiver, messageContent);
+        Message message = messageService.sendMessage(sender, receiver, messageContent);
+        Message strippedMessage = new Message(message.getId(), StrippedUser.getStrippedUser(sender), StrippedUser.getStrippedUser(receiver), messageContent, message.getTimestamp(), message.getStatus(), true);
 
-        return "redirect:/api/messages/conversation?id=" + receiver.getId();
+        // Send push notification
+        String name = receiver.getUsername() + "-" + sender.getUsername();
+        simpMessagingTemplate.convertAndSendToUser(name, "/specific", strippedMessage);
+
+        return ResponseEntity.ok("Message sent successfully");
     }
 
     @GetMapping("/conversation")
@@ -132,11 +148,17 @@ public class MessageController {
             return strippedMessage;
         }).collect(Collectors.toList());
 
+        int lastSENTIndex = -1;
         for (int i = 0; i < messages.size(); i++) {
             if (messages.get(i).getStatus().equals(MessageStatus.SENT)
                     && messages.get(i).getReceiver().getId().equals(currentUser.getId())) {
                 messageService.changeStatus(messages.get(i), MessageStatus.SEEN);
+                lastSENTIndex = i;
             }
+        }
+        if (lastSENTIndex != -1) {
+            String name = messages.get(lastSENTIndex).getSender().getUsername() + "-" + currentUser.getUsername();
+            simpMessagingTemplate.convertAndSendToUser(name, "/status", MessageStatus.SEEN);
         }
 
         model.addAttribute("messages", strippedMessages);

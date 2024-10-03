@@ -38,10 +38,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/login", "/login/form", "/register", "/register/form", "/home", "/", "/logout",
-                                        "/password-reset-email", "/password-reset-question", "/password-reset-change", "/password-reset/form").permitAll()
+                                        "/password-reset-email", "/password-reset-question", "/password-reset-change", "/password-reset/form", "/ws/**").permitAll()
                                 .requestMatchers("/css/**", "/javascript/**", "/svg/**", "/images/**").permitAll() //static recourses
                                 .requestMatchers("/admin/**").hasAnyRole("ADMIN")
                                 .anyRequest().authenticated()
+
                 )
                 .formLogin(formLogin ->
                         formLogin

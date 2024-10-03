@@ -22,32 +22,178 @@
             text-align: left;
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script>
+        let stompClient = null;
+
+        function connect() {
+            const socket = new SockJS('/ws');
+            stompClient = Stomp.over(socket);
+
+            stompClient.connect({}, function(frame) {
+                console.log('Connected: ' + frame);
+
+                // Get the logged-in user's username
+                const currentUser = document.getElementById('current-username').className;
+                const otherUser = document.getElementById('other-username').className;
+
+                // Subscribe to personal messages for the logged-in user
+                stompClient.subscribe('/user/' + currentUser + '-' + otherUser + '/specific', function(messageOutput) {
+                    showMessageOutput(JSON.parse(messageOutput.body), true);  // true means it's from the current user
+                });
+
+                stompClient.subscribe('/user/' + currentUser + '-' + otherUser + '/status', function(changeStatus) {
+                    console.log('Status changed: ' + changeStatus);
+                    const messagesElement = document.getElementById('messages');
+                    const lastStatus = messagesElement.querySelector('.status');
+                    if (lastStatus) {
+                        lastStatus.textContent = 'Status: ' + changeStatus.body;
+                    }
+                });
+
+                // Subscribe to a shared conversation channel with the other user
+                stompClient.subscribe('/user/' + otherUser + '-' + currentUser + '/specific', function(messageOutput) {
+                    //showMessageOutput(JSON.parse(messageOutput.body), false);  // false means it's from the other user
+                });
+            });
+        }
+
+
+        function showMessageOutput(message) {
+            const messageContainer = document.createElement('div');
+            messageContainer.className = 'message received';
+            messageContainer.innerHTML = `
+        <p>${message.messageContent}</p>
+        <small>${message.timestamp}</small>
+    `;
+
+            const messagesElement = document.getElementById('messages');
+            if (messagesElement) {
+                messagesElement.appendChild(messageContainer);
+            } else {
+                sleep(2500).then(() => {
+                    location.reload();
+                });
+            }
+
+            // Check if the message was received by the current user
+            if (message.receiver.username === document.getElementById('current-username').className) {
+                // Ping the backend to update the status of the message to "SEEN"
+                fetch('/api/messages/status', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({
+                        id: message.id  // Assuming message object contains message id
+                    })
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                        console.log('Message status updated to SEEN');
+                        // Optionally notify the sender via socket
+                    })
+                    .catch(error => {
+                        console.error('Error updating message status:', error);
+                    });
+            }
+        }
+
+
+        function sendMessage(event) {
+            event.preventDefault();
+            const messageContent = document.querySelector('textarea[name="messageContent"]').value;
+            const receiverUsername = document.querySelector('input[name="username"]').value;
+
+            // Remove the previous status indicator if it exists
+            const existingStatus = document.querySelector('.status');
+            if (existingStatus) {
+                existingStatus.remove();
+            }
+
+            // Optimistically append the message to the chat before server confirmation
+            const messageContainer = document.createElement('div');
+            messageContainer.className = 'message sent'; // Mark as sent
+            messageContainer.innerHTML = `
+        <p>${messageContent}</p>
+        <small>${new Date().toLocaleTimeString()}</small>
+        <small class="status">Status: Sending...</small>
+    `;
+
+            const messagesElement = document.getElementById('messages');
+            if (messagesElement) {
+                messagesElement.appendChild(messageContainer);
+            } else {
+                sleep(2500).then(() => {
+                    location.reload();
+                });
+            }
+
+            fetch('/api/messages/send', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    username: receiverUsername,
+                    messageContent: messageContent
+                })
+            })
+                .then(response => response.text())
+                .then(data => {
+                    if (data === "Message sent successfully") {
+                        document.querySelector('textarea[name="messageContent"]').value = '';
+                        console.log('Message sent successfully');
+
+                        // Update the status to reflect success
+                        const lastStatus = messageContainer.querySelector('.status');
+                        if (lastStatus) {
+                            lastStatus.textContent = 'Status: SENT';
+                        }
+                    } else {
+                        // Handle failed message send
+                        console.error('Failed to send message:', data);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error sending message:', error);
+                });
+        }
+
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            connect();
+            const messageContent = document.querySelector('textarea[name="messageContent"]');
+            messageContent.addEventListener('input', checkMessageContent);
+            checkMessageContent(); // Initial check
+
+            document.querySelector('form').addEventListener('submit', sendMessage);
+        });
+
         function checkMessageContent() {
             const messageContent = document.querySelector('textarea[name="messageContent"]');
             const sendButton = document.querySelector('button[type="submit"]');
             sendButton.disabled = messageContent.value.trim() === '';
         }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const messageContent = document.querySelector('textarea[name="messageContent"]');
-            messageContent.addEventListener('input', checkMessageContent);
-            checkMessageContent(); // Initial check
-        });
     </script>
 </head>
 <body>
+<input type="hidden" id="current-username" th:classappend="${#authentication.name}"/>
+<input type="hidden" id="other-username" th:classappend="${otherUser.username}"/>
 <h1>Conversation with <span th:text="${otherUser.username}"></span></h1>
-<div th:each="message, iterStat : ${messages}">
-    <div th:classappend="${message.sentByLoggedInUser} ? 'sent' : 'received'" class="message">
-        <p th:text="${message.messageContent}"></p>
-        <small th:text="${message.timestamp}"></small>
-        <small th:if="${message.sentByLoggedInUser} and ${iterStat.last}" th:text="'Status: ' + ${message.status}"></small>
+<div id="messages">
+    <div th:each="message, iterStat : ${messages}">
+        <div th:classappend="${message.sentByLoggedInUser} ? 'sent' : 'received'" class="message">
+            <p th:text="${message.messageContent}"></p>
+            <small th:text="${message.timestamp}"></small>
+            <small th:if="${message.sentByLoggedInUser} and ${iterStat.last}" class="status" th:text="'Status: ' + ${message.status}"></small>
+        </div>
     </div>
 </div>
-
-<form action="/api/messages/send" method="post">
-    <input type="hidden" name="id" th:value="${otherUser.id}" />
+<form>
+    <input type="hidden" name="username" th:value="${otherUser.username}" />
     <textarea name="messageContent" placeholder="Enter message" required></textarea>
     <button type="submit">Send</button>
 </form>

@@ -7,6 +7,7 @@ communicate with each other in real-time.
 
 TalkMeow is like TalkNow but with a cat twist. 
 The main theme of the application is cats.
+The theme might be now present, but it will be in the future for sure :)
 
 ## Must before running
 1. Docker installed and running
