@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{app.name} + ' - Register'"></title>
+</head>
+<body>
+<div class="container">
+    <a href="/static">Home</a>
+    <form th:action="@{/register}" method="post" th:object="${user}">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username" th:field="*{username}" required><br>
+
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" th:field="*{email}" required><br>
+
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password" th:field="*{password}" required><br>
+
+        <p>For resetting your password if you forget in the future please add security question and answer to this question</p>
+        <label for="securityQuestion">Security Question:</label><br>
+        <input type="text" id="securityQuestion" name="securityQuestion" th:field="*{securityQuestion}" required><br>
+
+        <label for="securityAnswer">Security Answer:</label><br>
+        <input type="text" id="securityAnswer" name="securityAnswer" th:field="*{securityAnswer}" required><br>
+
+        <br><br>
+        <input type="submit" id="submitButton" value="Submit">
+    </form>
+</div>
+</body>
+</html>

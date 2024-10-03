@@ -2,14 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title th:text="#{app.name} + ' - Home'"></title>
 </head>
 <body>
-    <div th:if="${isLoggedIn && user != null}">
-        <p>Welcome, <span th:text="${user.username}"></span>!</p>
-    </div>
-    <div th:if="${!isLoggedIn || user == null}">
-        <p>Hello, World!</p>
-    </div>
+<div class="container" th:if="${isLoggedIn && user != null}">
+    <a href="/logout">Logout</a>
+    <p>Welcome, <span th:text="${user.username}"></span>!</p>
+</div>
+<div class="container" th:if="${!isLoggedIn || user == null}">
+    <a href="/login/form">Login</a>
+    <p>Hello, World!</p>
+</div>
 </body>
 </html>

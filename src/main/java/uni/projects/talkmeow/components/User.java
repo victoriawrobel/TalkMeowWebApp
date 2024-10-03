@@ -26,11 +26,20 @@ public class User {
     @Column(name = "username", unique = true, nullable = false)
     private String username;
 
+    @Column(name = "email", unique = true, nullable = false)
+    private String email;
+
     @Column(name = "password", nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role = Role.USER;
+
+    @Column(name = "security_question", nullable = false)
+    private String securityQuestion;
+
+    @Column(name = "security_answer", nullable = false)
+    private String securityAnswer;
 
 }

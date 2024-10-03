@@ -7,5 +7,6 @@ package uni.projects.talkmeow.components;
  */
 public enum Role {
     USER,
-    ADMIN
+    ADMIN,
+    MANAGER
 }

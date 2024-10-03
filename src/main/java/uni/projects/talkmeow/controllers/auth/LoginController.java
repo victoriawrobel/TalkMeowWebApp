@@ -1,7 +1,6 @@
 package uni.projects.talkmeow.controllers.auth;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import uni.projects.talkmeow.components.User;
 import uni.projects.talkmeow.repositories.UserRepository;
 import uni.projects.talkmeow.services.CustomUserDetailsService;
@@ -57,13 +55,16 @@ public class LoginController {
     @GetMapping("/login/form")
     public String loginForm(Model model) {
         model.addAttribute("loginForm", new LoginForm());
-        return "login";
+        return "auth/login";
     }
 
     @PostMapping("/login")
-    public String login(HttpServletRequest request, HttpServletResponse response, @ModelAttribute LoginForm loginForm) {
+    public String login(HttpServletRequest request, @ModelAttribute LoginForm loginForm) {
         if (customUserDetailsService.authenticateUser(loginForm, passwordEncoder)) {
             User user = userRepository.findByUsername(loginForm.getUsername());
+            if (user == null) {
+                user = userRepository.findByEmail(loginForm.getUsername());
+            }
             httpSession.setAttribute("user", user);
 
             UsernamePasswordAuthenticationToken authReq

@@ -28,19 +28,19 @@ public class RegisterController {
     public String registerForm(Model model) {
         model.addAttribute("user", new User());
 
-        return "register";
+        return "auth/register";
     }
 
     @PostMapping("/register")
     @ResponseBody
-    public RedirectView registerUser(@ModelAttribute User user, Model model) {
+    public RedirectView registerUser(@ModelAttribute User user) {
 
         if (user.getUsername().isEmpty() || user.getPassword().isEmpty()) {
             return new RedirectView("/register/form?error=form");
         } else if (customUserDetailsService.existsByUsername(user.getUsername())) {
             return new RedirectView("/register/form?error=username");
         }
-        User registeredUser = customUserDetailsService.registerUser(user, passwordEncoder);
+        customUserDetailsService.registerUser(user, passwordEncoder);
 
         return new RedirectView("/login/form");
     }

@@ -28,6 +28,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
         if (user == null) {
+            user = userRepository.findByEmail(username);
+        }
+        if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
         return new UserPrincipal(user);
@@ -35,6 +38,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     public boolean authenticateUser(LoginController.LoginForm loginForm, PasswordEncoder passwordEncoder) {
         User user = userRepository.findByUsername(loginForm.getUsername());
+        if (user == null) {
+            user = userRepository.findByEmail(loginForm.getUsername());
+        }
 
         if (user != null) {
             return passwordEncoder.matches(loginForm.getPassword(), user.getPassword());
@@ -48,6 +54,23 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
+    }
+
+    public User loadUserPasswordReset(String login) {
+        User user = userRepository.findByUsername(login);
+        if (user == null) {
+            user = userRepository.findByEmail(login);
+        }
+        return user;
+    }
+
+    public boolean checkPasswordResetAnswer(User user, String answer) {
+        return user.getSecurityAnswer().equals(answer);
+    }
+
+    public void changePassword(User user, String password, PasswordEncoder passwordEncoder) {
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
     }
 
     public boolean existsByUsername(String username) {
