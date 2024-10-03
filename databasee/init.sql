@@ -13,5 +13,6 @@ CREATE TABLE messages (
                           sender INT REFERENCES users(id) ON DELETE CASCADE,
                           receiver INT REFERENCES users(id) ON DELETE CASCADE,
                           message_content TEXT NOT NULL,
+                          status VARCHAR(10) NOT NULL DEFAULT 'SENT',
                           timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

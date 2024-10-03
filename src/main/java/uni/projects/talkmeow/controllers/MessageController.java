@@ -1,11 +1,11 @@
 package uni.projects.talkmeow.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import uni.projects.talkmeow.components.Message;
+import uni.projects.talkmeow.components.MessageStatus;
 import uni.projects.talkmeow.components.StrippedUser;
 import uni.projects.talkmeow.components.User;
 import uni.projects.talkmeow.services.CustomUserDetailsService;
@@ -45,7 +45,7 @@ public class MessageController {
                     break;
             }
         }
-        return "sendMessage";
+        return "conversations/sendMessage";
     }
 
     // Send message to another user by ID or username
@@ -95,7 +95,7 @@ public class MessageController {
         // Check if either ID or username is provided
         if (id == null && (username == null || username.isEmpty())) {
             model.addAttribute("error", "No user provided");
-            return "conversation";
+            return "conversations/conversation";
         }
 
         Optional<User> otherUserOptional;
@@ -109,7 +109,7 @@ public class MessageController {
 
         if (!otherUserOptional.isPresent()) {
             model.addAttribute("error", "User not found");
-            return "conversation";
+            return "conversations/conversation";
         }
 
         // Get the currently authenticated user
@@ -128,12 +128,29 @@ public class MessageController {
             strippedMessage.setMessageContent(message.getMessageContent());
             strippedMessage.setTimestamp(message.getTimestamp());
             strippedMessage.setSentByLoggedInUser(message.getSender().equals(currentUser));
+            strippedMessage.setStatus(message.getStatus());
             return strippedMessage;
         }).collect(Collectors.toList());
+
+        for (int i = 0; i < messages.size(); i++) {
+            if (messages.get(i).getStatus().equals(MessageStatus.SENT)
+                    && messages.get(i).getReceiver().getId().equals(currentUser.getId())) {
+                messageService.changeStatus(messages.get(i), MessageStatus.SEEN);
+            }
+        }
 
         model.addAttribute("messages", strippedMessages);
         model.addAttribute("otherUser", StrippedUser.getStrippedUser(otherUser));
 
-        return "conversation";
+        return "conversations/conversation";
+    }
+
+    @GetMapping("/conversation/all")
+    public String getAllConversations(Model model) {
+        User currentUser = customUserDetailsService.getCurrentUser();
+        List<User> users = messageService.getAllConversation(currentUser);
+        List<User> strippedUsers = users.stream().map(StrippedUser::getStrippedUser).collect(Collectors.toList());
+        model.addAttribute("users", strippedUsers);
+        return "conversations/allConversations";
     }
 }

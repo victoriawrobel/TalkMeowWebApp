@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Conversation</title>
+    <style>
+        .message {
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+        }
+        .sent {
+            border: 3px solid darkred;
+            border-radius: 5px;
+            color: black;
+            text-align: right;
+        }
+        .received {
+            border: 3px solid darkgreen;
+            border-radius: 5px;
+            color: black;
+            text-align: left;
+        }
+    </style>
+    <script>
+        function checkMessageContent() {
+            const messageContent = document.querySelector('textarea[name="messageContent"]');
+            const sendButton = document.querySelector('button[type="submit"]');
+            sendButton.disabled = messageContent.value.trim() === '';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const messageContent = document.querySelector('textarea[name="messageContent"]');
+            messageContent.addEventListener('input', checkMessageContent);
+            checkMessageContent(); // Initial check
+        });
+    </script>
+</head>
+<body>
+<h1>Conversation with <span th:text="${otherUser.username}"></span></h1>
+<div th:each="message, iterStat : ${messages}">
+    <div th:classappend="${message.sentByLoggedInUser} ? 'sent' : 'received'" class="message">
+        <p th:text="${message.messageContent}"></p>
+        <small th:text="${message.timestamp}"></small>
+        <small th:if="${message.sentByLoggedInUser} and ${iterStat.last}" th:text="'Status: ' + ${message.status}"></small>
+    </div>
+</div>
+
+<form action="/api/messages/send" method="post">
+    <input type="hidden" name="id" th:value="${otherUser.id}" />
+    <textarea name="messageContent" placeholder="Enter message" required></textarea>
+    <button type="submit">Send</button>
+</form>
+</body>
+</html>

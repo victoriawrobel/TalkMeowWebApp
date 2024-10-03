@@ -38,6 +38,10 @@ public class Message {
     @Column(name = "timestamp", nullable = false)
     private LocalDateTime timestamp = LocalDateTime.now();
 
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private MessageStatus status = MessageStatus.SENT;
+
     @Transient
     private boolean sentByLoggedInUser;
 }
