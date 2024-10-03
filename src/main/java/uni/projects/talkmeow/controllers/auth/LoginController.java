@@ -61,7 +61,7 @@ public class LoginController {
     @PostMapping("/login")
     public String login(HttpServletRequest request, @ModelAttribute LoginForm loginForm) {
         if (customUserDetailsService.authenticateUser(loginForm, passwordEncoder)) {
-            User user = userRepository.findByUsername(loginForm.getUsername());
+            User user = userRepository.findByUsername(loginForm.getUsername()).orElse(null);
             if (user == null) {
                 user = userRepository.findByEmail(loginForm.getUsername());
             }

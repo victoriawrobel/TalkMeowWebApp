@@ -1,6 +1,8 @@
 package uni.projects.talkmeow.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,7 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username).orElse(null);
         if (user == null) {
             user = userRepository.findByEmail(username);
         }
@@ -37,7 +39,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     public boolean authenticateUser(LoginController.LoginForm loginForm, PasswordEncoder passwordEncoder) {
-        User user = userRepository.findByUsername(loginForm.getUsername());
+        User user = userRepository.findByUsername(loginForm.getUsername()).orElse(null);
         if (user == null) {
             user = userRepository.findByEmail(loginForm.getUsername());
         }
@@ -57,7 +59,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     public User loadUserPasswordReset(String login) {
-        User user = userRepository.findByUsername(login);
+        User user = userRepository.findByUsername(login).orElse(null);
         if (user == null) {
             user = userRepository.findByEmail(login);
         }
@@ -73,7 +75,17 @@ public class CustomUserDetailsService implements UserDetailsService {
         userRepository.save(user);
     }
 
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        return userRepository.findByUsername(username).orElse(null);
+    }
+
     public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
+    }
+
+    public boolean existsById(Long id) {
+        return userRepository.existsById(id);
     }
 }

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Conversation</title>
+    <style>
+        .message {
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+        }
+        .sent {
+            background-color: red;
+            color: white;
+            text-align: right;
+        }
+        .received {
+            background-color: green;
+            color: white;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<h1>Conversation with <span th:text="${otherUser.username}"></span></h1>
+<div th:each="message : ${messages}">
+    <div th:classappend="${message.sentByLoggedInUser} ? 'sent' : 'received'" class="message">
+        <p th:text="${message.messageContent}"></p>
+        <small th:text="${message.timestamp}"></small>
+    </div>
+</div>
+
+<form action="/api/messages/send" method="post">
+    <input type="hidden" name="id" th:value="${otherUser.id}" />
+    <textarea name="messageContent" placeholder="Enter message" required></textarea>
+    <button type="submit">Send</button>
+</form>
+</body>
+</html>

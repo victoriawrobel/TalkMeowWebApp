@@ -7,3 +7,11 @@ CREATE TABLE users (
     security_question VARCHAR(255) NOT NULL,
     security_answer VARCHAR(255) NOT NULL
 )
+
+CREATE TABLE messages (
+                          id SERIAL PRIMARY KEY,
+                          sender INT REFERENCES users(id) ON DELETE CASCADE,
+                          receiver INT REFERENCES users(id) ON DELETE CASCADE,
+                          message_content TEXT NOT NULL,
+                          timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
