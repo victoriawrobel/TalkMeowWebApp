@@ -187,7 +187,7 @@
     <div th:each="message, iterStat : ${messages}">
         <div th:classappend="${message.sentByLoggedInUser} ? 'sent' : 'received'" class="message">
             <p th:text="${message.messageContent}"></p>
-            <small th:text="${message.timestamp}"></small>
+            <small th:text="${#temporals.format(message.timestamp, 'HH:mm:ss')}"></small>
             <small th:if="${message.sentByLoggedInUser} and ${iterStat.last}" class="status" th:text="'Status: ' + ${message.status}"></small>
         </div>
     </div>
