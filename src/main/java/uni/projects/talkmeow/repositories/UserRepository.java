@@ -1,6 +1,7 @@
 package uni.projects.talkmeow.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import uni.projects.talkmeow.components.user.User;
 
 import java.util.Optional;
@@ -11,6 +12,7 @@ import java.util.Optional;
  * @since 02.10.2024
  */
 
+@Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByUsername(String username);

@@ -87,4 +87,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     public boolean existsById(Long id) {
         return userRepository.existsById(id);
     }
+
+    public boolean authenticateOldPassword(String oldPassword, User user, PasswordEncoder passwordEncoder) {
+        return passwordEncoder.matches(oldPassword, user.getPassword());
+    }
+
+    public User getUsernameByID(Long ID) {
+        return userRepository.findById(ID).orElse(null);
+    }
 }
