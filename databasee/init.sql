@@ -9,10 +9,21 @@ CREATE TABLE users (
 )
 
 CREATE TABLE messages (
-                          id SERIAL PRIMARY KEY,
-                          sender INT REFERENCES users(id) ON DELETE CASCADE,
-                          receiver INT REFERENCES users(id) ON DELETE CASCADE,
-                          message_content TEXT NOT NULL,
-                          status VARCHAR(10) NOT NULL DEFAULT 'SENT',
-                          timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    id SERIAL PRIMARY KEY,
+    sender INT REFERENCES users(id) ON DELETE CASCADE,
+    receiver INT REFERENCES users(id) ON DELETE CASCADE,
+    message_content TEXT NOT NULL,
+    status VARCHAR(10) NOT NULL DEFAULT 'SENT',
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE avatars (
+    id SERIAL PRIMARY KEY,
+    image BYTEA NOT NULL,
+    source VARCHAR(255) NOT NULL,
+    fur_color VARCHAR(63) NOT NULL,
+    eye_color VARCHAR(63) NOT NULL,
+    pattern VARCHAR(63) NOT NULL,
+    breed VARCHAR(63) NOT NULL,
+    age VarCHAR(63) NOT NULL
+)

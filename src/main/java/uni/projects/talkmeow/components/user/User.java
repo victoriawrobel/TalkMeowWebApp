@@ -1,4 +1,4 @@
-package uni.projects.talkmeow.components;
+package uni.projects.talkmeow.components.user;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

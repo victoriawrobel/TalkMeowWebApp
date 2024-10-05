@@ -41,6 +41,7 @@ public class SecurityConfig {
                                         "/password-reset-email", "/password-reset-question", "/password-reset-change", "/password-reset/form", "/ws/**").permitAll()
                                 .requestMatchers("/css/**", "/javascript/**", "/svg/**", "/images/**").permitAll() //static recourses
                                 .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+                                .requestMatchers("/manager/**").hasAnyRole("MANAGER", "ADMIN")
                                 .anyRequest().authenticated()
 
                 )

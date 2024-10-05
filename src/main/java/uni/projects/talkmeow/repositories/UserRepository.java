@@ -1,12 +1,7 @@
 package uni.projects.talkmeow.repositories;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
-import uni.projects.talkmeow.components.User;
+import uni.projects.talkmeow.components.user.User;
 
 import java.util.Optional;
 

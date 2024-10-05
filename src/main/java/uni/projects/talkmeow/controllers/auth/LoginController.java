@@ -15,7 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import uni.projects.talkmeow.components.User;
+import uni.projects.talkmeow.components.user.User;
 import uni.projects.talkmeow.repositories.UserRepository;
 import uni.projects.talkmeow.services.CustomUserDetailsService;
 import uni.projects.talkmeow.services.GlobalAttributeService;

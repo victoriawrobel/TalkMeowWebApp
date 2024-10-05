@@ -1,9 +1,10 @@
-package uni.projects.talkmeow.components;
+package uni.projects.talkmeow.components.message;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uni.projects.talkmeow.components.user.User;
 
 import java.time.LocalDateTime;
 

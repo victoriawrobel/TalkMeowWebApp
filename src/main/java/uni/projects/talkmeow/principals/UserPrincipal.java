@@ -3,11 +3,10 @@ package uni.projects.talkmeow.principals;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import uni.projects.talkmeow.components.User;
+import uni.projects.talkmeow.components.user.User;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * @author Tomasz Zbroszczyk

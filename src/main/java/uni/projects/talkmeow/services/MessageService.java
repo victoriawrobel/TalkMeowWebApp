@@ -2,9 +2,9 @@ package uni.projects.talkmeow.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import uni.projects.talkmeow.components.Message;
-import uni.projects.talkmeow.components.MessageStatus;
-import uni.projects.talkmeow.components.User;
+import uni.projects.talkmeow.components.message.Message;
+import uni.projects.talkmeow.components.message.MessageStatus;
+import uni.projects.talkmeow.components.user.User;
 import uni.projects.talkmeow.repositories.MessageRepository;
 import uni.projects.talkmeow.repositories.UserRepository;
 
