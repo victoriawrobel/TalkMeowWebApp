@@ -9,6 +9,8 @@
     <a href="/logout">Logout</a>
     <p>Welcome, <span th:text="${user.username}"></span>!</p>
     <a href="/api/messages/conversation/all">All Conversations</a>
+    <a href="/api/messages/conversation/all">All Conversations</a> <br/>
+    <a href="/profile">User Profile</a>
 </div>
 <div class="container" th:if="${!isLoggedIn || user == null}">
     <a href="/login/form">Login</a>
