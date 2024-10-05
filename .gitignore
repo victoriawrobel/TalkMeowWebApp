@@ -6,7 +6,7 @@ target/
 
 ### Application properties ###
 src/main/resources/.env
-resources/
+imageResources/
 
 ### STS ###
 .apt_generated
