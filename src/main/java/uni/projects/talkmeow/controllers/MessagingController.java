@@ -3,12 +3,11 @@ package uni.projects.talkmeow.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import uni.projects.talkmeow.components.Message;
-import uni.projects.talkmeow.components.MessageStatus;
-import uni.projects.talkmeow.components.User;
+import uni.projects.talkmeow.components.message.Message;
+import uni.projects.talkmeow.components.message.MessageStatus;
+import uni.projects.talkmeow.components.user.User;
 
 /**
  * @author Tomasz Zbroszczyk

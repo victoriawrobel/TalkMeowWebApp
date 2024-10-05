@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
-import uni.projects.talkmeow.components.User;
+import uni.projects.talkmeow.components.user.User;
 import uni.projects.talkmeow.services.CustomUserDetailsService;
 
 /**

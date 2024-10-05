@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Avatars</title>
+</head>
+<body>
+<h1>Avatars</h1>
+<div th:each="avatar : ${avatars}">
+    <div style="border: 1px black solid">
+        <img th:src="@{/image/avatar/{id}(id=${avatar.id})}" alt="Avatar Image" width="200" height="200"/>
+        <p>Fur Color: <span th:text="${avatar.furColor}"></span></p>
+        <p>Eye Color: <span th:text="${avatar.eyeColor}"></span></p>
+        <p>Pattern: <span th:text="${avatar.pattern}"></span></p>
+        <p>Breed: <span th:text="${avatar.breed}"></span></p>
+        <p>Age: <span th:text="${avatar.age}"></span></p>
+        <p>Source: <span th:text="${avatar.source}"></span></p>
+    </div>
+
+</div>
+</body>
+</html>

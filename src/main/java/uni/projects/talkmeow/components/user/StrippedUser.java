@@ -1,8 +1,4 @@
-package uni.projects.talkmeow.components;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+package uni.projects.talkmeow.components.user;
 
 /**
  * @author Tomasz Zbroszczyk

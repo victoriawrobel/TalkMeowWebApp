@@ -2,8 +2,8 @@ package uni.projects.talkmeow.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import uni.projects.talkmeow.components.Message;
-import uni.projects.talkmeow.components.User;
+import uni.projects.talkmeow.components.message.Message;
+import uni.projects.talkmeow.components.user.User;
 
 import java.util.List;
 
