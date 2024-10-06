@@ -73,5 +73,20 @@ public class MessageService {
     public Optional<User> findUserById(Long id) {
         return userRepository.findById(id);
     }
+
+    public Message getLatestMessage(User user1, User user2) {
+        Message message = messageRepository.findTop1BySenderAndReceiverOrderByTimestampDesc(user1, user2);
+        Message message2 = messageRepository.findTop1BySenderAndReceiverOrderByTimestampDesc(user2, user1);
+        if (message == null) {
+            return message2;
+        }
+        if (message2 == null) {
+            return message;
+        }
+        if (message.getTimestamp().isAfter(message2.getTimestamp())) {
+            return message;
+        }
+        return message2;
+    }
 }
 

@@ -10,7 +10,6 @@ import uni.projects.talkmeow.components.message.Message;
 import uni.projects.talkmeow.components.message.MessageStatus;
 import uni.projects.talkmeow.components.user.StrippedUser;
 import uni.projects.talkmeow.components.user.User;
-import uni.projects.talkmeow.repositories.InappropriateMessageRepository;
 import uni.projects.talkmeow.repositories.MessageRepository;
 import uni.projects.talkmeow.services.CustomUserDetailsService;
 import uni.projects.talkmeow.services.InappropriateMessageService;
@@ -167,7 +166,29 @@ public class MessageController {
         User currentUser = customUserDetailsService.getCurrentUser();
         List<User> users = messageService.getAllConversation(currentUser);
         List<User> strippedUsers = users.stream().map(StrippedUser::getStrippedUser).collect(Collectors.toList());
-        model.addAttribute("users", strippedUsers);
+        List<UserMessage> userMessages = strippedUsers.stream().map(user -> {
+            Message message = messageService.getLatestMessage(currentUser, user);
+            return new UserMessage(user, message);
+        }).collect(Collectors.toList());
+        model.addAttribute("userMessages", userMessages);
         return "conversations/allConversations";
+    }
+
+    public class UserMessage {
+        private User user;
+        private Message message;
+
+        public UserMessage(User user, Message message) {
+            this.user = user;
+            this.message = message;
+        }
+
+        public User getUser() {
+            return user;
+        }
+
+        public Message getMessage() {
+            return message;
+        }
     }
 }
