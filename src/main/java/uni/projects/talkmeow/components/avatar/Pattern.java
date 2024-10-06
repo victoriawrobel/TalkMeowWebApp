@@ -5,7 +5,7 @@ package uni.projects.talkmeow.components.avatar;
  * @version 1.0
  * @since 05.10.2024
  */
-public enum Patters {
+public enum Pattern {
     STRIPED,
     SPOTTED,
     SOLID,

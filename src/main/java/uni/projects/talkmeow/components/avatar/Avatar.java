@@ -44,7 +44,7 @@ public class Avatar {
 
     @Column(name = "pattern", nullable = false)
     @Enumerated(EnumType.STRING)
-    private Patters pattern;
+    private Pattern pattern;
 
     @Column(name = "breed", nullable = false)
     @Enumerated(EnumType.STRING)
