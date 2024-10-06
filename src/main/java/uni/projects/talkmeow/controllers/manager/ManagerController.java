@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import uni.projects.talkmeow.components.avatar.*;
 import uni.projects.talkmeow.repositories.AvatarRepository;
+import uni.projects.talkmeow.services.AvatarService;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.List;
 
 import static uni.projects.talkmeow.utility.ImageProcessor.*;
 
@@ -29,14 +31,27 @@ public class ManagerController {
     @Autowired
     private AvatarRepository avatarRepository;
 
+    @Autowired
+    private AvatarService avatarService;
+
     @GetMapping("/home")
     public String home() {
         return "manager/dashboard";
     }
 
     @GetMapping("/avatars")
-    public String avatars(Model model) {
-        model.addAttribute("avatars", avatarRepository.findAll());
+    public String avatars(@RequestParam(value = "furColor", required = false) Color furColor,
+                          @RequestParam(value = "eyeColor", required = false) Color eyeColor,
+                          @RequestParam(value = "pattern", required = false) Pattern pattern,
+                          @RequestParam(value = "breed", required = false) Breed breed,
+                          @RequestParam(value = "age", required = false) Age age,
+                          Model model) {
+        List<Avatar> filteredAvatars = avatarService.getFilteredAvatars(age, breed, furColor, eyeColor, pattern);
+        model.addAttribute("avatars", filteredAvatars);
+        model.addAttribute("age", Age.values());
+        model.addAttribute("breed", Breed.values());
+        model.addAttribute("color", Color.values());
+        model.addAttribute("pattern", Pattern.values());
         return "manager/avatars";
     }
 
@@ -46,7 +61,7 @@ public class ManagerController {
         model.addAttribute("age", Age.values());
         model.addAttribute("breed", Breed.values());
         model.addAttribute("color", Color.values());
-        model.addAttribute("pattern", Patters.values());
+        model.addAttribute("pattern", Pattern.values());
         return "manager/add-avatar";
     }
 
@@ -55,7 +70,7 @@ public class ManagerController {
     public String addAvatar(@RequestParam("imageData") MultipartFile image,
                             @RequestParam("furColor") Color furColor,
                             @RequestParam("eyeColor") Color eyeColor,
-                            @RequestParam("pattern") Patters pattern,
+                            @RequestParam("pattern") Pattern pattern,
                             @RequestParam("breed") Breed breed,
                             @RequestParam("age") Age age,
                             @RequestParam("source") String source,

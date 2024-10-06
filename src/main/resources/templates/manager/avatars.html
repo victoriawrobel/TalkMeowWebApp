@@ -5,6 +5,42 @@
     <title>Avatars</title>
 </head>
 <body>
+<h1>Filter Avatars</h1>
+
+<form action="#" th:action="@{/manager/avatars}" method="get">
+    <label for="furColor">Fur Color:</label>
+    <select id="furColor" name="furColor">
+        <option value="">All</option>
+        <option th:each="color : ${color}" th:value="${color}" th:text="${color}"></option>
+    </select>
+
+    <label for="eyeColor">Eye Color:</label>
+    <select id="eyeColor" name="eyeColor">
+        <option value="">All</option>
+        <option th:each="color : ${color}" th:value="${color}" th:text="${color}"></option>
+    </select>
+
+    <label for="pattern">Pattern:</label>
+    <select id="pattern" name="pattern">
+        <option value="">All</option>
+        <option th:each="pattern : ${pattern}" th:value="${pattern}" th:text="${pattern}"></option>
+    </select>
+
+    <label for="breed">Breed:</label>
+    <select id="breed" name="breed">
+        <option value="">All</option>
+        <option th:each="breed : ${breed}" th:value="${breed}" th:text="${breed}"></option>
+    </select>
+
+    <label for="age">Age:</label>
+    <select id="age" name="age">
+        <option value="">All</option>
+        <option th:each="age : ${age}" th:value="${age}" th:text="${age}"></option>
+    </select>
+
+    <button type="submit">Filter</button>
+</form>
+
 <h1>Avatars</h1>
 <div th:each="avatar : ${avatars}">
     <div style="border: 1px black solid">
@@ -16,7 +52,7 @@
         <p>Age: <span th:text="${avatar.age}"></span></p>
         <p>Source: <span th:text="${avatar.source}"></span></p>
     </div>
-
 </div>
+
 </body>
 </html>

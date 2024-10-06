@@ -1,6 +1,7 @@
 package uni.projects.talkmeow.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 import uni.projects.talkmeow.components.avatar.Avatar;
 
@@ -11,5 +12,5 @@ import uni.projects.talkmeow.components.avatar.Avatar;
  */
 
 @Repository
-public interface AvatarRepository extends JpaRepository<Avatar, Long> {
+public interface AvatarRepository extends JpaRepository<Avatar, Long>, JpaSpecificationExecutor<Avatar> {
 }
