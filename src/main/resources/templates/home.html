@@ -3,8 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="#{app.name} + ' - Home'"></title>
+    <style>
+        /* Styling the search bar results */
+        #search-results {
+            position: absolute;
+            z-index: 1000;
+            background-color: white;
+            border: 1px solid #ccc;
+            width: 300px;
+        }
+        #search-results img {
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+        #search-results div {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
 </head>
 <body>
+<div class="container">
+    <input type="text" id="search-bar" placeholder="Search users by username..." autocomplete="off">
+    <div id="search-results"></div>
+</div>
+
+<script>
+    // Listen for input changes in the search bar
+    document.getElementById("search-bar").addEventListener("input", function () {
+        let username = this.value;
+
+        // If the input is not empty, perform the search
+        if (username.length > 0) {
+            fetch('/user/search?username=' + username)
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById("search-results").innerHTML = html;
+                });
+        } else {
+            // Clear the search results if the search input is empty
+            document.getElementById("search-results").innerHTML = "";
+        }
+    });
+</script>
 <div class="container" th:if="${isLoggedIn && user != null}">
     <a href="/logout">Logout</a>
     <p>Welcome, <span th:text="${user.username}"></span>!</p>

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="user-search-results">
+    <div th:each="user : ${users}">
+        <a th:href="@{/api/messages/conversation(id=${user.id})}">
+            <div>
+                <img th:src="@{/image/avatar/{id}(id=${user.avatar.id})}" alt="Avatar Image" width="50" height="50"/>
+                <span th:text="${user.username}"></span>
+            </div>
+        </a>
+    </div>
+</div>
+</html>

@@ -170,6 +170,12 @@ public class MessageController {
             Message message = messageService.getLatestMessage(currentUser, user);
             return new UserMessage(user, message);
         }).collect(Collectors.toList());
+        userMessages.sort((o1, o2) -> {
+            if (o1.getMessage() == null || o2.getMessage() == null) {
+                return 0;
+            }
+            return o2.getMessage().getTimestamp().compareTo(o1.getMessage().getTimestamp());
+        });
         model.addAttribute("userMessages", userMessages);
         return "conversations/allConversations";
     }

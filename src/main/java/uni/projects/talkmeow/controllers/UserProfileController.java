@@ -64,4 +64,10 @@ public class UserProfileController {
         return "redirect:/profile";
     }
 
+    @GetMapping("/user/search")
+    public String searchUsersStartingWith(@RequestParam String username, Model model) {
+        model.addAttribute("users", userRepository.findAllByUsernameStartingWithIgnoreCase(username));
+        return "fragments/user-search-results :: user-search-results";
+    }
+
 }
