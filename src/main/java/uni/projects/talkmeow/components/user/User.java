@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uni.projects.talkmeow.components.avatar.Avatar;
 
 /**
  * @author Tomasz Zbroszczyk
@@ -42,6 +43,10 @@ public class User {
     @Column(name = "security_answer", nullable = false)
     private String securityAnswer;
 
+    @ManyToOne
+    @JoinColumn(name = "avatar", nullable = false)
+    private Avatar avatar;
+
     public User(User user) {
         this.id = user.id;
         this.username = user.username;
@@ -50,6 +55,7 @@ public class User {
         this.role = user.role;
         this.securityQuestion = user.securityQuestion;
         this.securityAnswer = user.securityAnswer;
+        this.avatar = user.avatar;
     }
 
 }

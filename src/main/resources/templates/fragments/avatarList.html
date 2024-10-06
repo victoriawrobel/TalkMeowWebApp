@@ -1,0 +1,10 @@
+<!-- src/main/resources/templates/fragments/avatarList.html -->
+<div id="avatarList" th:fragment="avatarList">
+    <!--/*@thymesVar id="avatar" type="uni.projects.talkmeow.components.avatar"*/-->
+    <div th:each="avatar : ${avatars}">
+        <input type="radio" th:id="'avatar_' + ${avatar.id}" name="selectedAvatarId" th:value="${avatar.id}">
+        <label th:for="'avatar_' + ${avatar.id}">
+            <img th:src="@{/image/avatar/{id}(id=${avatar.id})}" alt="Avatar Image" width="100" height="100"/>
+        </label>
+    </div>
+</div>

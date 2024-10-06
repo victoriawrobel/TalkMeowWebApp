@@ -8,6 +8,50 @@
 <div class="container">
     <a href="/static">Home</a>
     <form th:action="@{/register}" method="post" th:object="${user}">
+
+        <<!-- Avatar Filtering Options -->
+        <label for="furColor">Fur Color:</label>
+        <select id="furColor" name="furColor">
+            <option value="">Any</option>
+            <option th:each="color : ${color}" th:value="${color}" th:text="${color}"></option>
+        </select>
+
+        <label for="eyeColor">Eye Color:</label>
+        <select id="eyeColor" name="eyeColor">
+            <option value="">Any</option>
+            <option th:each="eyeColor : ${eyeColors}" th:value="${eyeColor}" th:text="${eyeColor}"></option>
+        </select>
+
+        <label for="pattern">Pattern:</label>
+        <select id="pattern" name="pattern">
+            <option value="">Any</option>
+            <option th:each="pattern : ${pattern}" th:value="${pattern}" th:text="${pattern}"></option>
+        </select>
+
+        <label for="breed">Breed:</label>
+        <select id="breed" name="breed">
+            <option value="">Any</option>
+            <option th:each="breed : ${breed}" th:value="${breed}" th:text="${breed}"></option>
+        </select>
+
+        <label for="age">Age:</label>
+        <select id="age" name="age">
+            <option value="">Any</option>
+            <option th:each="age : ${age}" th:value="${age}" th:text="${age}"></option>
+        </select>
+
+        <!-- Avatar Selection -->
+        <p>Select Avatar:</p>
+        <div id="avatarList">
+            <div th:each="avatar : ${avatars}">
+                <input type="radio" th:id="'avatar_' + ${avatar.id}" name="selectedAvatarId" th:value="${avatar.id}">
+                <label th:for="'avatar_' + ${avatar.id}">
+                    <img th:src="@{/image/avatar/{id}(id=${avatar.id})}" alt="Avatar Image" width="100" height="100"/>
+                </label>
+            </div>
+        </div>
+        <br>
+
         <label for="username">Username:</label><br>
         <input type="text" id="username" name="username" th:field="*{username}" required><br>
 
@@ -27,6 +71,25 @@
         <br><br>
         <input type="submit" id="submitButton" value="Submit">
     </form>
+    <!-- AJAX Script for dynamic avatar filtering -->
+    <script>
+        document.querySelectorAll('select').forEach(select => {
+            select.addEventListener('change', function() {
+                const furColor = document.getElementById('furColor').value;
+                const eyeColor = document.getElementById('eyeColor').value;
+                const pattern = document.getElementById('pattern').value;
+                const breed = document.getElementById('breed').value;
+                const age = document.getElementById('age').value;
+
+                // AJAX call to filter avatars
+                fetch(`/register/avatars?furColor=${furColor}&eyeColor=${eyeColor}&pattern=${pattern}&breed=${breed}&age=${age}`)
+                    .then(response => response.text())
+                    .then(html => {
+                        document.getElementById('avatarList').innerHTML = html;
+                    });
+            });
+        });
+    </script>
 </div>
 </body>
 </html>

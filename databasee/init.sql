@@ -5,7 +5,8 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL,
     role VARCHAR(10) NOT NULL DEFAULT 'USER',
     security_question VARCHAR(255) NOT NULL,
-    security_answer VARCHAR(255) NOT NULL
+    security_answer VARCHAR(255) NOT NULL,
+    avatar INT REFERENCES avatars(id) ON DELETE SET NULL DEFAULT 1
 )
 
 CREATE TABLE messages (

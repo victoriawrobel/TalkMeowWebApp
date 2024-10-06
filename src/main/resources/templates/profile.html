@@ -28,6 +28,8 @@
 </script>
 </head>
 <body>
+<img th:src="@{/image/avatar/{id}(id=${currentUser.avatar.id})}" alt="Avatar Image" width="200" height="200"/>
+
 <form th:action="@{/profile/change}" method="post" th:object="${currentUser}" onsubmit="return validateForm()">
     <p>E-mail:
         <label for="emailInput"></label><input type="text" id="emailInput" name="email" th:value="${currentUser.getEmail()}" disabled>

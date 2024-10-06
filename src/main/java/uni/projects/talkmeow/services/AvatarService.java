@@ -30,5 +30,9 @@ public class AvatarService {
                         .and(AvatarSpecifications.hasAge(age))
         );
     }
+
+    public Avatar getAvatarById(Long id) {
+        return avatarRepository.findById(id).orElse(null);
+    }
 }
 
