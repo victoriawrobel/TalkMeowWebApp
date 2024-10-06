@@ -16,9 +16,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import uni.projects.talkmeow.components.user.User;
+import uni.projects.talkmeow.components.user.UserStatus;
 import uni.projects.talkmeow.repositories.UserRepository;
+import uni.projects.talkmeow.services.BannedService;
 import uni.projects.talkmeow.services.CustomUserDetailsService;
 import uni.projects.talkmeow.services.GlobalAttributeService;
+
+import java.time.LocalDateTime;
 
 import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
@@ -46,6 +50,9 @@ public class LoginController {
     @Autowired
     private GlobalAttributeService globalAttributeService;
 
+    @Autowired
+    private BannedService bannedService;
+
     private final AuthenticationManager authenticationManager;
 
     public LoginController(AuthenticationManager authenticationManager) {
@@ -65,6 +72,17 @@ public class LoginController {
             if (user == null) {
                 user = userRepository.findByEmail(loginForm.getUsername());
             }
+            if (user.getUserStatus() != UserStatus.ACTIVE){
+                if (user.getUserStatus() == UserStatus.TEMPORARILY_BANNED) {
+                    if (bannedService.getLastUserBan(user).getBanTimeEnd().isBefore(LocalDateTime.now())) {
+                        bannedService.unbanUser(user.getId());
+                    } else
+                        return "redirect:/login/form?error=temporarily_banned";
+                } else
+                    return "redirect:/login/form?error=permanently_banned";
+
+            }
+
             httpSession.setAttribute("user", user);
 
             UsernamePasswordAuthenticationToken authReq

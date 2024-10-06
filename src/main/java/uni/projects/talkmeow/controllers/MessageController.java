@@ -10,9 +10,12 @@ import uni.projects.talkmeow.components.message.Message;
 import uni.projects.talkmeow.components.message.MessageStatus;
 import uni.projects.talkmeow.components.user.StrippedUser;
 import uni.projects.talkmeow.components.user.User;
+import uni.projects.talkmeow.repositories.InappropriateMessageRepository;
 import uni.projects.talkmeow.repositories.MessageRepository;
 import uni.projects.talkmeow.services.CustomUserDetailsService;
+import uni.projects.talkmeow.services.InappropriateMessageService;
 import uni.projects.talkmeow.services.MessageService;
+import uni.projects.talkmeow.utility.MessageSupervisor;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,25 +42,10 @@ public class MessageController {
     @Autowired
     private MessageRepository messageRepository;
 
-    @GetMapping("/send")
-    public String send(Model model, @RequestParam(required = false) String error) {
-        if (error != null) {
-            switch (error) {
-                case "no_user":
-                    model.addAttribute("error", "No user provided");
-                    break;
-                case "user_not_found":
-                    model.addAttribute("error", "User not found");
-                    break;
-                case "empty_message":
-                    model.addAttribute("error", "Message cannot be empty");
-                    break;
-            }
-        }
-        return "conversations/sendMessage";
-    }
+    private final MessageSupervisor messageSupervisor = new MessageSupervisor();
 
-
+    @Autowired
+    private InappropriateMessageService inappropriateMessageService;
 
     @PostMapping("/send")
     @ResponseBody
@@ -91,8 +79,15 @@ public class MessageController {
         User sender = customUserDetailsService.getCurrentUser();
         User receiver = receiverOptional.get();
 
+
+
         // Send the message
         Message message = messageService.sendMessage(sender, receiver, messageContent);
+
+        if (!messageSupervisor.isMessageAppropriate(messageContent)) {
+            inappropriateMessageService.saveInappropriateMessage(message, sender);
+        }
+
         Message strippedMessage = new Message(message.getId(), StrippedUser.getStrippedUser(sender), StrippedUser.getStrippedUser(receiver), messageContent, message.getTimestamp(), message.getStatus(), true);
 
         // Send push notification

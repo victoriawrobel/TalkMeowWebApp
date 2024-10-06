@@ -4,7 +4,11 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uni.projects.talkmeow.components.Banned;
 import uni.projects.talkmeow.components.avatar.Avatar;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author Tomasz Zbroszczyk
@@ -47,6 +51,13 @@ public class User {
     @JoinColumn(name = "avatar", nullable = false)
     private Avatar avatar;
 
+    @Column(name = "ban_strike")
+    private int banStrike = 0;
+
+    @Column(name = "user_status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private UserStatus userStatus = UserStatus.ACTIVE;
+
     public User(User user) {
         this.id = user.id;
         this.username = user.username;
@@ -56,6 +67,8 @@ public class User {
         this.securityQuestion = user.securityQuestion;
         this.securityAnswer = user.securityAnswer;
         this.avatar = user.avatar;
+        this.banStrike = user.banStrike;
+        this.userStatus = user.userStatus;
     }
 
 }

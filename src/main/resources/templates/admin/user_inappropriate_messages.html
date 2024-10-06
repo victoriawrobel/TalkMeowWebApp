@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Inappropriate Messages</title>
+</head>
+<body>
+
+<h1>Inappropriate Messages for User: <span th:text="${user.username}"></span></h1>
+
+<h2>Ban Status: <span th:text="${user.userStatus}"></span></h2>
+<h2>Ban Strike: <span th:text="${user.banStrike}"></span></h2>
+
+<form th:if="${user.userStatus.toString() == 'ACTIVE'}"
+      th:action="@{'/admin/user/' + ${user.id} + '/ban'}" method="post">
+  <label for="reason">Ban Reason:</label>
+  <input type="text" id="reason" name="reason" required>
+  <label for="banEndTime">Ban End Time:</label>
+  <input type="datetime-local" id="banEndTime" name="banEndTime" required>
+  <button type="submit">Ban User</button>
+</form>
+
+<form th:if="${user.userStatus.toString() == 'TEMPORARILY_BANNED'}"
+      th:action="@{'/admin/user/' + ${user.id} + '/unban'}" method="post">
+  <button type="submit">Unban User</button>
+</form>
+
+<h2>Inappropriate Messages after Last Ban</h2>
+<table>
+  <thead>
+  <tr>
+    <th>Message Content</th>
+    <th>Sent At</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="message : ${messages}">
+    <td th:text="${message.messageContent}"></td>
+    <td th:text="${#temporals.format(message.messageTime, 'dd/MM/yyyy HH:mm')}"></td>
+  </tr>
+  </tbody>
+</table>
+
+<a href="/admin/users">Back to User List</a>
+
+</body>
+</html>

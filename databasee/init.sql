@@ -6,8 +6,20 @@ CREATE TABLE users (
     role VARCHAR(10) NOT NULL DEFAULT 'USER',
     security_question VARCHAR(255) NOT NULL,
     security_answer VARCHAR(255) NOT NULL,
-    avatar INT REFERENCES avatars(id) ON DELETE SET NULL DEFAULT 1
+    avatar INT REFERENCES avatars(id) ON DELETE SET NULL DEFAULT 1,
+    ban_strike INT DEFAULT 0,
+    user_status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE'
 )
+
+CREATE TABLE banned (
+    id SERIAL PRIMARY KEY,
+    banned_user INT REFERENCES users(id) ON DELETE CASCADE,
+    banned_by INT REFERENCES users(id) ON DELETE SET NULL,
+    reason TEXT NOT NULL,
+    ban_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ban_time_end TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 
 CREATE TABLE messages (
     id SERIAL PRIMARY KEY,
@@ -27,4 +39,13 @@ CREATE TABLE avatars (
     pattern VARCHAR(63) NOT NULL,
     breed VARCHAR(63) NOT NULL,
     age VarCHAR(63) NOT NULL
+)
+
+CREATE TABLE inappropriate_messages (
+    id SERIAL PRIMARY KEY,
+    message_content TEXT NOT NULL,
+    sender INT REFERENCES users(id) ON DELETE CASCADE,
+    message INT REFERENCES messages(id) ON DELETE CASCADE,
+    approval VARCHAR(20) NOT NULL DEFAULT 'NEEDS_VERIFICATION',
+    message_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )

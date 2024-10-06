@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User List</title>
+</head>
+<body>
+
+<h1>All Users</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>Username</th>
+        <th>Status</th>
+        <th>Ban Strike</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.userStatus}"></td>
+        <td th:text="${user.banStrike}"></td>
+        <td>
+            <a th:href="@{'/admin/user/' + ${user.id} + '/messages'}">View Messages</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

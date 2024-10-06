@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Bans</title>
+</head>
+<body>
+<h1>Bans for User: <span th:text="${user.username}"></span></h1>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Ban Reason</th>
+        <th>Ban Start Time</th>
+        <th>Ban End Time</th>
+        <th>Banned By</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="ban : ${bans}">
+        <td th:text="${ban.reason}"></td>
+        <td th:text="${#temporals.format(ban.banTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+        <td th:text="${#temporals.format(ban.banTimeEnd, 'yyyy-MM-dd HH:mm:ss')}"></td>
+        <td th:text="${ban.bannedBy.username}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<a href="/admin/banned">Back to Banned Users</a>
+
+</body>
+</html>

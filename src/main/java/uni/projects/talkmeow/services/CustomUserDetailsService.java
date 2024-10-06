@@ -9,9 +9,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uni.projects.talkmeow.components.user.User;
+import uni.projects.talkmeow.components.user.UserStatus;
 import uni.projects.talkmeow.controllers.auth.LoginController;
 import uni.projects.talkmeow.principals.UserPrincipal;
 import uni.projects.talkmeow.repositories.UserRepository;
+
+import java.util.List;
+
+import static uni.projects.talkmeow.utility.Defaults.MAX_BAN_STRIKES;
 
 /**
  * @author Tomasz Zbroszczyk
@@ -35,6 +40,30 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found");
         }
         return new UserPrincipal(user);
+    }
+
+    public void banUser(Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user != null) {
+            user.setUserStatus(UserStatus.TEMPORARILY_BANNED);
+            user.setBanStrike(user.getBanStrike() + 1);
+            if (user.getBanStrike() >= MAX_BAN_STRIKES) {
+                user.setUserStatus(UserStatus.PERMANENTLY_BANNED);
+            }
+            userRepository.save(user);
+        }
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public UserStatus getUserStatus(Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user != null) {
+            return user.getUserStatus();
+        }
+        return null;
     }
 
     public boolean authenticateUser(LoginController.LoginForm loginForm, PasswordEncoder passwordEncoder) {
@@ -94,5 +123,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     public User getUsernameByID(Long ID) {
         return userRepository.findById(ID).orElse(null);
+    }
+
+    public void unbanUser(Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user != null) {
+            user.setUserStatus(UserStatus.ACTIVE);
+            userRepository.save(user);
+        }
     }
 }
