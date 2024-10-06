@@ -82,7 +82,7 @@
                 const age = document.getElementById('age').value;
 
                 // AJAX call to filter avatars
-                fetch(`/register/avatars?furColor=${furColor}&eyeColor=${eyeColor}&pattern=${pattern}&breed=${breed}&age=${age}`)
+                fetch(`/image/avatars?furColor=${furColor}&eyeColor=${eyeColor}&pattern=${pattern}&breed=${breed}&age=${age}`)
                     .then(response => response.text())
                     .then(html => {
                         document.getElementById('avatarList').innerHTML = html;

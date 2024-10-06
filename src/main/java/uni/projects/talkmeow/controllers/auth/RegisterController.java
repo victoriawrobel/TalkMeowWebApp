@@ -76,17 +76,4 @@ public class RegisterController {
         return new RedirectView("/login/form");
     }
 
-    @GetMapping("/register/avatars")
-    public String filterAvatars(@RequestParam(value = "furColor", required = false) Color furColor,
-                                @RequestParam(value = "eyeColor", required = false) Color eyeColor,
-                                @RequestParam(value = "pattern", required = false) Pattern pattern,
-                                @RequestParam(value = "breed", required = false) Breed breed,
-                                @RequestParam(value = "age", required = false) Age age,
-                                Model model) {
-        // Fetch filtered avatars based on the provided filters
-        List<Avatar> filteredAvatars = avatarService.getFilteredAvatars(age, breed, furColor, eyeColor, pattern);
-        model.addAttribute("avatars", filteredAvatars);
-        return "fragments/avatarList :: avatarList";  // Return a fragment with the updated avatar list
-    }
-
 }
