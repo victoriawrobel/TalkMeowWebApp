@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<div th:fragment="user-search-results">
-    <div th:each="user : ${users}">
+<div th:fragment="user-search-results" class="user-search-results">
+    <div th:each="user : ${users}" class="user-search-result">
         <a th:href="@{/api/messages/conversation(id=${user.id})}">
-            <div>
-                <img th:src="@{/image/avatar/{id}(id=${user.avatar.id})}" alt="Avatar Image" width="50" height="50"/>
-                <span th:text="${user.username}"></span>
+            <img th:src="@{/image/avatar/{id}(id=${user.avatar.id})}" alt="Avatar Image" width="75" height="75" class="user-image"/>
+            <div class="username-container">
+                <span th:text="${user.username}" class="username"></span>
             </div>
         </a>
     </div>
