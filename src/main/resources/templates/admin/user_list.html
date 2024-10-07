@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>User List</title>
-    <th:block th:include="fragments/header :: header"></th:block>
+    <th:block th:insert="~{fragments/header :: header}"></th:block>
 </head>
 <body>
-<th:block th:include="fragments/new-message-notification :: new-message-notification"></th:block>
+<th:block th:insert="~{fragments/new-message-notification :: new-message-notification}"></th:block>
 
 <h1>All Users</h1>
 

@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Add Avatar</title>
-    <th:block th:include="fragments/header :: header"></th:block>
+    <th:block th:insert="~{fragments/header :: header}"></th:block>
 </head>
 <body>
+<th:block th:insert="~{fragments/new-message-notification :: new-message-notification}"></th:block>
+
 <form action="/manager/add-avatar" method="post" enctype="multipart/form-data">
     <label for="imageData">Avatar Image:</label><br>
     <input type="file" id="imageData" name="imageData" accept="image/jpeg,image/png,image/jpg"><br><br>
