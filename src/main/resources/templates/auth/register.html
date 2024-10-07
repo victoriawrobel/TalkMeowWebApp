@@ -4,13 +4,22 @@
     <meta charset="UTF-8">
     <title th:text="#{app.name} + ' - Register'"></title>
     <th:block th:include="fragments/header :: header"></th:block>
+    <style>
+        .avatar-image {
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .avatar-image.selected {
+            border: 2px solid blue;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
-    <a href="/static">Home</a>
+    <a href="/">Home</a>
     <form th:action="@{/register}" method="post" th:object="${user}">
 
-        <<!-- Avatar Filtering Options -->
+        <!-- Avatar Filtering Options -->
         <label for="furColor">Fur Color:</label>
         <select id="furColor" name="furColor">
             <option value="">Any</option>
@@ -43,14 +52,7 @@
 
         <!-- Avatar Selection -->
         <p>Select Avatar:</p>
-        <div id="avatarList">
-            <div th:each="avatar : ${avatars}">
-                <input type="radio" th:id="'avatar_' + ${avatar.id}" name="selectedAvatarId" th:value="${avatar.id}">
-                <label th:for="'avatar_' + ${avatar.id}">
-                    <img th:src="@{/image/avatar/{id}(id=${avatar.id})}" alt="Avatar Image" width="100" height="100"/>
-                </label>
-            </div>
-        </div>
+        <div id="avatarList" th:include="fragments/avatarList :: avatarList"></div>
         <br>
 
         <label for="username">Username:</label><br>
@@ -73,24 +75,7 @@
         <input type="submit" id="submitButton" value="Submit">
     </form>
     <!-- AJAX Script for dynamic avatar filtering -->
-    <script>
-        document.querySelectorAll('select').forEach(select => {
-            select.addEventListener('change', function() {
-                const furColor = document.getElementById('furColor').value;
-                const eyeColor = document.getElementById('eyeColor').value;
-                const pattern = document.getElementById('pattern').value;
-                const breed = document.getElementById('breed').value;
-                const age = document.getElementById('age').value;
-
-                // AJAX call to filter avatars
-                fetch(`/image/avatars?furColor=${furColor}&eyeColor=${eyeColor}&pattern=${pattern}&breed=${breed}&age=${age}`)
-                    .then(response => response.text())
-                    .then(html => {
-                        document.getElementById('avatarList').innerHTML = html;
-                    });
-            });
-        });
-    </script>
+    <script src="/javascript/registerFilterAvatars.js"></script>
 </div>
 </body>
 </html>

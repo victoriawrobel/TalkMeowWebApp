@@ -1,0 +1,28 @@
+<nav th:fragment="navbar">
+    <div class="navbar">
+        <div class="navbar-left">
+            <a href="/">
+                <img src="/images/TalkMeowLogoTransparent.png" alt="App Logo" width="100" height="100">
+            </a>
+        </div>
+        <div class="navbar-center">
+            <div th:if="${isLoggedIn && user != null}">
+                <input type="text" id="search-bar" placeholder="Search users by username..." autocomplete="off">
+                <div id="search-results"></div>
+                <script src="/javascript/search.js"></script>
+            </div>
+        </div>
+        <div class="navbar-right">
+            <div th:if="${!isLoggedIn || user == null}">
+                <a href="/register/form">Register</a>
+                <a href="/login/form">Login</a>
+            </div>
+            <div th:if="${isLoggedIn && user != null}">
+                <img id="user-avatar" src="" alt="User Avatar"/>
+                <a href="/profile">User Profile</a>
+                <a href="/logout">Logout</a>
+            </div>
+            <script src="/javascript/fetchAvatar.js"></script>
+        </div>
+    </div>
+</nav>
