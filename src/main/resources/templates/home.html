@@ -3,29 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="#{app.name} + ' - Home'"></title>
-    <th:block th:include="fragments/header :: header"></th:block>
+    <th:block th:insert="~{fragments/header :: header}"></th:block>
 </head>
 <body>
-    <th:block th:include="fragments/new-message-notification :: new-message-notification"></th:block>
-    <nav th:include="fragments/navbar :: navbar"></nav>
+    <th:block th:insert="~{fragments/new-message-notification :: new-message-notification}"></th:block>
+    <nav th:insert="~{fragments/navbar :: navbar}"></nav>
     <div>
-
         <!-- Home page for logged-in users-->
         <div class="grid-container" th:if="${isLoggedIn && user != null}">
             <h2>Welcome, <span th:text="${user.username}"></span>!</h2>
 
-            <div class="grid-item">
-                <img src="/images/WelcomeCatTransparent.png" alt="Welcome Cat" width="350" height="350">
-            </div>
-            <div class="grid-item">
-                <div class="grid-item-buttons">
-                    <a href="/api/messages/conversation/all" class="button">All Conversations</a>
-                    <a href="/profile" class="button">User Profile</a>
-                    <a href="/logout" class="button">Logout</a>
+            <div class="home-main-container">
+                <div class="grid-item">
+                    <img src="/images/WelcomeCatTransparent.png" alt="Welcome Cat" width="350" height="350">
+                </div>
+                <div class="grid-item">
+                    <div class="grid-item-buttons">
+                        <a href="/api/messages/conversation/all" class="button">All Conversations</a>
+                        <a href="/profile" class="button">User Profile</a>
+                        <a href="/logout" class="button">Logout</a>
+                    </div>
                 </div>
             </div>
         </div>
-
         <!-- Home page for non-logged-in users-->
         <div class="container" th:if="${!isLoggedIn || user == null}">
             <img src="/images/TalkMeowLogoTransparent.png" alt="Talk Meow Logo" width="300" height="300">
