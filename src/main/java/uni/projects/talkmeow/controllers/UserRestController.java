@@ -15,9 +15,23 @@ import uni.projects.talkmeow.components.user.User;
 public class UserRestController {
 
     @GetMapping("/user/currentUser")
-    public String getCurrentUser(HttpSession session) {
+    public String getCurrentUserUsername(HttpSession session) {
         User user = (User)session.getAttribute("user");
         return user.getUsername();
     }
+
+    @GetMapping("/user/currentUser/id")
+    public Long getCurrentUserId(HttpSession session) {
+        User user = (User)session.getAttribute("user");
+        return user.getId();
+    }
+
+    @GetMapping("/user/currentUser/avatar")
+    public Long getCurrentUserAvatar(HttpSession session) {
+        User user = (User)session.getAttribute("user");
+        return user.getAvatar().getId();
+    }
+
+
 
 }
