@@ -1,0 +1,86 @@
+body {
+    background-color: #fcf5df;
+    font-family: Amaranth-Regular, sans-serif;
+}
+
+@font-face {
+    font-family: Amaranth-Bold;
+    src: url("/css/fonts/Amaranth-Bold.ttf");
+}
+
+@font-face {
+    font-family: Amaranth-Regular;
+    src: url("/css/fonts/Amaranth-Regular.ttf");
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.grid-container {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+}
+
+.grid-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 1em;
+}
+
+/* Styling the headers */
+h1 {
+    font-family: Amaranth-Bold, sans-serif;
+    font-size: 3em;
+}
+
+h2 {
+    font-family: Amaranth-Bold, sans-serif;
+    font-size: 2em;
+    margin-left: 5vh;
+}
+
+/* Styling login/register buttons */
+.button {
+    display: inline-block;
+    background-color: black;
+    font-family: Amaranth-Regular, sans-serif;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    margin: 5px;
+}
+
+.grid-item-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    border-left: 0.25em solid black;
+}
+
+/* Styling the search bar results */
+#search-results {
+    position: absolute;
+    z-index: 1000;
+    background-color: white;
+    border: 1px solid #ccc;
+    width: 300px;
+}
+#search-results img {
+    vertical-align: middle;
+    margin-right: 10px;
+}
+#search-results div {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}

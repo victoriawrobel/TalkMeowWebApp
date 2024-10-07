@@ -4,59 +4,31 @@
     <meta charset="UTF-8">
     <title th:text="#{app.name} + ' - Home'"></title>
     <th:block th:include="fragments/header :: header"></th:block>
-    <style>
-        /* Styling the search bar results */
-        #search-results {
-            position: absolute;
-            z-index: 1000;
-            background-color: white;
-            border: 1px solid #ccc;
-            width: 300px;
-        }
-        #search-results img {
-            vertical-align: middle;
-            margin-right: 10px;
-        }
-        #search-results div {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-    </style>
 </head>
 <body>
-<th:block th:include="fragments/new-message-notification :: new-message-notification"></th:block>
-<div class="container">
-    <input type="text" id="search-bar" placeholder="Search users by username..." autocomplete="off">
-    <div id="search-results"></div>
-</div>
+    <th:block th:include="fragments/new-message-notification :: new-message-notification"></th:block>
+    <h2>Welcome, <span th:text="${user.username}"></span>!</h2>
 
-<script>
-    // Listen for input changes in the search bar
-    document.getElementById("search-bar").addEventListener("input", function () {
-        let username = this.value;
+    <!-- Home page for logged-in users-->
+    <div class="grid-container" th:if="${isLoggedIn && user != null}">
+        <div class="grid-item">
+            <img src="/images/WelcomeCatTransparent.png" alt="Welcome Cat" width="350" height="350">
+        </div>
+        <div class="grid-item">
+            <div class="grid-item-buttons">
+                <a href="/api/messages/conversation/all" class="button">All Conversations</a>
+                <a href="/profile" class="button">User Profile</a>
+                <a href="/logout" class="button">Logout</a>
+            </div>
+        </div>
+    </div>
 
-        // If the input is not empty, perform the search
-        if (username.length > 0) {
-            fetch('/user/search?username=' + username)
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById("search-results").innerHTML = html;
-                });
-        } else {
-            // Clear the search results if the search input is empty
-            document.getElementById("search-results").innerHTML = "";
-        }
-    });
-</script>
-<div class="container" th:if="${isLoggedIn && user != null}">
-    <a href="/logout">Logout</a>
-    <p>Welcome, <span th:text="${user.username}"></span>!</p>
-    <a href="/api/messages/conversation/all">All Conversations</a> <br/>
-    <a href="/profile">User Profile</a>
-</div>
-<div class="container" th:if="${!isLoggedIn || user == null}">
-    <a href="/login/form">Login</a>
-    <p>Hello, World!</p>
-</div>
+    <!-- Home page for non-logged-in users-->
+    <div class="container" th:if="${!isLoggedIn || user == null}">
+        <img src="/images/TalkMeowLogoTransparent.png" alt="Talk Meow Logo" width="300" height="300">
+        <h1>Talk Meow</h1>
+        <a href="/register/form" class="button">Register</a>
+        <a href="/login/form" class="button">Login</a>
+    </div>
 </body>
 </html>
