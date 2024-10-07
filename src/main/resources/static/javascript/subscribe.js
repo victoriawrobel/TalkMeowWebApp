@@ -6,8 +6,22 @@ function loadScript(url, callback) {
     document.head.appendChild(script);
 }
 
+function getCurrentUserAndSetClass() {
+    fetch('/user/currentUser')
+        .then(response => response.text())
+        .then(username => {
+            const currentUserElement = document.getElementById('current-user-username');
+            if (currentUserElement) {
+                currentUserElement.classList.add(username);
+            }
+        })
+        .catch(error => console.error('Error fetching current user:', error));
+}
+
 loadScript('https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js', function() {
     loadScript('https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js', function() {
+        getCurrentUserAndSetClass(); // Call the function to set the class
+
         const socket = new SockJS('/ws');
         const stompClient = Stomp.over(socket);
 
@@ -22,8 +36,12 @@ loadScript('https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.mi
         });
 
         function showMessageOutput(message) {
-            const currentUserElement = document.getElementById('current-user-username');
-            currentUserElement.textContent = "received a message: " + message;
+            const otherUserElement = document.getElementById('other-username');
+            if (otherUserElement && otherUserElement.className === message) {
+                console.log("Message matches other-username, no notification displayed.");
+                return;
+            }
+            alert('New message from: ' + message);
             console.log("Received message: ", message);
         }
     });

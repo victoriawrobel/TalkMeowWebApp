@@ -32,6 +32,8 @@
 </script>
 </head>
 <body>
+<th:block th:include="fragments/new-message-notification :: new-message-notification"></th:block>
+
 <img th:src="@{/image/avatar/{id}(id=${currentUser.avatar.id})}" alt="Avatar Image" width="200" height="200"/>
 
 <form th:action="@{/profile/change}" method="post" th:object="${currentUser}" onsubmit="return validateForm()">
