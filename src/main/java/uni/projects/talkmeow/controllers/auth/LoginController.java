@@ -94,7 +94,9 @@ public class LoginController {
             HttpSession session = request.getSession(true);
             session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
             session.setAttribute("isLoggedIn", true);
+            session.setAttribute("current-user-username", user.getUsername());
             globalAttributeService.addAttribute("isLoggedIn", true);
+            globalAttributeService.addAttribute("currentUserUsername", user.getUsername());
 
             return "redirect:/";
         }
@@ -104,6 +106,7 @@ public class LoginController {
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
         globalAttributeService.addAttribute("isLoggedIn", false);
+        globalAttributeService.addAttribute("current-user-username", null);
         SecurityContextHolder.clearContext();
         request.getSession().invalidate();
         return "redirect:/home";
