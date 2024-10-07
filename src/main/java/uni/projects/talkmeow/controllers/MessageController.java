@@ -92,6 +92,7 @@ public class MessageController {
         // Send push notification
         String name = receiver.getUsername() + "-" + sender.getUsername();
         simpMessagingTemplate.convertAndSendToUser(name, "/specific", strippedMessage);
+        simpMessagingTemplate.convertAndSendToUser(receiver.getUsername(), "/new-message", sender.getUsername());
 
         return ResponseEntity.ok("Message sent successfully");
     }
