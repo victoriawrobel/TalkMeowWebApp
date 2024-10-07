@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="#{app.name} + ' - Login'"></title>
+    <th:block th:include="fragments/header :: header"></th:block>
 </head>
 <body>
 <div class="container">
-    <a href="/static">Home</a><br>
+    <a href="/home">Home</a><br>
     <a href="/register/form">Register</a>
     <form th:action="@{/login}" th:object="${loginForm}" method="post">
         <label for="username">Username or Email:</label><br>
