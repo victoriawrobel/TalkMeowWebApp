@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="#{app.name} + ' - Home'"></title>
+    <th:block th:include="fragments/header :: header"></th:block>
     <style>
         /* Styling the search bar results */
         #search-results {
