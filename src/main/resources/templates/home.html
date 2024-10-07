@@ -9,10 +9,11 @@
     <th:block th:include="fragments/new-message-notification :: new-message-notification"></th:block>
     <nav th:include="fragments/navbar :: navbar"></nav>
     <div>
-        <h2>Welcome, <span th:text="${user.username}"></span>!</h2>
 
         <!-- Home page for logged-in users-->
         <div class="grid-container" th:if="${isLoggedIn && user != null}">
+            <h2>Welcome, <span th:text="${user.username}"></span>!</h2>
+
             <div class="grid-item">
                 <img src="/images/WelcomeCatTransparent.png" alt="Welcome Cat" width="350" height="350">
             </div>
