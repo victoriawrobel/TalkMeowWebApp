@@ -119,6 +119,41 @@ class TalkMeowApplicationTests {
                 .andExpect(content().string(containsString("Register")));
     }
 
+    @Test
+    @DisplayName("Search for a user after logging in")
+    void searchUserAfterLogin() throws Exception {
+        // Step 1: Log in as 'wiki'
+        MockHttpSession session = login("wiki", "wiki");
+
+        // Step 2: Perform a search for 'admin'
+        this.mockMvc.perform(get("/user/search") // Assuming your search endpoint is "/search"
+                        .param("username", "admin") // Adjust according to your search implementation
+                        .session(session))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("admin"))) // Check if the username appears in the results
+                .andExpect(xpath("//div[contains(@class, 'user-search-results')]").exists()) // Verify search results container exists
+                .andExpect(xpath("//a[@href='/api/messages/conversation?id=6']//span[contains(@class, 'username') and text()='admin']").exists()); // Check if 'admin' is in the results
+    }
+
+    @Test
+    @DisplayName("Clicking on the logo redirects to the home page")
+    void clickingLogoRedirectsToHome() throws Exception {
+        // Access the home page
+        this.mockMvc.perform(get("/"))
+                .andExpect(status().isOk()) // Ensure the home page is accessible
+                .andExpect(xpath("//title").string("TalkMeow - Home")) // Optional: Verify the title
+
+                // Check if the logo is present and clickable
+                .andExpect(xpath("//a[@href='/']") // Check if the logo link points to the correct URL
+                        .exists())
+                .andExpect(xpath("//a[@href='/']//img[@alt='App Logo']") // Verify that the logo image exists
+                        .exists());
+
+        // Simulate clicking on the logo
+        this.mockMvc.perform(get("/"))
+                .andExpect(status().isOk());
+    }
+
     // Helper method for login
     private MockHttpSession login(String username, String password) throws Exception {
         return (MockHttpSession) this.mockMvc.perform(post("/login")
