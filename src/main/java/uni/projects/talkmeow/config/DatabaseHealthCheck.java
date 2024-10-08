@@ -1,7 +1,9 @@
 package uni.projects.talkmeow.config;
 
+import lombok.Getter;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import uni.projects.talkmeow.TalkMeowApplication;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -14,6 +16,7 @@ import java.sql.SQLException;
  */
 
 @Component
+@Getter
 public class DatabaseHealthCheck {
 
     private final DataSourceConfig dataSourceConfig;
@@ -24,18 +27,15 @@ public class DatabaseHealthCheck {
         this.currentDataSource = dataSourceConfig.dataSource();
     }
 
-    @Scheduled(fixedDelay = 5 * 60 * 1000)  // Check every 5 minutes
+    @Scheduled(fixedDelay = 60 * 1000)
     public void checkDatabaseHealth() {
-        try (Connection connection = currentDataSource.getConnection()) {
-            // Successfully connected to the current database, no action needed
-        } catch (SQLException e) {
-            // If connection fails, switch the data source
-            System.out.println("Switching to fallback database");
-            currentDataSource = dataSourceConfig.createFallbackDataSource();
+        System.out.println("Checking database health");
+        if (DataSourceConfig.isDatabaseAvailable(currentDataSource)){
+
+        } else {
+            System.out.println("Restarting the application");
+            TalkMeowApplication.restart();
         }
     }
 
-    public DataSource getCurrentDataSource() {
-        return currentDataSource;
-    }
 }
