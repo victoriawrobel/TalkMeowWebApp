@@ -169,6 +169,7 @@
 </head>
 <body>
 <th:block th:insert="~{fragments/new-message-notification :: new-message-notification}"></th:block>
+<th:block th:insert="~{fragments/navbar :: navbar}"></th:block>
 
 <input type="hidden" id="current-username" th:classappend="${#authentication.name}"/>
 <input type="hidden" id="other-username" th:classappend="${otherUser.username}"/>
@@ -190,6 +191,30 @@
     <input type="hidden" name="username" th:value="${otherUser.username}"/>
     <textarea name="messageContent" placeholder="Enter message" required></textarea>
     <button type="submit" class="button">Send</button>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            scrollToBottom();
+            const messageContent = document.querySelector('textarea[name="messageContent"]');
+            messageContent.addEventListener('input', checkMessageContent);
+            checkMessageContent(); // Initial check
+
+            document.querySelector('form').addEventListener('submit', sendMessage);
+
+            messageContent.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    // Submit the form on Enter or Shift + Enter
+                    event.preventDefault();
+                    sendMessage(event);
+                    sleep(100).then(() => scrollToBottom());
+                    scrollToBottom();
+                }
+            });
+        });
+
+        function scrollToBottom() {
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+    </script>
 </form>
 </body>
 </html>

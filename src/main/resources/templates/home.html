@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
     <title th:text="#{app.name} + ' - Home'"></title>
     <th:block th:insert="~{fragments/header :: header}"></th:block>
 </head>
@@ -15,7 +15,7 @@
 
             <div class="home-main-container">
                 <div class="grid-item">
-                    <img src="/images/WelcomeCatTransparent.png" alt="Welcome Cat" width="350" height="350">
+                    <img src="/images/WelcomeCatTransparent.png" alt="Welcome Cat" width="350" height="350"/>
                 </div>
                 <div class="grid-item">
                     <div class="grid-item-buttons">
@@ -28,7 +28,7 @@
         </div>
         <!-- Home page for non-logged-in users-->
         <div class="container" th:if="${!isLoggedIn || user == null}">
-            <img src="/images/TalkMeowLogoTransparent.png" alt="Talk Meow Logo" width="300" height="300">
+            <img src="/images/TalkMeowLogoTransparent.png" alt="Talk Meow Logo" width="300" height="300"/>
             <h1>Talk Meow</h1>
             <a href="/register/form" class="button">Register</a>
             <a href="/login/form" class="button">Login</a>
