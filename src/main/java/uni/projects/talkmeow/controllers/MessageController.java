@@ -1,11 +1,14 @@
 package uni.projects.talkmeow.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 import uni.projects.talkmeow.components.message.Message;
 import uni.projects.talkmeow.components.message.MessageStatus;
 import uni.projects.talkmeow.components.user.StrippedUser;
@@ -16,7 +19,9 @@ import uni.projects.talkmeow.services.InappropriateMessageService;
 import uni.projects.talkmeow.services.MessageService;
 import uni.projects.talkmeow.utility.MessageSupervisor;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -46,6 +51,9 @@ public class MessageController {
     @Autowired
     private InappropriateMessageService inappropriateMessageService;
 
+    @Autowired
+    private TemplateEngine templateEngine;
+
     @PostMapping("/send")
     @ResponseBody
     public ResponseEntity<String> sendMessage(
@@ -67,18 +75,16 @@ public class MessageController {
             receiverOptional = messageService.findUserByUsername(username);
         }
 
-        if (!receiverOptional.isPresent()) {
+        if (receiverOptional.isEmpty()) {
             return ResponseEntity.badRequest().body("User not found");
         }
         if (messageContent.isEmpty()) {
             return ResponseEntity.badRequest().body("Message cannot be empty");
         }
 
-        // Get the currently authenticated user as the sender (this assumes you have security context)
+        // Get the currently authenticated user as the sender
         User sender = customUserDetailsService.getCurrentUser();
         User receiver = receiverOptional.get();
-
-
 
         // Send the message
         Message message = messageService.sendMessage(sender, receiver, messageContent);
@@ -94,7 +100,21 @@ public class MessageController {
         simpMessagingTemplate.convertAndSendToUser(name, "/specific", strippedMessage);
         simpMessagingTemplate.convertAndSendToUser(receiver.getUsername(), "/new-message", sender.getUsername());
 
-        return ResponseEntity.ok("Message sent successfully");
+        // Return the rendered fragment with the message
+        return ResponseEntity.ok(renderMessageFragment(strippedMessage, sender));
+    }
+
+    // Method to render the message fragment
+    private String renderMessageFragment(Message message, User currentUser) {
+        Context context = new Context();
+        context.setVariable("messageContent", message.getMessageContent());
+        context.setVariable("timestamp", message.getTimestamp());
+        context.setVariable("sentByLoggedInUser", message.getSender().getUsername().equals(currentUser.getUsername()));
+        context.setVariable("last", true); // Update this logic if needed
+        context.setVariable("status", message.getStatus());
+        context.setVariable("otherUser", currentUser);
+
+        return templateEngine.process("fragments/messageFragment", context); // Use the proper template engine
     }
 
     @GetMapping("/conversation")

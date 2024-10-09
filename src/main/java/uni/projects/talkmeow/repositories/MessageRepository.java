@@ -24,4 +24,6 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
 
     Message findTop1BySenderAndReceiverOrderByTimestampDesc(User sender, User receiver);
 
+    Message findTop1ByReceiverAndSenderOrderByTimestampDesc(User receiver, User sender);
+
 }
