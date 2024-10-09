@@ -95,6 +95,7 @@ public class LoginController {
             session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
             session.setAttribute("isLoggedIn", true);
             globalAttributeService.addAttribute("isLoggedIn", true);
+            globalAttributeService.addAttribute("user", user);
 
             return "redirect:/";
         }

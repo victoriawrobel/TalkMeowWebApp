@@ -4,18 +4,33 @@
     <meta charset="UTF-8">
     <title>All Conversations</title>
     <th:block th:insert="~{fragments/header :: header}"></th:block>
+    <link rel="stylesheet" href="/css/conversations.css">
 </head>
 <body>
 <th:block th:insert="~{fragments/new-message-notification :: new-message-notification}"></th:block>
+<th:block th:insert="~{fragments/navbar :: navbar}"></th:block>
 
 <h1>All Conversations</h1>
-<ul>
-    <li th:each="userMessage : ${userMessages}">
-        <a th:href="@{/api/messages/conversation(id=${userMessage.user.id})}" th:text="${userMessage.user.username}"></a>
-        <span th:text="${userMessage.message.messageContent}"></span>
-        <span th:text="${#temporals.format(userMessage.message.timestamp, 'HH:mm:ss')}"></span>
-        <span th:if="${userMessage.user.id == userMessage.message.receiver.id}" th:text="${userMessage.message.status}"></span>
-    </li>
-</ul>
+<div class="conversations">
+    <div th:each="userMessage : ${userMessages}">
+        <a th:href="@{/api/messages/conversation(id=${userMessage.user.id})}">
+            <div class="conversation">
+                <div class="image-content">
+                    <img th:src="'/image/avatar/'+${userMessage.user.avatar.id}">
+                </div>
+                <div class="message-info">
+                    <span th:text="${userMessage.user.username}" class="username"></span>
+                    <span th:classappend="${userMessage.user.id == userMessage.message.sender.id && userMessage.message.status.toString().equals('SENT')} ? 'bold' : ${userMessage.message.status}" th:text="${userMessage.message.messageContent}"></span>
+                    <div>
+                        <span th:text="${#temporals.format(userMessage.message.timestamp, 'HH:mm:ss')}"></span>
+                        <span th:if="${userMessage.user.id == userMessage.message.receiver.id}" th:text="${userMessage.message.status}" class="status"></span>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+
 </body>
 </html>
