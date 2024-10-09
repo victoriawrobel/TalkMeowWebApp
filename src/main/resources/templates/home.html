@@ -34,42 +34,8 @@
             <a href="/login/form" class="button">Login</a>
         </div>
 
-        <div id="paw-prints-container"></div>
+        <div th:insert="~{fragments/paw-prints :: paw-prints}"></div>
 
-        <script>
-            let pawPrintPosition = 0;
-            let rotateUp = true;
-            function createPawPrint() {
-                const container = document.getElementById('paw-prints-container');
-                const pawPrint = document.createElement('img');
-                pawPrint.src = '/images/PawPrintCartoonStyleTransparent.png';
-                pawPrint.className = 'paw-print';
-                pawPrint.style.left = pawPrintPosition + 'px';
-
-                if (rotateUp) {
-                    pawPrint.classList.add('rotate-up');
-                } else {
-                    pawPrint.classList.add('rotate-down');
-                }
-
-                rotateUp = !rotateUp;
-
-                container.appendChild(pawPrint);
-
-                pawPrintPosition += 75; // Adjust the distance between paw prints
-
-                // Reset position if it goes beyond the window width
-                if (pawPrintPosition > window.innerWidth) {
-                    pawPrintPosition = 0;
-                }
-
-                setTimeout(() => {
-                    container.removeChild(pawPrint);
-                }, 10000);
-            }
-
-            setInterval(createPawPrint, 1000);
-        </script>
 
     </div>
 </body>
