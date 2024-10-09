@@ -72,13 +72,20 @@ h2 {
     border-left: 0.25em solid black;
 }
 
+#paw-prints-container {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    margin: 0.25em;
+}
+
 .paw-print {
     position: absolute;
     bottom: 0;
     width: 50px;
     height: 50px;
     opacity: 0;
-    animation: fadeInOut 10s linear infinite;
+    transition: left;
 }
 
 .paw-print.rotate-up {
@@ -91,6 +98,8 @@ h2 {
 
 @keyframes fadeInOut {
     0% { opacity: 0; }
-    50% { opacity: 1; }
+    30% { opacity: 1; }
+    50% { opacity: 0; }
     100% { opacity: 0; }
 }
+
