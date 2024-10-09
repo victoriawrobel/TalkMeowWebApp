@@ -1,0 +1,14 @@
+<div th:fragment="messageFragment">
+    <div th:classappend="${sentByLoggedInUser} ? 'sent' : 'received'" class="message">
+        <!--/*@thymesVar id="otherUser" type="uni.projects.talkmeow.components.user.User"*/-->
+        <div class="message-image">
+            <img th:if="${!sentByLoggedInUser}" th:src="@{/image/avatar/{id}(id=${otherUser.avatar.id})}" alt="Profile picture"/>
+        </div>
+        <div class="message-content">
+            <p th:text="${messageContent}"></p>
+            <small th:text="${#temporals.format(timestamp, 'HH:mm:ss')}"></small>
+            <small th:if="${sentByLoggedInUser} and ${last}" class="status" th:text="'Status: ' + ${status}"></small>
+        </div>
+    </div>
+</div>
+

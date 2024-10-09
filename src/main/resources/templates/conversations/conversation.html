@@ -4,25 +4,7 @@
     <meta charset="UTF-8">
     <title>Conversation</title>
     <th:block th:insert="~{fragments/header :: header}"></th:block>
-    <style>
-        .message {
-            padding: 10px;
-            margin: 5px;
-            border-radius: 5px;
-        }
-        .sent {
-            border: 3px solid darkred;
-            border-radius: 5px;
-            color: black;
-            text-align: right;
-        }
-        .received {
-            border: 3px solid darkgreen;
-            border-radius: 5px;
-            color: black;
-            text-align: left;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/messages.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script>
@@ -41,7 +23,8 @@
 
                 // Subscribe to personal messages for the logged-in user
                 stompClient.subscribe('/user/' + currentUser + '-' + otherUser + '/specific', function(messageOutput) {
-                    showMessageOutput(JSON.parse(messageOutput.body), true);  // true means it's from the current user
+                    showMessageOutput(JSON.parse(messageOutput.body), true);  //TODO pass the message object and parse it correctly
+                    Console.log('Message received: ' + messageOutput);
                 });
 
                 stompClient.subscribe('/user/' + currentUser + '-' + otherUser + '/status', function(changeStatus) {
@@ -60,13 +43,28 @@
             });
         }
 
+        function formatTimestamp(timestamp) {
+            const date = new Date(timestamp);
+            const hours = String(date.getUTCHours()).padStart(2, '0');
+            const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+            const seconds = String(date.getUTCSeconds()).padStart(2, '0');
+            return `${hours}:${minutes}:${seconds}`;
+        }
 
         function showMessageOutput(message) {
             const messageContainer = document.createElement('div');
-            messageContainer.className = 'message received';
             messageContainer.innerHTML = `
-        <p>${message.messageContent}</p>
-        <small>${message.timestamp}</small>
+        <div>
+            <div class="message received">
+                <div class="message-image">
+                    <img src="/image/avatar/${message.sender.avatar.id}" alt="Profile picture"/>
+                </div>
+                <div class="message-content">
+                    <p>${message.messageContent}</p>
+                    <small>${formatTimestamp(message.timestamp)}</small>
+                </div>
+            </div>
+        </div>
     `;
 
             const messagesElement = document.getElementById('messages');
@@ -102,21 +100,17 @@
         }
 
 
-        function sendMessage(event) {
+
+
+            function sendMessage(event) {
             event.preventDefault();
             const messageContent = document.querySelector('textarea[name="messageContent"]').value;
             const receiverUsername = document.querySelector('input[name="username"]').value;
 
-            // Remove the previous status indicator if it exists
-            const existingStatus = document.querySelector('.status');
-            if (existingStatus) {
-                existingStatus.remove();
-            }
-
-            // Optimistically append the message to the chat before server confirmation
-            const messageContainer = document.createElement('div');
-            messageContainer.className = 'message sent'; // Mark as sent
-            messageContainer.innerHTML = `
+            // Optimistically append a placeholder message
+            const placeholderMessage = document.createElement('div');
+            placeholderMessage.className = 'message sent';
+            placeholderMessage.innerHTML = `
         <p>${messageContent}</p>
         <small>${new Date().toLocaleTimeString()}</small>
         <small class="status">Status: Sending...</small>
@@ -124,11 +118,7 @@
 
             const messagesElement = document.getElementById('messages');
             if (messagesElement) {
-                messagesElement.appendChild(messageContainer);
-            } else {
-                sleep(2500).then(() => {
-                    location.reload();
-                });
+                messagesElement.appendChild(placeholderMessage);
             }
 
             fetch('/api/messages/send', {
@@ -143,17 +133,13 @@
             })
                 .then(response => response.text())
                 .then(data => {
-                    if (data === "Message sent successfully") {
-                        document.querySelector('textarea[name="messageContent"]').value = '';
-                        console.log('Message sent successfully');
-
-                        // Update the status to reflect success
-                        const lastStatus = messageContainer.querySelector('.status');
-                        if (lastStatus) {
-                            lastStatus.textContent = 'Status: SENT';
-                        }
+                    // Replace the placeholder message with the actual message fragment returned from the server
+                    if (data) {
+                        const newMessageElement = document.createElement('div');
+                        newMessageElement.innerHTML = data; // This contains the message HTML from the server
+                        messagesElement.replaceChild(newMessageElement.firstChild, placeholderMessage); // Replace the placeholder
+                        document.querySelector('textarea[name="messageContent"]').value = ''; // Clear input
                     } else {
-                        // Handle failed message send
                         console.error('Failed to send message:', data);
                     }
                 })
@@ -161,6 +147,7 @@
                     console.error('Error sending message:', error);
                 });
         }
+
 
 
 
@@ -188,17 +175,21 @@
 <h1>Conversation with <span th:text="${otherUser.username}"></span></h1>
 <div id="messages">
     <div th:each="message, iterStat : ${messages}">
-        <div th:classappend="${message.sentByLoggedInUser} ? 'sent' : 'received'" class="message">
-            <p th:text="${message.messageContent}"></p>
-            <small th:text="${#temporals.format(message.timestamp, 'HH:mm:ss')}"></small>
-            <small th:if="${message.sentByLoggedInUser} and ${iterStat.last}" class="status" th:text="'Status: ' + ${message.status}"></small>
-        </div>
+        <th:block th:replace="~{fragments/messageFragment :: messageFragment(
+            messageContent=${message.messageContent},
+            timestamp=${message.timestamp},
+            sentByLoggedInUser=${message.sentByLoggedInUser},
+            status=${message.status},
+            last=${iterStat.last},
+            otherUser=${message.getSender()})}">
+        </th:block>
     </div>
 </div>
-<form>
-    <input type="hidden" name="username" th:value="${otherUser.username}" />
+
+<form class="send-message">
+    <input type="hidden" name="username" th:value="${otherUser.username}"/>
     <textarea name="messageContent" placeholder="Enter message" required></textarea>
-    <button type="submit">Send</button>
+    <button type="submit" class="button">Send</button>
 </form>
 </body>
 </html>
