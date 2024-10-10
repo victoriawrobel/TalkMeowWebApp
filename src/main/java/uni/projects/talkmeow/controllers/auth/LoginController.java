@@ -61,6 +61,8 @@ public class LoginController {
 
     @GetMapping("/login/form")
     public String loginForm(Model model) {
+        User user = (User) httpSession.getAttribute("user");
+        model.addAttribute("user", user);
         model.addAttribute("loginForm", new LoginForm());
         return "auth/login";
     }
@@ -104,10 +106,11 @@ public class LoginController {
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
-        globalAttributeService.addAttribute("isLoggedIn", false);
-        globalAttributeService.addAttribute("current-user-username", null);
         SecurityContextHolder.clearContext();
         request.getSession().invalidate();
+
+        globalAttributeService.addAttribute("isLoggedIn", false);
+        globalAttributeService.addAttribute("current-user-username", null);
         return "redirect:/home";
     }
 
