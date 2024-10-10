@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
     <title th:text="#{app.name} + ' - Register'"></title>
     <th:block th:insert="~{fragments/header :: header}"></th:block>
-    <style>
-        .avatar-image {
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
-        .avatar-image.selected {
-            border: 2px solid blue;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="/css/login-register.css">
+    <script src="/javascript/buttonPress.js"></script>
 </head>
 <body>
-<div class="container">
-    <a href="/">Home</a>
+<th:block th:insert="~{fragments/navbar :: navbar}" ></th:block>
+
+<div class="grid-container" id="register-container">
+    <div class="register-header-container">
+        <h2>Register</h2>
+        <a href="/" class="button" id="register-home-button">Home</a>
+    </div>
+
+    <p>Choose your avatar. You can search through the database of avatars using filters below:</p>
     <form th:action="@{/register}" method="post" th:object="${user}">
 
         <!-- Avatar Filtering Options -->
@@ -53,29 +53,34 @@
         <!-- Avatar Selection -->
         <p>Select Avatar:</p>
         <div id="avatarList" th:include="fragments/avatarList :: avatarList"></div>
+
+        <br>
         <br>
 
-        <label for="username">Username:</label><br>
-        <input type="text" id="username" name="username" th:field="*{username}" required><br>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" th:field="*{username}" required><br><br>
 
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" th:field="*{email}" required><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" th:field="*{email}" required><br><br>
 
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password" th:field="*{password}" required><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" th:field="*{password}" required><br><br>
 
-        <p>For resetting your password if you forget in the future please add security question and answer to this question</p>
-        <label for="securityQuestion">Security Question:</label><br>
-        <input type="text" id="securityQuestion" name="securityQuestion" th:field="*{securityQuestion}" required><br>
+        <p>In case you forget your password in the future, please add a security question and the answer to this question.</p>
+        <label for="securityQuestion">Security Question:</label>
+        <input type="text" id="securityQuestion" name="securityQuestion" th:field="*{securityQuestion}" required><br><br>
 
-        <label for="securityAnswer">Security Answer:</label><br>
-        <input type="text" id="securityAnswer" name="securityAnswer" th:field="*{securityAnswer}" required><br>
+        <label for="securityAnswer">Security Answer:</label>
+        <input type="text" id="securityAnswer" name="securityAnswer" th:field="*{securityAnswer}" required><br><br>
 
-        <br><br>
-        <input type="submit" id="submitButton" value="Submit">
+        <br>
+        <input type="submit" class="submit-button" value="Submit">
     </form>
     <!-- AJAX Script for dynamic avatar filtering -->
     <script src="/javascript/registerFilterAvatars.js"></script>
 </div>
+
+<div th:insert="~{fragments/paw-prints :: paw-prints}"></div>
+
 </body>
 </html>

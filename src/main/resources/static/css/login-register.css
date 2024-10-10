@@ -1,4 +1,4 @@
-#username, #password {
+#username, #password, #email, #securityQuestion, #securityAnswer, select {
     width: 30vw;
     min-width: 200px;
     padding: 10px;
@@ -6,4 +6,40 @@
     border-radius: 5px;
     font-family: Amaranth-Regular, sans-serif;
     font-size: 1em;
+}
+
+ .avatar-image {
+     cursor: pointer;
+     border: 2px solid transparent;
+ }
+.avatar-image.selected {
+    border: 2px solid blue;
+}
+
+label {
+    font-family: Amaranth-Regular, sans-serif;
+    font-size: 1em;
+    color: black;
+    margin: 5px 0;
+    display: block;
+}
+
+#register-container {
+    margin-left: 5vw;
+}
+
+.register-header-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: 1em;
+    width: 30vw;
+    min-width: 200px;
+}
+
+#register-home-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
