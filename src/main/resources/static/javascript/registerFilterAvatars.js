@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-function attachAvatarClickHandlers() {
+export function attachAvatarClickHandlers() {
     const avatarItems = document.querySelectorAll('.avatar-item');
 
     avatarItems.forEach(item => {

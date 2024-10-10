@@ -5,57 +5,49 @@
     <title th:text="#{app.name} + ' - Profile'"></title>
     <th:block th:insert="~{fragments/header :: header}"></th:block>
     <link rel="stylesheet" type="text/css" href="/css/profile.css">
-
-<script>
-    function enableEditing() {
-        document.getElementById('usernameInput').disabled = false;
-        document.getElementById('submitButton').style.display = 'inline';
-        document.getElementById('passwordEncrypted').style.display = 'none';
-        document.getElementById('passwordChange').style.display = 'inline';
-    }
-
-    function validateForm() {
-        const username = document.getElementById('usernameInput').value;
-        if (username === '') {
-            alert('Username cannot be empty');
-            return false;
-        }
-        return true;
-    }
-</script>
+    <script src="/javascript/userProfileSettings.js"></script>
 </head>
+
 <body>
 <th:block th:insert="~{fragments/new-message-notification :: new-message-notification}"></th:block>
- <th:block th:insert="~{fragments/navbar :: navbar}"></th:block>
+<th:block th:insert="~{fragments/navbar :: navbar}"></th:block>
 
 <h2> User profile</h2>
 
-<div id="user-profile-container">
-    <img th:src="@{/image/avatar/{id}(id=${currentUser.avatar.id})}" alt="Avatar Image" width="200" height="200"/>
-
-    <form th:action="@{/profile/change}" method="post" th:object="${currentUser}" onsubmit="return validateForm()">
-        <p>E-mail:
-            <label for="emailInput"></label><input type="text" id="emailInput" name="email" th:value="${currentUser.getEmail()}" disabled>
-            <button type="button" class="edit-button" onclick="enableEditing()">&#9998;</button> <!-- Pencil icon -->
-        </p>
-
-        <p>Username:
-            <label for="usernameInput"></label><input type="text" id="usernameInput" name="username" th:value="${currentUser.getUsername()}" disabled>
-        </p>
-        <div id="passwordEncrypted" >
-            <p>Password: ************</p>
-        </div>
-        <div id="passwordChange" style="display:none;">
-            <p>Password:</p>
-            <label for="oldPasswordInput"></label><input type="password" id="oldPasswordInput" name="oldPassword" placeholder="Old password"> <br>
-            <label for="newPasswordInput"></label><input type="password" id="newPasswordInput" name="newPassword" placeholder="New password"> <br>
+<div class="grid-container" id="settings-container">
+    <div class="avatar-container" > <!-- Avatar div-->
+        <img th:src="@{/image/avatar/{id}(id=${currentUser.avatar.id})}" id="user-avatar-profile" alt="Avatar Image"/>
+        <div>
+            <a href="#" class="button" id='avatar-change-button'>Change Avatar</a>
         </div>
 
-        <input type="submit" id="submitButton" value="Submit" style="display:none;">
-    </form>
+    </div>
+
+    <div> <!-- User profile settings div-->
+        <form th:action="@{/profile/change}" method="post" th:object="${currentUser}" onsubmit="return validateForm()">
+            <p>E-mail:
+                <label for="emailInput"></label><input type="text" id="emailInput" name="email" th:value="${currentUser.getEmail()}" disabled>
+                <button type="button" class="edit-button" onclick="enableEditing()">&#9998;</button> <!-- Pencil icon -->
+            </p>
+
+            <p>Username:
+                <label for="usernameInput"></label><input type="text" id="usernameInput" name="username" th:value="${currentUser.getUsername()}" disabled>
+            </p>
+            <div id="passwordEncrypted" >
+                <p>Password: ************</p>
+            </div>
+            <div id="passwordChange" style="display:none;">
+                <p>Password:</p>
+                <label for="oldPasswordInput"></label><input type="password" id="oldPasswordInput" name="oldPassword" placeholder="Old password"> <br>
+                <label for="newPasswordInput"></label><input type="password" id="newPasswordInput" name="newPassword" placeholder="New password"> <br>
+            </div>
+
+            <input type="submit" id="submitButton" value="Submit" style="display:none;">
+        </form>
+    </div>
+
 </div>
 
-
-<p th:if="${errorMessage}" style="color: red;" th:text="${errorMessage}"></p> <!-- Error message -->
+<p th:if="${errorMessage}" style="color: red;" th:text="${errorMessage}"></p>
 </body>
 </html>
