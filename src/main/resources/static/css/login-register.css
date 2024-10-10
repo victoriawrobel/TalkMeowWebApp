@@ -1,0 +1,9 @@
+#username, #password {
+    width: 30vw;
+    min-width: 200px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: Amaranth-Regular, sans-serif;
+    font-size: 1em;
+}
