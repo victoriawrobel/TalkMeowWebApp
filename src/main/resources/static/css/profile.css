@@ -1,0 +1,12 @@
+#user-profile-container {
+    margin-left: 5vh;
+
+}
+
+.edit-button {
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: black;
+    text-decoration: underline;
+}
