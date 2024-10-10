@@ -104,4 +104,25 @@ h2 {
     100% { opacity: 0; }
 }
 
+/* Styling for select elements */
+select {
+    font-family: Amaranth-Regular, sans-serif;
+    font-size: 1em;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: white;
+    color: black;
+    margin: 5px 0;
+}
+
+/* Styling for label elements */
+label {
+    font-family: Amaranth-Regular, sans-serif;
+    font-size: 1em;
+    color: black;
+    margin: 5px 0;
+    display: block;
+}
+
 

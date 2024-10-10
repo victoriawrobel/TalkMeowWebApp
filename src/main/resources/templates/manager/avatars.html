@@ -4,58 +4,98 @@
     <meta charset="UTF-8">
     <title>Avatars</title>
     <th:block th:insert="~{fragments/header :: header}"></th:block>
+    <link rel="stylesheet" href="/css/manager-avatars.css">
 </head>
 <body>
 <th:block th:insert="~{fragments/new-message-notification :: new-message-notification}"></th:block>
+<th:block th:insert="~{fragments/navbar :: navbar}"></th:block>
 
-<h1>Filter Avatars</h1>
+<div class="container" style="padding-right: 15px; padding-left: 15px">
+    <h2>Avatars</h2>
+    <form action="#" th:action="@{/manager/avatars}" method="get">
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Function to populate the filters based on query parameters
+                function setSelectedFilters() {
+                    const params = new URLSearchParams(window.location.search);
 
-<form action="#" th:action="@{/manager/avatars}" method="get">
-    <label for="furColor">Fur Color:</label>
-    <select id="furColor" name="furColor">
-        <option value="">All</option>
-        <option th:each="color : ${color}" th:value="${color}" th:text="${color}"></option>
-    </select>
+                    // Get each parameter from the URL and set it to the corresponding select element
+                    document.getElementById('furColor').value = params.get('furColor') || '';
+                    document.getElementById('eyeColor').value = params.get('eyeColor') || '';
+                    document.getElementById('pattern').value = params.get('pattern') || '';
+                    document.getElementById('breed').value = params.get('breed') || '';
+                    document.getElementById('age').value = params.get('age') || '';
+                }
 
-    <label for="eyeColor">Eye Color:</label>
-    <select id="eyeColor" name="eyeColor">
-        <option value="">All</option>
-        <option th:each="color : ${color}" th:value="${color}" th:text="${color}"></option>
-    </select>
+                // Call the function to set selected filters based on URL params when the page loads
+                setSelectedFilters();
+            });
+        </script>
+        <div>
+            <label for="furColor">Fur Color:</label>
+            <select id="furColor" name="furColor">
+                <option value="">All</option>
+                <option th:each="color : ${color}" th:value="${color}" th:text="${color}"></option>
+            </select>
+        </div>
 
-    <label for="pattern">Pattern:</label>
-    <select id="pattern" name="pattern">
-        <option value="">All</option>
-        <option th:each="pattern : ${pattern}" th:value="${pattern}" th:text="${pattern}"></option>
-    </select>
+        <div>
+            <label for="eyeColor">Eye Color:</label>
+            <select id="eyeColor" name="eyeColor">
+                <option value="">All</option>
+                <option th:each="color : ${color}" th:value="${color}" th:text="${color}"></option>
+            </select>
+        </div>
 
-    <label for="breed">Breed:</label>
-    <select id="breed" name="breed">
-        <option value="">All</option>
-        <option th:each="breed : ${breed}" th:value="${breed}" th:text="${breed}"></option>
-    </select>
+        <div>
+            <label for="pattern">Pattern:</label>
+            <select id="pattern" name="pattern">
+                <option value="">All</option>
+                <option th:each="pattern : ${pattern}" th:value="${pattern}" th:text="${pattern}"></option>
+            </select>
+        </div>
 
-    <label for="age">Age:</label>
-    <select id="age" name="age">
-        <option value="">All</option>
-        <option th:each="age : ${age}" th:value="${age}" th:text="${age}"></option>
-    </select>
+        <div>
+            <label for="breed">Breed:</label>
+            <select id="breed" name="breed">
+                <option value="">All</option>
+                <option th:each="breed : ${breed}" th:value="${breed}" th:text="${breed}"></option>
+            </select>
+        </div>
 
-    <button type="submit">Filter</button>
-</form>
+        <div>
+            <label for="age">Age:</label>
+            <select id="age" name="age">
+                <option value="">All</option>
+                <option th:each="age : ${age}" th:value="${age}" th:text="${age}"></option>
+            </select>
+        </div>
+        <div>
+            <p></p>
+            <button type="submit" class="button">Filter</button>
+        </div>
+    </form>
 
-<h1>Avatars</h1>
-<div th:each="avatar : ${avatars}">
-    <div style="border: 1px black solid">
-        <img th:src="@{/image/avatar/{id}(id=${avatar.id})}" alt="Avatar Image" width="200" height="200"/>
-        <p>Fur Color: <span th:text="${avatar.furColor}"></span></p>
-        <p>Eye Color: <span th:text="${avatar.eyeColor}"></span></p>
-        <p>Pattern: <span th:text="${avatar.pattern}"></span></p>
-        <p>Breed: <span th:text="${avatar.breed}"></span></p>
-        <p>Age: <span th:text="${avatar.age}"></span></p>
-        <p>Source: <span th:text="${avatar.source}"></span></p>
+    <div class="avatars-container">
+
+        <div th:each="avatar : ${avatars}">
+            <div class="avatar">
+                <div class="avatar-image">
+                    <img th:src="@{/image/avatar/{id}(id=${avatar.id})}" alt="Avatar Image"/>
+                </div>
+                <div class="avatar-info">
+                    <p>Fur Color: <span th:text="${avatar.furColor}"></span></p>
+                    <p>Eye Color: <span th:text="${avatar.eyeColor}"></span></p>
+                    <p>Pattern: <span th:text="${avatar.pattern}"></span></p>
+                    <p>Breed: <span th:text="${avatar.breed}"></span></p>
+                    <p>Age: <span th:text="${avatar.age}"></span></p>
+                    <p>Source: <span th:text="${avatar.source}"></span></p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
+<th:block th:insert="~{fragments/paw-prints :: paw-prints}"></th:block>
 </body>
 </html>
