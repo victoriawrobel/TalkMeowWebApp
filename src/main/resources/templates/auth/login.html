@@ -4,22 +4,36 @@
     <meta charset="UTF-8"/>
     <title th:text="#{app.name} + ' - Login'"></title>
     <th:block th:insert="~{fragments/header :: header}"></th:block>
+    <link rel="stylesheet" type="text/css" href="/css/login-register.css">
+    <script src="/javascript/buttonPress.js"></script>
 </head>
 <body>
+<th:block th:insert="~{fragments/navbar :: navbar}" ></th:block>
 <div class="container">
-    <a href="/">Home</a><br>
-    <a href="/register/form">Register</a>
+    <h3>Login</h3>
+    <div class="grid-container-row">
+        <a href="/" class="button">Home</a><br>
+        <a href="/register/form" class="button">Register</a>
+    </div>
+    <br>
+
     <form th:action="@{/login}" th:object="${loginForm}" method="post">
-        <label for="username">Username or Email:</label><br>
-        <input type="text" id="username" th:field="*{username}"><br>
-        <label for="password">Password:</label><br>
+        <label for="username">Username or Email:</label>
+        <input type="text" id="username" th:field="*{username}"><br><br>
+        <label for="password">Password:</label>
         <input type="password" id="password" th:field="*{password}"><br><br>
-        <input type="submit" value="Submit">
+        <label>
+            <a href="/password-reset/form">Forgot Password</a>
+        </label><br>
+        <input type="submit" class="submit-button" value="Submit">
     </form>
-    <a href="/password-reset/form">Forgot Password</a>
+
     <div th:if="${param.error}">
         <p>Invalid username or password.</p>
     </div>
+
+
+    <div th:insert="~{fragments/paw-prints :: paw-prints}"></div>
 </div>
 </body>
 </html>
