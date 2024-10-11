@@ -1,5 +1,4 @@
-/* src/main/resources/static/css/navbar.css */
-
+/* General Navbar Styling */
 .navbar {
     display: flex;
     flex-direction: row;
@@ -10,16 +9,19 @@
     color: #000000;
 }
 
+/* Left Section: Logo */
 .navbar .navbar-left a img {
-
+    /* You can add specific styles for the logo here if needed */
 }
 
+/* Center Section: Search Bar */
 .navbar .navbar-center .search-bar {
     position: relative;
     display: flex;
     align-items: center;
 }
 
+/* Search Bar Input Styling */
 .navbar .navbar-center .search-bar input[type="text"] {
     width: 500px;
     padding: 10px;
@@ -29,6 +31,7 @@
     font-size: 1em;
 }
 
+/* Search Results Styling */
 .user-search-results {
     cursor: pointer;
     margin: 0;
@@ -42,7 +45,7 @@
 }
 
 .user-search-result:hover {
-    background-color: #e0f0d0
+    background-color: #e0f0d0;
 }
 
 .user-search-result a {
@@ -67,6 +70,7 @@
     padding: 0.5em;
 }
 
+/* Search Results Dropdown */
 .navbar .navbar-center .search-bar #search-results {
     position: absolute;
     top: 100%;
@@ -80,6 +84,7 @@
     overflow-y: auto;
 }
 
+/* Right Section: User Profile and Logout Buttons */
 .navbar .navbar-right .nav-right-container {
     display: flex;
     flex-direction: row;
@@ -88,6 +93,7 @@
     gap: 0.5em;
 }
 
+/* Search Result Item (dropdown) */
 .search-result-item {
     display: flex;
     align-items: center;
@@ -102,4 +108,61 @@
 
 .search-result-item:hover {
     background-color: #f0f0f0;
+}
+/* Toggle search bar button styling for smaller screens */
+.navbar .navbar-center .search-toggle {
+    display: none; /* This will be changed for smaller screens */
+    cursor: pointer;
+    background: none;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin-left: 10px;
+}
+
+/* Show the search toggle (button with icon) on screens smaller than 768px */
+@media (max-width: 768px) {
+    .navbar .navbar-center .search-toggle {
+        display: block; /* Show the search icon button */
+    }
+
+    /* Hide the search bar input on small screens by default */
+    .navbar .navbar-center .search-bar {
+        display: none;
+    }
+
+    /* Search bar will be shown only when active (after clicking the toggle) */
+    .navbar .navbar-center .search-bar.active {
+        display: flex;
+        width: 100vw; /* Full viewport width to cover the entire navbar */
+        position: absolute;
+        top: 0; /* Align it to the top of the navbar */
+        left: 0;
+        right: 0;
+        padding: 10px;
+        background-color: white;
+        z-index: 3000; /* Higher z-index to ensure it covers other elements */
+        border: none; /* Remove borders so it covers fully */
+        border-radius: 0; /* Remove border radius to fit the navbar */
+    }
+}
+
+
+/* Icon inside the button (can adjust size and appearance here) */
+.search-toggle img {
+    width: 40px; /* Adjust icon size */
+    height: 40px;
+}
+
+/* Styles for larger screens */
+@media (min-width: 769px) {
+    /* Display the search bar in the center for larger screens */
+    .navbar .navbar-center .search-bar {
+        display: flex;
+    }
+
+    /* Hide the toggle button for larger screens */
+    .navbar .navbar-center .search-toggle {
+        display: none;
+    }
 }

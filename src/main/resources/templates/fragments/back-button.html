@@ -1,5 +1,5 @@
-<div th:fragment="back-button(endpoint)" id="back-button" th:if="${endpoint != null}">
+<div th:fragment="back-button" id="back-button">
     <div class="back-button-container">
-        <a th:href="${endpoint}" class="back-button">↩</a>
+        <a class="back-button" onclick="history.back()">↩</a>
     </div>
 </div>
