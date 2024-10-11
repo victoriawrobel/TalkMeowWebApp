@@ -1,0 +1,5 @@
+<div th:fragment="back-button(endpoint)" id="back-button" th:if="${endpoint != null}">
+    <div class="back-button-container">
+        <a th:href="${endpoint}" class="back-button">↩</a>
+    </div>
+</div>

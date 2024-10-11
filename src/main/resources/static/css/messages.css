@@ -42,7 +42,7 @@
 .send-message {
     display: flex;
     flex-direction: row;
-    justify-content: left;
+    justify-content: center;
     align-items: center;
     margin: 10px;
 }
