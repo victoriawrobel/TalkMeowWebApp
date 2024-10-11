@@ -1,4 +1,4 @@
-#username, #password, #email, #securityQuestion, #securityAnswer, select {
+#username, #password, #newPassword, #email, #securityQuestion, #securityAnswer, #answer, select {
     width: 30vw;
     min-width: 200px;
     padding: 10px;
@@ -24,7 +24,7 @@ label {
     display: block;
 }
 
-#register-container {
+.register-container {
     margin-left: 5vw;
 }
 
