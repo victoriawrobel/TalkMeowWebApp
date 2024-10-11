@@ -4,31 +4,39 @@
     <meta charset="UTF-8">
     <title>Banned Users</title>
     <th:block th:insert="~{fragments/header :: header}"></th:block>
+    <link rel="stylesheet" href="/css/admin.css">
+    <script src="/javascript/buttonPress.js"></script>
 </head>
 <body>
 <th:block th:insert="~{fragments/new-message-notification :: new-message-notification}"></th:block>
-<h1>Banned Users</h1>
+<th:block th:insert="~{fragments/navbar :: navbar}"></th:block>
 
-<table border="1">
-    <thead>
-    <tr>
-        <th>Username</th>
-        <th>Ban Strikes</th>
-        <th>Status</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="user : ${bannedUsers}">
-        <td th:text="${user.username}"></td>
-        <td th:text="${user.banStrike}"></td>
-        <td th:text="${user.userStatus}"></td>
-        <td>
-            <a th:href="@{'/admin/user/' + ${user.id} + '/bans'}">View Bans</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<div class="container">
+    <h2>Banned Users</h2>
 
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Username</th>
+            <th>Ban Strikes</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${bannedUsers}">
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.banStrike}"></td>
+            <td th:text="${user.userStatus}"></td>
+            <td>
+                <a th:href="@{'/admin/user/' + ${user.id} + '/bans'}" class="submit-button">View Bans</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<th:block th:insert="~{fragments/paw-prints :: paw-prints}"></th:block>
 </body>
 </html>

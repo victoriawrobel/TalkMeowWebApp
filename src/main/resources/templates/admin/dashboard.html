@@ -7,8 +7,14 @@
 </head>
 <body>
 <th:block th:insert="~{fragments/new-message-notification :: new-message-notification}"></th:block>
-<a href="/admin/banned">Banned users</a>
-<a href="/admin/suspicious_messages">Suspicious messages</a>
-<a href="/admin/users">Users</a>
+<th:block th:insert="~{fragments/navbar :: navbar}"></th:block>
+
+<div class="container">
+    <h2>Admin dashboard</h2>
+    <a href="/admin/suspicious_messages" class="button">Suspicious messages</a>
+    <a href="/admin/banned" class="button">Banned users</a>
+    <a href="/admin/users" class="button">Users</a>
+</div>
+<th:block th:insert="~{fragments/paw-prints :: paw-prints}"></th:block>
 </body>
 </html>

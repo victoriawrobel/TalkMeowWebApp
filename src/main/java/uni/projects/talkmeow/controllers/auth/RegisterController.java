@@ -1,5 +1,6 @@
 package uni.projects.talkmeow.controllers.auth;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -32,8 +33,9 @@ public class RegisterController {
     private AvatarService avatarService;
 
     @GetMapping("/register/form")
-    public String registerForm(Model model) {
-        model.addAttribute("user", new User());
+    public String registerForm(Model model, HttpSession session) {
+        model.addAttribute("user", (User) session.getAttribute("user"));
+        model.addAttribute("newUser", new User());
 
         model.addAttribute("avatars", avatarService.getFilteredAvatars(null,null,null,null,null)); // Retrieve all avatars
         model.addAttribute("color", Color.values());

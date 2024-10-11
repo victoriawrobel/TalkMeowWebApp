@@ -15,6 +15,7 @@ import uni.projects.talkmeow.services.InappropriateMessageService;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -43,7 +44,7 @@ public class AdminController {
 
     @GetMapping("/banned")
     public String banned(Model model) {
-        model.addAttribute("bannedUsers", bannedService.getBannedUsers());
+        model.addAttribute("bannedUsers", new HashSet<>(bannedService.getBannedUsers()).stream().toList());
         return "admin/banned";
     }
 
