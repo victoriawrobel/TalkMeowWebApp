@@ -49,5 +49,7 @@
 </div>
 
 <p th:if="${errorMessage}" style="color: red;" th:text="${errorMessage}"></p>
+<th:block th:insert="~{fragments/back-button :: back-button}"></th:block>
+
 </body>
 </html>
