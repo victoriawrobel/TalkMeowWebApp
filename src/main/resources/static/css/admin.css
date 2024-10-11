@@ -1,0 +1,45 @@
+table {
+    border-collapse: collapse;
+    width: 80%;
+    margin: 20px 0;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    text-align: center;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    font-family: Amaranth-Regular, sans-serif;
+}
+
+th {
+    background-color: #c0dbc4;
+    font-family: Amaranth-Bold, sans-serif;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+label {
+    font-family: Amaranth-Regular, sans-serif;
+    font-size: 1em;
+    margin-right: 10px;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+input[type="text"], input[type="datetime-local"] {
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    font-family: Amaranth-Regular, sans-serif;
+    margin: 10px 0;
+}
+
+.buttons-segment {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 10px;
+}

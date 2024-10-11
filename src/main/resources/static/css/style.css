@@ -62,6 +62,7 @@ h2 {
 h3 {
     font-family: Amaranth-Bold, sans-serif;
     font-size: 2em;
+    margin-left: 5vh;
 }
 
 /* Styling login/register buttons */

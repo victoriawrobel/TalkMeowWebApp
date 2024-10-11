@@ -4,32 +4,37 @@
     <meta charset="UTF-8">
     <title>User Bans</title>
     <th:block th:insert="~{fragments/header :: header}"></th:block>
+    <link rel="stylesheet" href="/css/admin.css">
 </head>
 <body>
 <th:block th:insert="~{fragments/new-message-notification :: new-message-notification}"></th:block>
+<th:block th:insert="~{fragments/navbar :: navbar}"></th:block>
 
-<h1>Bans for User: <span th:text="${user.username}"></span></h1>
+<div class="container">
+    <h2>Bans for User: <span th:text="${user.username}"></span></h2>
 
-<table border="1">
-    <thead>
-    <tr>
-        <th>Ban Reason</th>
-        <th>Ban Start Time</th>
-        <th>Ban End Time</th>
-        <th>Banned By</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="ban : ${bans}">
-        <td th:text="${ban.reason}"></td>
-        <td th:text="${#temporals.format(ban.banTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-        <td th:text="${#temporals.format(ban.banTimeEnd, 'yyyy-MM-dd HH:mm:ss')}"></td>
-        <td th:text="${ban.bannedBy.username}"></td>
-    </tr>
-    </tbody>
-</table>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Ban Reason</th>
+            <th>Ban Start Time</th>
+            <th>Ban End Time</th>
+            <th>Banned By</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="ban : ${bans}">
+            <td th:text="${ban.reason}"></td>
+            <td th:text="${#temporals.format(ban.banTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="${#temporals.format(ban.banTimeEnd, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="${ban.bannedBy.username}"></td>
+        </tr>
+        </tbody>
+    </table>
 
-<a href="/admin/banned">Back to Banned Users</a>
+    <a href="/admin/banned" class="button">Back to Banned Users</a>
+</div>
 
+<th:block th:insert="~{fragments/paw-prints :: paw-prints}"></th:block>
 </body>
 </html>
