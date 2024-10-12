@@ -46,6 +46,8 @@ document.addEventListener("DOMContentLoaded", function () {
             setTimeout(() => {
                 // Only hide if the search bar contains the 'active' class
                 searchBar.classList.remove("active");
+                searchBarInput.value = ""; // Clear the search input
+                searchResults.innerHTML = ""; // Clear the search results
             }, 200); // Delay to allow interactions with results
         });
 
