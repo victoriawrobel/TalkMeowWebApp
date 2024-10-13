@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static uni.projects.talkmeow.Utility.login;
+import static uni.projects.talkmeow.Utility.*;
 
 /**
  * @author Tomasz Zbroszczyk
@@ -26,8 +26,6 @@ import static uni.projects.talkmeow.Utility.login;
 @AutoConfigureMockMvc
 public class HomeTests {
 
-    final String username = "wiki";
-    final String password = "wiki";
 
     final String searchUsername = "admin";
 

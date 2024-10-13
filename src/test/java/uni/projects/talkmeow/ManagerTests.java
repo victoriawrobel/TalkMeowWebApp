@@ -10,7 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static uni.projects.talkmeow.Utility.login;
+import static uni.projects.talkmeow.Utility.*;
 
 /**
  * @author Tomasz Zbroszczyk
@@ -24,13 +24,10 @@ public class ManagerTests {
     @Autowired
     private MockMvc mockMvc;
 
-    private final String username = "manager";
-    private final String password = "manager";
-
     @Test
     @DisplayName("Manager panel is accessible")
     void adminPanelIsAccessible() throws Exception {
-        MockHttpSession session = login(username, password, mockMvc);
+        MockHttpSession session = login(managerUsername, managerPassword, mockMvc);
         this.mockMvc.perform(get("/manager/home").session(session))
                 .andExpect(status().isOk());
     }

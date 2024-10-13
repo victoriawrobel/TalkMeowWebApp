@@ -10,7 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static uni.projects.talkmeow.Utility.login;
+import static uni.projects.talkmeow.Utility.*;
 
 /**
  * @author Tomasz Zbroszczyk
@@ -23,9 +23,6 @@ public class UserTests {
 
     @Autowired
     private MockMvc mockMvc;
-
-    private final String username = "wiki";
-    private final String password = "wiki";
 
     @Test
     @DisplayName("Default user login test, has to be changed")

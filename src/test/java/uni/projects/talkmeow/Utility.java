@@ -15,6 +15,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class Utility {
 
+    public static String username = "wiki";
+    public static String password = "wiki";
+
+    public static String invalidUsername = randomString(16);
+    public static String invalidPassword = randomString(16);
+
+    public static String adminUsername = "admin";
+    public static String adminPassword = "admin";
+
+    public static String managerUsername = "manager";
+    public static String managerPassword = "manager";
+
     // Helper method for login
     public static MockHttpSession login(String username, String password, MockMvc mockMvc) throws Exception {
         return (MockHttpSession) mockMvc.perform(post("/login")

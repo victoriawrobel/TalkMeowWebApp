@@ -12,8 +12,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static uni.projects.talkmeow.Utility.login;
-import static uni.projects.talkmeow.Utility.randomString;
+import static uni.projects.talkmeow.Utility.*;
 
 /**
  * @author Tomasz Zbroszczyk
@@ -27,12 +26,6 @@ public class AuthTests {
 
     @Autowired
     private MockMvc mockMvc;
-
-    private final String username = "admin";
-    private final String password = "admin";
-
-    private final String invalidUsername = randomString(16);
-    private final String invalidPassword = randomString(16);
 
     //Login
     @Test
