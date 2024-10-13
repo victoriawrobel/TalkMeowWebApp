@@ -79,7 +79,13 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     public User registerUser(User user, PasswordEncoder passwordEncoder) {
+        if (userRepository.existsById(user.getId())) {
+            user.setId(null);
+        }
         if (userRepository.existsByUsername(user.getUsername())) {
+            return null;
+        }
+        if (userRepository.existsByEmail(user.getEmail())) {
             return null;
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -131,5 +137,9 @@ public class CustomUserDetailsService implements UserDetailsService {
             user.setUserStatus(UserStatus.ACTIVE);
             userRepository.save(user);
         }
+    }
+
+    public boolean existsByEmail(String email) {
+        return userRepository.findByEmail(email) != null;
     }
 }

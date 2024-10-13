@@ -15,6 +15,7 @@
         <h2>Register</h2>
         <a href="/" class="button" id="register-home-button">Home</a>
     </div>
+    <div id="error-message-container"></div>
 
     <p>Choose your avatar. You can search through the database of avatars using filters below:</p>
     <form th:action="@{/register}" method="post" th:object="${newUser}" class="register-form">
@@ -94,6 +95,51 @@
     </form>
     <!-- AJAX Script for dynamic avatar filtering -->
     <script src="/javascript/registerFilterAvatars.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const params = new URLSearchParams(window.location.search);
+            const errorMessageContainer = document.getElementById("error-message-container");
+
+            // Clear any existing error messages
+            errorMessageContainer.innerHTML = "";
+
+            if (params.has("error")) {
+                let errorMessage = "";
+                const error = params.get("error");
+
+                // Set error messages based on the error type
+                switch (error) {
+                    case "username_format":
+                        errorMessage = "Invalid username. It must be at least 6 characters long and contain only letters, numbers, or underscores.";
+                        break;
+                    case "username_exists":
+                        errorMessage = "This username already exists. Please choose another.";
+                        break;
+                    case "email_format":
+                        errorMessage = "Invalid email format. Please enter a valid email address.";
+                        break;
+                    case "email_exists":
+                        errorMessage = "This email is already registered. Please choose another or login.";
+                        break;
+                    case "password_strength":
+                        errorMessage = "Weak password. It must be at least 8 characters long, with 2 uppercase letters, 1 special character, 2 numbers, and 3 lowercase letters.";
+                        break;
+                    case "avatar_not_found":
+                        errorMessage = "Invalid avatar selection. Please choose a valid avatar.";
+                        break;
+                    default:
+                        errorMessage = "An unknown error occurred. Please try again.";
+                        break;
+                }
+
+                // Display the error message
+                if (errorMessage) {
+                    errorMessageContainer.innerHTML = `<div class="error-message">${errorMessage}</div>`;
+                }
+            }
+        });
+    </script>
 </div>
 
 <div th:insert="~{fragments/paw-prints :: paw-prints}"></div>

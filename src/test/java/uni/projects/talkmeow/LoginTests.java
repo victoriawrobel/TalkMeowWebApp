@@ -22,7 +22,7 @@ import static uni.projects.talkmeow.Utility.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-public class AuthTests {
+public class LoginTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -39,7 +39,7 @@ public class AuthTests {
     @Test
     @DisplayName("Login with valid credentials")
     void loginWithValidCredentials() throws Exception {
-        MockHttpSession session = login(username, password, mockMvc);
+        MockHttpSession session = login(adminUsername, adminPassword, mockMvc);
         this.mockMvc.perform(get("/admin/home").session(session))
                 .andExpect(status().isOk());
     }
@@ -84,11 +84,5 @@ public class AuthTests {
 
     //Register
 
-    @Test
-    @DisplayName("Register form is accessible")
-    void registerFormIsAccessible() throws Exception {
-           this.mockMvc.perform(get("/register/form"))
-                   .andExpect(status().isOk())
-                   .andExpect(content().string(containsString("Register")));
-    }
+
 }

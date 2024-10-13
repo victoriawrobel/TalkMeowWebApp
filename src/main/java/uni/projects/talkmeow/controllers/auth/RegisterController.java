@@ -51,14 +51,30 @@ public class RegisterController {
     @ResponseBody
     public RedirectView registerUser(@ModelAttribute User user, @RequestParam("selectedAvatarId") Long selectedAvatarId) {
 
-        // Check if required fields are provided
-        if (user.getUsername().isEmpty() || user.getPassword().isEmpty()) {
-            return new RedirectView("/register/form?error=form");
+        // Username validation: 6 characters, only alphanumeric or underscores
+        if (user.getUsername().length() < 6 || !user.getUsername().matches("^[a-zA-Z0-9_]+$")) {
+            return new RedirectView("/register/form?error=username_format");
+        }
+
+        // Email validation
+        if (!user.getEmail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            return new RedirectView("/register/form?error=email_format");
+        }
+
+        // Password strength validation
+        String passwordRegex = "^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*\\d.*\\d)(?=.*[a-z].*[a-z].*[a-z]).{8,}$";
+        if (!user.getPassword().matches(passwordRegex)) {
+            return new RedirectView("/register/form?error=password_strength");
         }
 
         // Check if the username already exists
         if (customUserDetailsService.existsByUsername(user.getUsername())) {
-            return new RedirectView("/register/form?error=username");
+            return new RedirectView("/register/form?error=username_exists");
+        }
+
+        // Check if the email already exists
+        if (customUserDetailsService.existsByEmail(user.getEmail())) {
+            return new RedirectView("/register/form?error=email_exists");
         }
 
         // Fetch the selected avatar
@@ -66,16 +82,18 @@ public class RegisterController {
 
         // If avatar not found, return an error
         if (avatar == null) {
-            return new RedirectView("/register/form?error=avatar");
+            return new RedirectView("/register/form?error=avatar_not_found");
         }
 
         // Assign the avatar to the user
         user.setAvatar(avatar);
 
-        // Encode and save the user
+        // Encode the password and save the user
         customUserDetailsService.registerUser(user, passwordEncoder);
 
+        // Redirect to login upon success
         return new RedirectView("/login/form");
     }
+
 
 }
