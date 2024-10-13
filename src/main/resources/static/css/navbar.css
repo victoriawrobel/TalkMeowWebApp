@@ -150,8 +150,8 @@
 
 /* Icon inside the button (can adjust size and appearance here) */
 .search-toggle img {
-    width: 40px; /* Adjust icon size */
-    height: 40px;
+    width: 60px;
+    height: 60px;
 }
 
 /* Styles for larger screens */
@@ -159,10 +159,12 @@
     /* Display the search bar in the center for larger screens */
     .navbar .navbar-center .search-bar {
         display: flex;
+        justify-content: center;
     }
 
     /* Hide the toggle button for larger screens */
     .navbar .navbar-center .search-toggle {
         display: none;
+        justify-content: center;
     }
 }
