@@ -101,6 +101,12 @@
             <artifactId>spring-boot-docker-compose</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
+            <version>1.10.0</version> <!-- or latest version -->
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

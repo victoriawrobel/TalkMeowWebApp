@@ -2,6 +2,9 @@ package uni.projects.talkmeow;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.suite.api.IncludeClassNamePatterns;
+import org.junit.platform.suite.api.SelectClasses;
+import org.junit.platform.suite.api.Suite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +21,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
+@Suite
+@SelectClasses({
+        AuthTests.class,
+        AdminTests.class,
+        HomeTests.class,
+        ManagerTests.class,
+        UserTests.class
+})
+@IncludeClassNamePatterns({"^.*Tests$"})
 class TalkMeowApplicationTests {
 
     @Test

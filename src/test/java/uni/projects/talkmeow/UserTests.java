@@ -32,7 +32,7 @@ public class UserTests {
     void adminPanelIsAccessible() throws Exception {
         MockHttpSession session = login(username, password, mockMvc);
         this.mockMvc.perform(get("/home").session(session))
-                .andExpect(status().isOk());
+                .andExpect(status().is3xxRedirection());
     }
 
 }
