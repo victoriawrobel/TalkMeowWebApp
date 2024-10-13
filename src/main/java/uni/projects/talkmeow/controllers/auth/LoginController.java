@@ -69,6 +69,12 @@ public class LoginController {
 
     @PostMapping("/login")
     public String login(HttpServletRequest request, @ModelAttribute LoginForm loginForm) {
+        if (loginForm.getPassword() == null || loginForm.getPassword().isEmpty()) {
+            return "redirect:/login/form?error=missing_password";
+        }
+        if (loginForm.getUsername() == null || loginForm.getUsername().isEmpty()) {
+            return "redirect:/login/form?error=missing_username";
+        }
         if (customUserDetailsService.authenticateUser(loginForm, passwordEncoder)) {
             User user = userRepository.findByUsername(loginForm.getUsername()).orElse(null);
             if (user == null) {

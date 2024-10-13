@@ -28,9 +28,22 @@
         <input type="submit" class="submit-button" value="Submit">
     </form>
 
-    <div th:if="${param.error}">
+    <div th:if="${param.error != null and param.error[0] == 'true'}">
         <p>Invalid username or password.</p>
     </div>
+    <div th:if="${param.error != null and param.error[0] == 'missing_password'}">
+        <p>Please enter password.</p>
+    </div>
+    <div th:if="${param.error != null and param.error[0] == 'missing_username'}">
+        <p>Please enter username.</p>
+    </div>
+    <div th:if="${param.error != null and param.error[0] == 'temporarily_banned'}">
+        <p>Your account has been temporarily banned.</p>
+    </div>
+    <div th:if="${param.error != null and param.error[0] == 'permanently_banned'}">
+        <p>Your account has been permanently banned.</p>
+    </div>
+
 </div>
 
 <div th:insert="~{fragments/paw-prints :: paw-prints}"></div>
