@@ -17,61 +17,77 @@
     </div>
 
     <p>Choose your avatar. You can search through the database of avatars using filters below:</p>
-    <form th:action="@{/register}" method="post" th:object="${newUser}">
+    <form th:action="@{/register}" method="post" th:object="${newUser}" class="register-form">
+        <div class="avatars">
+            <div class="avatar-selection">
+                <div>
+                    <label for="furColor">Fur Color:</label>
+                    <select id="furColor" name="furColor">
+                        <option value="">All</option>
+                        <option th:each="color : ${color}" th:value="${color}" th:text="${color}"></option>
+                    </select>
+                </div>
 
-        <!-- Avatar Filtering Options -->
-        <label for="furColor">Fur Color:</label>
-        <select id="furColor" name="furColor">
-            <option value="">Any</option>
-            <option th:each="color : ${color}" th:value="${color}" th:text="${color}"></option>
-        </select>
+                <div>
+                    <label for="eyeColor">Eye Color:</label>
+                    <select id="eyeColor" name="eyeColor">
+                        <option value="">All</option>
+                        <option th:each="color : ${color}" th:value="${color}" th:text="${color}"></option>
+                    </select>
+                </div>
 
-        <label for="eyeColor">Eye Color:</label>
-        <select id="eyeColor" name="eyeColor">
-            <option value="">Any</option>
-            <option th:each="eyeColor : ${eyeColors}" th:value="${eyeColor}" th:text="${eyeColor}"></option>
-        </select>
+                <div>
+                    <label for="pattern">Pattern:</label>
+                    <select id="pattern" name="pattern">
+                        <option value="">All</option>
+                        <option th:each="pattern : ${pattern}" th:value="${pattern}" th:text="${pattern}"></option>
+                    </select>
+                </div>
 
-        <label for="pattern">Pattern:</label>
-        <select id="pattern" name="pattern">
-            <option value="">Any</option>
-            <option th:each="pattern : ${pattern}" th:value="${pattern}" th:text="${pattern}"></option>
-        </select>
+                <div>
+                    <label for="breed">Breed:</label>
+                    <select id="breed" name="breed">
+                        <option value="">All</option>
+                        <option th:each="breed : ${breed}" th:value="${breed}" th:text="${breed}"></option>
+                    </select>
+                </div>
 
-        <label for="breed">Breed:</label>
-        <select id="breed" name="breed">
-            <option value="">Any</option>
-            <option th:each="breed : ${breed}" th:value="${breed}" th:text="${breed}"></option>
-        </select>
+                <div>
+                    <label for="age">Age:</label>
+                    <select id="age" name="age">
+                        <option value="">All</option>
+                        <option th:each="age : ${age}" th:value="${age}" th:text="${age}"></option>
+                    </select>
+                </div>
+            </div>
 
-        <label for="age">Age:</label>
-        <select id="age" name="age">
-            <option value="">Any</option>
-            <option th:each="age : ${age}" th:value="${age}" th:text="${age}"></option>
-        </select>
+            <div class="avatar-selection-view">
+                <!-- Avatar Selection -->
+                <p>Select Avatar:</p>
+                <th:block th:insert="~{fragments/avatarList :: avatarList}"></th:block>
+            </div>
 
-        <!-- Avatar Selection -->
-        <p>Select Avatar:</p>
-        <div id="avatarList" th:include="fragments/avatarList :: avatarList"></div>
+        </div>
+
 
         <br>
         <br>
 
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username" th:field="*{username}" required><br><br>
+        <input type="text" id="username" name="username" th:field="*{username}" class="input" required><br><br>
 
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" th:field="*{email}" required><br><br>
+        <input type="email" id="email" name="email" th:field="*{email}" class="input" required><br><br>
 
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" th:field="*{password}" required><br><br>
+        <input type="password" id="password" name="password" th:field="*{password}" class="input" required><br><br>
 
         <p>In case you forget your password in the future, please add a security question and the answer to this question.</p>
         <label for="securityQuestion">Security Question:</label>
-        <input type="text" id="securityQuestion" name="securityQuestion" th:field="*{securityQuestion}" required><br><br>
+        <input type="text" id="securityQuestion" name="securityQuestion" th:field="*{securityQuestion}" class="input" required><br><br>
 
         <label for="securityAnswer">Security Answer:</label>
-        <input type="text" id="securityAnswer" name="securityAnswer" th:field="*{securityAnswer}" required><br><br>
+        <input type="text" id="securityAnswer" name="securityAnswer" th:field="*{securityAnswer}" class="input" required><br><br>
 
         <br>
         <input type="submit" class="submit-button" value="Submit">

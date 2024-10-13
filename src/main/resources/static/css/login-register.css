@@ -1,4 +1,4 @@
-#username, #password, #newPassword, #email, #securityQuestion, #securityAnswer, #answer, select {
+.input {
     width: 30vw;
     min-width: 200px;
     padding: 10px;
@@ -8,13 +8,6 @@
     font-size: 1em;
 }
 
- .avatar-image {
-     cursor: pointer;
-     border: 2px solid transparent;
- }
-.avatar-image.selected {
-    border: 2px solid blue;
-}
 
 label {
     font-family: Amaranth-Regular, sans-serif;
@@ -42,4 +35,47 @@ label {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.register-form .avatars .avatar-selection {
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.register-form .avatars {
+    display: flex;
+    flex-direction: column;
+}
+
+#avatarList {
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-width: 352px;
+    max-height: 332px;
+    border: 1px solid black;
+    overflow-y: auto;
+}
+
+.avatar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    border: 2px solid black;
+}
+.avatar-item label {
+    cursor: pointer;
+    max-width: 100px;
+    max-height: 100px;
+}
+
+.avatar-item .selected {
+    border: 2px solid blue;
 }
