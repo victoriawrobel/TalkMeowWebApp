@@ -24,7 +24,6 @@
                 // Subscribe to personal messages for the logged-in user
                 stompClient.subscribe('/user/' + currentUser + '-' + otherUser + '/specific', function(messageOutput) {
                     showMessageOutput(JSON.parse(messageOutput.body), true);  //TODO pass the message object and parse it correctly
-                    Console.log('Message received: ' + messageOutput);
                 });
 
                 stompClient.subscribe('/user/' + currentUser + '-' + otherUser + '/status', function(changeStatus) {
