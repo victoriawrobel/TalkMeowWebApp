@@ -6,7 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import uni.projects.talkmeow.components.avatar.Avatar;
+import uni.projects.talkmeow.components.avatar.*;
 import uni.projects.talkmeow.components.user.User;
 import uni.projects.talkmeow.repositories.AvatarRepository;
 import uni.projects.talkmeow.repositories.UserRepository;
@@ -37,14 +37,30 @@ public class UserProfileController {
     public String getProfileAttributes(Model model, HttpSession session) {
         User user = (User)session.getAttribute("user");
         model.addAttribute("currentUser", user);
+        model.addAttribute("age", Age.values());
+        model.addAttribute("breed", Breed.values());
+        model.addAttribute("color", Color.values());
+        model.addAttribute("pattern", Pattern.values());
         return "profile";
+    }
+
+    @PostMapping("/profile/avatar-change")
+    public String changeAvatar(@RequestParam(value = "selectedAvatarId", required = false, defaultValue = "-1") Long avatarId, HttpSession session) {
+        User currentUser = new User((User)session.getAttribute("user"));
+        if (avatarId == -1)
+            return "redirect:/profile?error=invalid_avatar";
+
+        Avatar avatar = avatarRepository.getById(avatarId);
+        currentUser.setAvatar(avatar);
+        userRepository.save(currentUser);
+        session.setAttribute("user", currentUser);
+        return "redirect:/profile";
     }
 
     @PostMapping("/profile/change")
     public String changeUserAttributes(@ModelAttribute User user,
                                        @RequestParam(required = false) String newPassword,
                                        @RequestParam (required = false) String oldPassword,
-                                       @RequestParam (required = false, value = "-1") Long avatarId,
                                        HttpSession session) {
         User currentUser = new User((User)session.getAttribute("user"));
         if((oldPassword.isEmpty() && !newPassword.isEmpty()) || (!oldPassword.isEmpty() && newPassword.isEmpty()))
@@ -63,12 +79,6 @@ public class UserProfileController {
                 return "redirect:/profile?error=wrong_password";
             else
                 customUserDetailsService.changePassword(currentUser, newPassword, passwordEncoder);
-
-        //Change avatar
-        if(avatarId != -1) {
-            Avatar avatar = avatarRepository.getById(avatarId);
-            currentUser.setAvatar(avatar);
-        }
 
 
         userRepository.save(currentUser);

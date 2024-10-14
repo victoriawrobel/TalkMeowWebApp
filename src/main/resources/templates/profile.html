@@ -26,7 +26,7 @@
 
     <div class="avatar-selection-container" id="avatar-selection-container">
             <p> Press "Change Avatar" again to confirm changes </p>
-        <form id="avatar-change-form" th:action="@{/profile/avatar-change}" method="post" th:object="${avatarId}" class="register-form">
+        <form id="avatar-change-form" th:action="@{/profile/avatar-change}" method="post" class="register-form">
             <div class="avatars">
                 <div class="avatar-selection">
                     <div>
@@ -75,6 +75,7 @@
                     <p>Select Avatar:</p>
                     <th:block th:insert="~{fragments/avatarList :: avatarList}"></th:block>
                 </div>
+                <button type="submit" class="submit-button">Submit</button>
 
             </div>
         </form>
