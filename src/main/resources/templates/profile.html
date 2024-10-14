@@ -6,6 +6,7 @@
     <th:block th:insert="~{fragments/header :: header}"></th:block>
     <link rel="stylesheet" type="text/css" href="/css/profile.css">
     <script src="/javascript/userProfileSettings.js"></script>
+    <script src="/javascript/onPressDisplayAvatars.js"></script>
 </head>
 
 <body>
@@ -15,40 +16,101 @@
 <h2> User profile</h2>
 
 <div class="grid-container" id="settings-container">
-    <div class="avatar-container" > <!-- Avatar div-->
-        <img th:src="@{/image/avatar/{id}(id=${currentUser.avatar.id})}" id="user-avatar-profile" alt="Avatar Image"/>
-        <div>
-            <a href="#" class="button" id='avatar-change-button'>Change Avatar</a>
+    <div class="avatar-container">
+        <div class="before-click-change-avatar">
+            <img th:src="@{/image/avatar/{id}(id=${currentUser.avatar.id})}" id="user-avatar-profile" alt="Avatar Image"/>
+            <div>
+                <a href="#" class="button" id='avatar-change-button'>Change Avatar</a>
+            </div>
         </div>
 
+    <div class="avatar-selection-container" id="avatar-selection-container">
+            <p> Press "Change Avatar" again to confirm changes </p>
+        <form id="avatar-change-form" th:action="@{/profile/avatar-change}" method="post" th:object="${avatarId}" class="register-form">
+            <div class="avatars">
+                <div class="avatar-selection">
+                    <div>
+                        <label for="furColor">Fur Color:</label>
+                        <select id="furColor" name="furColor">
+                            <option value="">All</option>
+                            <option th:each="color : ${color}" th:value="${color}" th:text="${color}"></option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="eyeColor">Eye Color:</label>
+                        <select id="eyeColor" name="eyeColor">
+                            <option value="">All</option>
+                            <option th:each="color : ${color}" th:value="${color}" th:text="${color}"></option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="pattern">Pattern:</label>
+                        <select id="pattern" name="pattern">
+                            <option value="">All</option>
+                            <option th:each="pattern : ${pattern}" th:value="${pattern}" th:text="${pattern}"></option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="breed">Breed:</label>
+                        <select id="breed" name="breed">
+                            <option value="">All</option>
+                            <option th:each="breed : ${breed}" th:value="${breed}" th:text="${breed}"></option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="age">Age:</label>
+                        <select id="age" name="age">
+                            <option value="">All</option>
+                            <option th:each="age : ${age}" th:value="${age}" th:text="${age}"></option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="avatar-selection-view">
+                    <!-- Avatar Selection -->
+                    <p>Select Avatar:</p>
+                    <th:block th:insert="~{fragments/avatarList :: avatarList}"></th:block>
+                </div>
+
+            </div>
+        </form>
     </div>
+
+    </div>
+    <script src="/javascript/registerFilterAvatars.js"></script>
+
 
     <div> <!-- User profile settings div-->
         <form th:action="@{/profile/change}" method="post" th:object="${currentUser}" onsubmit="return validateForm()">
             <p>E-mail:
-                <label for="emailInput"></label><input type="text" id="emailInput" name="email" th:value="${currentUser.getEmail()}" disabled>
+                <label for="emailInput"></label><input type="text" id="emailInput" class="input" name="email" th:value="${currentUser.getEmail()}" disabled>
                 <button type="button" class="edit-button" onclick="enableEditing()">&#9998;</button> <!-- Pencil icon -->
             </p>
 
             <p>Username:
-                <label for="usernameInput"></label><input type="text" id="usernameInput" name="username" th:value="${currentUser.getUsername()}" disabled>
+                <label for="usernameInput"></label><input type="text" id="usernameInput" class="input" name="username" th:value="${currentUser.getUsername()}" disabled>
             </p>
             <div id="passwordEncrypted" >
                 <p>Password: ************</p>
             </div>
             <div id="passwordChange" style="display:none;">
                 <p>Password:</p>
-                <label for="oldPasswordInput"></label><input type="password" id="oldPasswordInput" name="oldPassword" placeholder="Old password"> <br>
-                <label for="newPasswordInput"></label><input type="password" id="newPasswordInput" name="newPassword" placeholder="New password"> <br>
+                <label for="oldPasswordInput"></label><input type="password" id="oldPasswordInput" class="input" name="oldPassword" placeholder="Old password"> <br>
+                <label for="newPasswordInput"></label><input type="password" id="newPasswordInput" class="input" name="newPassword" placeholder="New password"> <br>
             </div>
+            <br/>
 
-            <input type="submit" id="submitButton" value="Submit" style="display:none;">
+            <input type="submit" id="submitButton" class="submit-button" value="Submit" style="display:none;">
         </form>
     </div>
 
 </div>
 
-<p th:if="${errorMessage}" style="color: red;" th:text="${errorMessage}"></p>
+
 <th:block th:insert="~{fragments/back-button :: back-button}"></th:block>
 
 </body>
