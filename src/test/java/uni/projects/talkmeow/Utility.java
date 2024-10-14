@@ -33,7 +33,7 @@ public class Utility {
     public static String newEmail = randomStringEmail(16);
     public static String newSecurityQuestion = "What is your pet's name?";
     public static String newSecurityAnswer = "Fluffy";
-    public static String newAvatarId = "4";
+    public static String newAvatarId = "1";
 
     public static String invalidUsernameReg = randomStringUsername(4);
     public static String invalidEmailFormatReg = "invalidEmail";
@@ -43,6 +43,9 @@ public class Utility {
     public static String noNumberPassword = "Password@word";
     public static String noLowercasePassword = "PASSWORD@123";
     public static String invalidAvatarId = "9999999";
+
+    public static final String placeholderImagePath = "src/main/resources/static/images/test_placeholder.png";
+
 
     // Helper method for login
     public static MockHttpSession login(String username, String password, MockMvc mockMvc) throws Exception {

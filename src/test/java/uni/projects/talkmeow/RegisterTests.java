@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
+import uni.projects.talkmeow.repositories.UserRepository;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.when;
@@ -26,6 +27,9 @@ public class RegisterTests {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Test
     @DisplayName("Register form is accessible")
@@ -232,6 +236,7 @@ public class RegisterTests {
                 .andExpect(xpath("//a[@href='/profile' and contains(text(),'User Profile')]").exists())
                 .andExpect(xpath("//a[@href='/logout' and contains(text(),'Logout')]").exists())
                 .andExpect(xpath("//*[@id='search-bar']").exists());
+        userRepository.delete(userRepository.findByUsername(newUsername).get());
         newUsername = randomStringUsername(16);
         newEmail = randomStringEmail(16);
     }
