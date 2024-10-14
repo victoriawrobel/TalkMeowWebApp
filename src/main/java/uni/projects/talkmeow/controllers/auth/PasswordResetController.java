@@ -27,11 +27,13 @@ public class PasswordResetController {
 
     @GetMapping("/password-reset/form")
     public String passwordResetForm(Model model) {
+        model.addAttribute("user", null);
         return "auth/password-reset/password-reset-email";
     }
 
     @PostMapping("/password-reset-email")
-    public ModelAndView passwordReset(@RequestParam String email, HttpSession session) {
+    public ModelAndView passwordReset(Model model, @RequestParam String email, HttpSession session) {
+        model.addAttribute("user", null);
         User user = customUserDetailsService.loadUserPasswordReset(email);
         ModelAndView modelAndView = new ModelAndView();
         if (user == null) {
@@ -46,7 +48,8 @@ public class PasswordResetController {
     }
 
     @PostMapping("/password-reset-question")
-    public ModelAndView passwordResetQuestion(@RequestParam String answer, HttpSession session) {
+    public ModelAndView passwordResetQuestion(Model model, @RequestParam String answer, HttpSession session) {
+        model.addAttribute("user", null);
         User user = (User) session.getAttribute("password-reset-user");
         ModelAndView modelAndView = new ModelAndView();
         if (user != null && customUserDetailsService.checkPasswordResetAnswer(user, answer)) {
@@ -60,7 +63,8 @@ public class PasswordResetController {
     }
 
     @PostMapping("/password-reset-change")
-    public String passwordResetChange(@RequestParam String newPassword, HttpSession session) {
+    public String passwordResetChange(Model model, @RequestParam String newPassword, HttpSession session) {
+        model.addAttribute("user", null);
         User user = (User) session.getAttribute("password-reset-user");
         if (user != null) {
             customUserDetailsService.changePassword(user, newPassword, passwordEncoder);
