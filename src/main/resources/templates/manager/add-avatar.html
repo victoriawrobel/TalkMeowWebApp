@@ -11,6 +11,15 @@
 <th:block th:insert="~{fragments/navbar :: navbar}"></th:block>
 <div class="container">
     <h2>Add Avatar</h2>
+    <div class="error-message" style="color: red;" th:if="${param.errot != null}">
+        <p th:if="${param.error[0] == 'image_required'}">Image is required.</p>
+        <p th:if="${param.error[0] == 'fur_color_required'}">Fur color is required.</p>
+        <p th:if="${param.error[0] == 'eye_color_required'}">Eye color is required.</p>
+        <p th:if="${param.error[0] == 'pattern_required'}">Pattern is required.</p>
+        <p th:if="${param.error[0] == 'breed_required'}">Breed is required.</p>
+        <p th:if="${param.error[0] == 'age_required'}">Age is required.</p>
+        <p th:if="${param.error[0] == 'source_required'}">Source is required.</p>
+    </div>
     <form action="/manager/add-avatar" method="post" enctype="multipart/form-data">
 
         <div class="params-container">

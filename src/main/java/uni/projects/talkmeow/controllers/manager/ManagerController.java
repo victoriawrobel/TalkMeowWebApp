@@ -67,14 +67,44 @@ public class ManagerController {
 
     @SneakyThrows
     @PostMapping("/add-avatar")
-    public String addAvatar(@RequestParam("imageData") MultipartFile image,
-                            @RequestParam("furColor") Color furColor,
+    public String addAvatar(@RequestParam(value = "imageData") MultipartFile image,
+                            @RequestParam(value = "furColor") Color furColor,
                             @RequestParam("eyeColor") Color eyeColor,
                             @RequestParam("pattern") Pattern pattern,
                             @RequestParam("breed") Breed breed,
                             @RequestParam("age") Age age,
                             @RequestParam("source") String source,
                             Model model) throws IOException {
+
+        // Validate fields
+        if (image.isEmpty()) {
+            return "redirect:/manager/add-avatar?error=image_required";
+        }
+
+        if (furColor == null) {
+            return "redirect:/manager/add-avatar?error=fur_color_required";
+        }
+
+        if (eyeColor == null) {
+            return "redirect:/manager/add-avatar?error=eye_color_required";
+        }
+
+        if (pattern == null) {
+            return "redirect:/manager/add-avatar?error=pattern_required";
+        }
+
+        if (breed == null) {
+            return "redirect:/manager/add-avatar?error=breed_required";
+        }
+
+        if (age == null) {
+            return "redirect:/manager/add-avatar?error=age_required";
+        }
+
+        if (source == null || source.trim().isEmpty()) {
+            return "redirect:/manager/add-avatar?error=source_required";
+        }
+
         Avatar avatar = new Avatar();
         if (!image.isEmpty()) {
             BufferedImage bufferedImage = ImageIO.read(image.getInputStream());
