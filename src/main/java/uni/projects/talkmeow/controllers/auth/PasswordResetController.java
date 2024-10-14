@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 import uni.projects.talkmeow.components.user.User;
 import uni.projects.talkmeow.services.CustomUserDetailsService;
 
@@ -63,12 +64,20 @@ public class PasswordResetController {
     }
 
     @PostMapping("/password-reset-change")
-    public String passwordResetChange(Model model, @RequestParam String newPassword, HttpSession session) {
+    public ModelAndView passwordResetChange(Model model, @RequestParam String newPassword, HttpSession session) {
         model.addAttribute("user", null);
         User user = (User) session.getAttribute("password-reset-user");
+        String passwordRegex = "^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*\\d.*\\d)(?=.*[a-z].*[a-z].*[a-z]).{8,}$";
+        ModelAndView modelAndView = new ModelAndView();
+        if (!newPassword.matches(passwordRegex)) {
+            modelAndView.setViewName("auth/password-reset/password-reset-change");
+            modelAndView.addObject("error", "Password doesn't meet the requirements");
+            return modelAndView;
+        }
         if (user != null) {
             customUserDetailsService.changePassword(user, newPassword, passwordEncoder);
         }
-        return "redirect:/login/form";
+        modelAndView.setView(new RedirectView("/login/form"));
+        return modelAndView;
     }
 }
