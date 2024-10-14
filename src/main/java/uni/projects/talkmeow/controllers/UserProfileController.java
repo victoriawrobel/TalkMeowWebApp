@@ -6,7 +6,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import uni.projects.talkmeow.components.avatar.Avatar;
 import uni.projects.talkmeow.components.user.User;
+import uni.projects.talkmeow.repositories.AvatarRepository;
 import uni.projects.talkmeow.repositories.UserRepository;
 import uni.projects.talkmeow.services.CustomUserDetailsService;
 
@@ -28,6 +30,9 @@ public class UserProfileController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private AvatarRepository avatarRepository;
+
     @GetMapping("/profile")
     public String getProfileAttributes(Model model, HttpSession session) {
         User user = (User)session.getAttribute("user");
@@ -39,6 +44,7 @@ public class UserProfileController {
     public String changeUserAttributes(@ModelAttribute User user,
                                        @RequestParam(required = false) String newPassword,
                                        @RequestParam (required = false) String oldPassword,
+                                       @RequestParam (required = false, value = "-1") Long avatarId,
                                        HttpSession session) {
         User currentUser = new User((User)session.getAttribute("user"));
         if((oldPassword.isEmpty() && !newPassword.isEmpty()) || (!oldPassword.isEmpty() && newPassword.isEmpty()))
@@ -57,6 +63,12 @@ public class UserProfileController {
                 return "redirect:/profile?error=wrong_password";
             else
                 customUserDetailsService.changePassword(currentUser, newPassword, passwordEncoder);
+
+        //Change avatar
+        if(avatarId != -1) {
+            Avatar avatar = avatarRepository.getById(avatarId);
+            currentUser.setAvatar(avatar);
+        }
 
 
         userRepository.save(currentUser);
