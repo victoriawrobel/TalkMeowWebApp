@@ -19,9 +19,9 @@
 
     <form th:action="@{/login}" th:object="${loginForm}" method="post">
         <label for="username">Username or Email:</label>
-        <input type="text" id="username" th:field="*{username}"><br><br>
+        <input type="text" id="username" class="input" th:field="*{username}"><br><br>
         <label for="password">Password:</label>
-        <input type="password" id="password" th:field="*{password}"><br><br>
+        <input type="password" id="password" class="input" th:field="*{password}"><br><br>
         <label>
             <a href="/password-reset/form">Forgot Password</a>
         </label><br>

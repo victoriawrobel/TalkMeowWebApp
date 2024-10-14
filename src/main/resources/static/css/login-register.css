@@ -4,18 +4,6 @@
     margin-bottom: 15px;
 }
 
-
-.input {
-    width: 30vw;
-    min-width: 200px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-family: Amaranth-Regular, sans-serif;
-    font-size: 1em;
-}
-
-
 label {
     font-family: Amaranth-Regular, sans-serif;
     font-size: 1em;
@@ -85,4 +73,18 @@ label {
 
 .avatar-item .selected {
     border: 2px solid blue;
+}
+
+.password-reset-cat {
+    width: 20vh;
+    min-width: 100px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 30px;
+}
+
+.password-reset-container {
+    margin-left: 5vw;
+    display: flex;
+    flex-direction: row;
 }
