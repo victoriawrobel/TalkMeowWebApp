@@ -35,13 +35,27 @@ loadScript('https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.mi
             }
         });
 
+
         function showMessageOutput(message) {
             const otherUserElement = document.getElementById('other-username');
             if (otherUserElement && otherUserElement.className === message) {
                 console.log("Message matches other-username, no notification displayed.");
                 return;
             }
-            alert('New message from: ' + message);
+
+            // Create the popup element
+            const popup = document.createElement('div');
+            popup.className = 'message-popup';
+            popup.innerText = 'New message from: ' + message;
+
+            // Add the popup to the body
+            document.body.appendChild(popup);
+
+            // Remove the popup after 3 seconds
+            setTimeout(() => {
+                popup.remove();
+            }, 3000);
+
             console.log("Received message: ", message);
         }
     });
