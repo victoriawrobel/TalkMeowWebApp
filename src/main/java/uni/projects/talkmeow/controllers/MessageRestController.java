@@ -42,7 +42,6 @@ public class MessageRestController {
         return "redirect:/api/messages/conversation/all";
     }
 
-    //TODO pass the message object and parse it correctly
     @GetMapping("/get/message/{id}")
     public Message getMessage(@PathVariable Long id, HttpSession session) {
         User currentUser = customUserDetailsService.getCurrentUser();

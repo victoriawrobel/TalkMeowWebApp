@@ -124,7 +124,6 @@ public class HomeTests {
         this.mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(xpath("//title").string("TalkMeow - Home"))
-
                 .andExpect(xpath("//a[@href='/']")
                         .exists())
                 .andExpect(xpath("//a[@href='/']//img[@alt='App Logo']")
@@ -134,6 +133,12 @@ public class HomeTests {
                 .andExpect(status().isOk());
     }
 
-
+    @Test
+    @DisplayName("Back button works")
+    void userPanelBackButtonWorks() throws Exception {
+        MockHttpSession session = login(username, password, mockMvc);
+        this.mockMvc.perform(get("/user/back").session(session))
+                .andExpect(status().is3xxRedirection());
+    }
 
 }

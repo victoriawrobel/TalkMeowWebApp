@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import uni.projects.talkmeow.services.BannedService;
 import uni.projects.talkmeow.services.InappropriateMessageService;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -45,7 +46,8 @@ public class AdminTests {
     public void testManagerPanelAccess() throws Exception {
         MockHttpSession session = login(adminUsername, adminPassword, mockMvc);
         this.mockMvc.perform(get("/manager/home").session(session))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Talk Meow - Home")));
     }
 
     @Test
