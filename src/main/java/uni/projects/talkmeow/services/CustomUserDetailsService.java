@@ -73,7 +73,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     public User registerUser(User user, PasswordEncoder passwordEncoder) {
-        if (userRepository.existsById(user.getId())) {
+        if (user.getId() != null && userRepository.existsById(user.getId())) {
             user.setId(null);
         }
         if (userRepository.existsByUsername(user.getUsername())) {
