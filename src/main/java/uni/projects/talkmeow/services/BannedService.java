@@ -12,12 +12,6 @@ import uni.projects.talkmeow.repositories.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * @author Tomasz Zbroszczyk
- * @version 1.0
- * @since 06.10.2024
- */
-
 @Service
 public class BannedService {
 
@@ -45,9 +39,6 @@ public class BannedService {
         customUserDetailsService.unbanUser(userId);
     }
 
-    public UserStatus checkIfUserIsBanned(Long userId) {
-        return customUserDetailsService.getUserStatus(userId);
-    }
 
     public List<User> getBannedUsers() {
         List<Banned> bans = bannedRepository.findAll();

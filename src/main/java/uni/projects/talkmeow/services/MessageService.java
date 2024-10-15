@@ -14,11 +14,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-/**
- * @author Tomasz Zbroszczyk
- * @version 1.0
- * @since 03.10.2024
- */
 @Service
 public class MessageService {
 
@@ -31,7 +26,6 @@ public class MessageService {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
-    // Send a message from one user to another
     public Message sendMessage(User sender, User receiver, String messageContent) {
         Message message = new Message();
         message.setSender(sender);
@@ -64,12 +58,10 @@ public class MessageService {
         messageRepository.save(message);
     }
 
-    // Find a user by username
     public Optional<User> findUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
-    // Find a user by ID
     public Optional<User> findUserById(Long id) {
         return userRepository.findById(id);
     }

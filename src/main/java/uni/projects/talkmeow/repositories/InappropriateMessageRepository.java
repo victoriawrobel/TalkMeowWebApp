@@ -8,11 +8,6 @@ import uni.projects.talkmeow.components.user.User;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * @author Tomasz Zbroszczyk
- * @version 1.0
- * @since 06.10.2024
- */
 public interface InappropriateMessageRepository extends JpaRepository<InappropriateMessage, Long> {
 
 

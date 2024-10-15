@@ -9,12 +9,6 @@ import uni.projects.talkmeow.repositories.AvatarRepository;
 
 import java.util.List;
 
-/**
- * @author Tomasz Zbroszczyk
- * @version 1.0
- * @since 06.10.2024
- */
-
 @Service
 public class AvatarService {
 

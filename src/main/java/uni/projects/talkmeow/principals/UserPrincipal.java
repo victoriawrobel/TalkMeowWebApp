@@ -8,11 +8,7 @@ import uni.projects.talkmeow.components.user.User;
 import java.util.ArrayList;
 import java.util.Collection;
 
-/**
- * @author Tomasz Zbroszczyk
- * @version 1.0
- * @since 02.10.2024
- */
+
 public class UserPrincipal implements UserDetails {
 
     private User user;

@@ -8,11 +8,6 @@ import uni.projects.talkmeow.components.user.User;
 
 import java.time.LocalDateTime;
 
-/**
- * @author Tomasz Zbroszczyk
- * @version 1.0
- * @since 03.10.2024
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

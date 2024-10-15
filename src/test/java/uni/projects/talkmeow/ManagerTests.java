@@ -23,11 +23,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static uni.projects.talkmeow.Utility.*;
 
-/**
- * @author Tomasz Zbroszczyk
- * @version 1.0
- * @since 12.10.2024
- */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 public class ManagerTests {
@@ -53,8 +48,8 @@ public class ManagerTests {
 
         this.mockMvc.perform(get("/manager/home").session(session))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Manager dashboard"))) // Check header is present
-                .andExpect(content().string(containsString("View Avatars"))) // Check "View Avatars" button
+                .andExpect(content().string(containsString("Manager dashboard")))
+                .andExpect(content().string(containsString("View Avatars")))
                 .andExpect(content().string(containsString("Add Avatar")));
     }
 
@@ -63,11 +58,9 @@ public class ManagerTests {
     void managerPanelHasWorkingLinks() throws Exception {
         MockHttpSession session = login(managerUsername, managerPassword, mockMvc);
 
-        // Test "View Avatars" link
         this.mockMvc.perform(get("/manager/avatars").session(session))
-                .andExpect(status().isOk()); // Ensure the page is accessible
+                .andExpect(status().isOk());
 
-        // Test "Add Avatar" link
         this.mockMvc.perform(get("/manager/add-avatar").session(session))
                 .andExpect(status().isOk());
     }
@@ -88,7 +81,7 @@ public class ManagerTests {
 
         this.mockMvc.perform(get("/manager/avatars").session(session))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Avatar Image"))); // Check if at least one avatar is displayed
+                .andExpect(content().string(containsString("Avatar Image")));
     }
 
     @Test
@@ -96,22 +89,16 @@ public class ManagerTests {
     void avatarListPageFiltersWork() throws Exception {
         MockHttpSession session = login(managerUsername, managerPassword, mockMvc);
 
-        // Test fur color filter
         this.mockMvc.perform(get("/manager/avatars?furColor=WHITE").session(session))
                 .andExpect(status().isOk())
-                // Check that there is an avatar with the fur color 'WHITE'
                 .andExpect(xpath("//div[@class='avatar-info']/p/span[text()='WHITE']").exists());
 
-        // Test eye color filter
         this.mockMvc.perform(get("/manager/avatars?eyeColor=GREEN").session(session))
                 .andExpect(status().isOk())
-                // Check that there is an avatar with the eye color 'GREEN'
                 .andExpect(xpath("//div[@class='avatar-info']/p/span[text()='GREEN']").exists());
 
-        // Test breed filter
         this.mockMvc.perform(get("/manager/avatars?breed=BRITISH_SHORTHAIR").session(session))
                 .andExpect(status().isOk())
-                // Check that there is an avatar with the breed 'BRITISH_SHORTHAIR'
                 .andExpect(xpath("//div[@class='avatar-info']/p/span[text()='BRITISH_SHORTHAIR']").exists());
     }
 
@@ -129,14 +116,11 @@ public class ManagerTests {
     @Test
     @DisplayName("Avatar list page filters with multiple criteria")
     void avatarListPageFiltersMultipleCriteria() throws Exception {
-        // Logging in the manager
         MockHttpSession session = login(managerUsername, managerPassword, mockMvc);
 
-        // Performing a GET request with multiple filter criteria
         this.mockMvc.perform(get("/manager/avatars?furColor=BLACK&eyeColor=ORANGE&breed=RAGDOLL").session(session))
                 .andExpect(status().isOk())
 
-                // Check the content of the avatar list contains these criteria
                 .andExpect(xpath("//div[@class='avatar-info']/p/span[text()='BLACK']").exists())
                 .andExpect(xpath("//div[@class='avatar-info']/p/span[text()='ORANGE']").exists())
                 .andExpect(xpath("//div[@class='avatar-info']/p/span[text()='RAGDOLL']").exists());
@@ -147,7 +131,7 @@ public class ManagerTests {
         MockHttpSession session = login(managerUsername, managerPassword, mockMvc);
 
         mockMvc.perform(multipart("/manager/add-avatar")
-                        .file(new MockMultipartFile("imageData", "", MediaType.IMAGE_JPEG_VALUE, new byte[0])) // No image
+                        .file(new MockMultipartFile("imageData", "", MediaType.IMAGE_JPEG_VALUE, new byte[0]))
                         .param("furColor", "BLACK")
                         .param("eyeColor", "ORANGE")
                         .param("pattern", "SOLID")
@@ -165,8 +149,8 @@ public class ManagerTests {
 
 
         mockMvc.perform(multipart("/manager/add-avatar")
-                        .file(getPlaceholderImage()) // Using the placeholder image
-                        .param("furColor", "") // No fur color
+                        .file(getPlaceholderImage())
+                        .param("furColor", "")
                         .param("eyeColor", "ORANGE")
                         .param("pattern", "SOLID")
                         .param("breed", "RAGDOLL")
@@ -181,9 +165,9 @@ public class ManagerTests {
         MockHttpSession session = login(managerUsername, managerPassword, mockMvc);
 
         mockMvc.perform(multipart("/manager/add-avatar")
-                        .file(getPlaceholderImage()) // Using the placeholder image
+                        .file(getPlaceholderImage())
                         .param("furColor", "BLACK")
-                        .param("eyeColor", "") // No eye color
+                        .param("eyeColor", "")
                         .param("pattern", "SOLID")
                         .param("breed", "RAGDOLL")
                         .param("age", "YOUNG")
@@ -197,10 +181,10 @@ public class ManagerTests {
         MockHttpSession session = login(managerUsername, managerPassword, mockMvc);
 
         mockMvc.perform(multipart("/manager/add-avatar")
-                        .file(getPlaceholderImage()) // Using the placeholder image
+                        .file(getPlaceholderImage())
                         .param("furColor", "BLACK")
                         .param("eyeColor", "ORANGE")
-                        .param("pattern", "") // No pattern
+                        .param("pattern", "")
                         .param("breed", "RAGDOLL")
                         .param("age", "YOUNG")
                         .param("source", "Generated Image").session(session))
@@ -213,11 +197,11 @@ public class ManagerTests {
         MockHttpSession session = login(managerUsername, managerPassword, mockMvc);
 
         mockMvc.perform(multipart("/manager/add-avatar")
-                        .file(getPlaceholderImage()) // Using the placeholder image
+                        .file(getPlaceholderImage())
                         .param("furColor", "BLACK")
                         .param("eyeColor", "ORANGE")
                         .param("pattern", "SOLID")
-                        .param("breed", "") // No breed
+                        .param("breed", "")
                         .param("age", "YOUNG")
                         .param("source", "Generated Image").session(session))
                 .andExpect(status().is4xxClientError());
@@ -229,12 +213,12 @@ public class ManagerTests {
         MockHttpSession session = login(managerUsername, managerPassword, mockMvc);
 
         mockMvc.perform(multipart("/manager/add-avatar")
-                        .file(getPlaceholderImage()) // Using the placeholder image
+                        .file(getPlaceholderImage())
                         .param("furColor", "BLACK")
                         .param("eyeColor", "ORANGE")
                         .param("pattern", "SOLID")
                         .param("breed", "RAGDOLL")
-                        .param("age", "") // No age
+                        .param("age", "")
                         .param("source", "Generated Image").session(session))
                 .andExpect(status().is4xxClientError());
     }
@@ -245,18 +229,17 @@ public class ManagerTests {
         MockHttpSession session = login(managerUsername, managerPassword, mockMvc);
 
         mockMvc.perform(multipart("/manager/add-avatar")
-                        .file(getPlaceholderImage()) // Using the placeholder image
+                        .file(getPlaceholderImage())
                         .param("furColor", "BLACK")
                         .param("eyeColor", "ORANGE")
                         .param("pattern", "SOLID")
                         .param("breed", "RAGDOLL")
                         .param("age", "YOUNG")
-                        .param("source", "").session(session)) // No source
+                        .param("source", "").session(session))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/manager/add-avatar?error=source_required"));
     }
 
-    // Helper method to load the placeholder image as a MockMultipartFile
     private MockMultipartFile getPlaceholderImage() throws IOException {
         File file = new File(placeholderImagePath);
         return new MockMultipartFile("imageData", file.getName(), MediaType.IMAGE_JPEG_VALUE, Files.readAllBytes(file.toPath()));
@@ -266,7 +249,6 @@ public class ManagerTests {
     @DisplayName("Should add avatar successfully with correct image and details")
     void shouldAddAvatarSuccessfully() throws Exception {
         MockHttpSession session = login(managerUsername, managerPassword, mockMvc);
-        // Use placeholder image
         MockMultipartFile imageFile = getPlaceholderImage();
         String source = randomStringUsername(32);
 
@@ -281,11 +263,8 @@ public class ManagerTests {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/manager/add-avatar"));
 
-        // Verify that the avatar is saved in the repository
-        // Assuming you have an avatar repository injected
         Avatar savedAvatar = avatarRepository.findBySource(source);
 
-        // Assertions to verify the avatar details
         assertNotNull(savedAvatar);
         assertNotNull(savedAvatar.getImage());
         assertEquals("BLACK", savedAvatar.getFurColor().toString());

@@ -2,11 +2,6 @@ package uni.projects.talkmeow.components.avatar;
 
 import org.springframework.data.jpa.domain.Specification;
 
-/**
- * @author Tomasz Zbroszczyk
- * @version 1.0
- * @since 06.10.2024
- */
 public class AvatarSpecifications {
 
     public static Specification<Avatar> hasFurColor(Color furColor) {

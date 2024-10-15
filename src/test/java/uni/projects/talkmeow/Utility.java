@@ -8,11 +8,6 @@ import java.util.Random;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/**
- * @author Tomasz Zbroszczyk
- * @version 1.0
- * @since 12.10.2024
- */
 public class Utility {
 
     public static String username = "wiki";
@@ -46,8 +41,10 @@ public class Utility {
 
     public static final String placeholderImagePath = "src/main/resources/static/images/test_placeholder.png";
 
+    public static final String searchUsername = "admin";
 
-    // Helper method for login
+
+
     public static MockHttpSession login(String username, String password, MockMvc mockMvc) throws Exception {
         return (MockHttpSession) mockMvc.perform(post("/login")
                         .param("username", username)
@@ -59,8 +56,8 @@ public class Utility {
     }
 
     public static String randomString(int length) {
-        int leftLimit = 48; // numeral '0'
-        int rightLimit = 122; // letter 'z'
+        int leftLimit = 48;
+        int rightLimit = 122;
         Random random = new Random();
 
         return random.ints(leftLimit, rightLimit + 1)
@@ -71,29 +68,29 @@ public class Utility {
     }
 
     public static String randomStringUsername(int length) {
-        int leftLimit = 48; // numeral '0'
-        int rightLimit = 122; // letter 'z'
+        int leftLimit = 48;
+        int rightLimit = 122;
         Random random = new Random();
 
         return random.ints(leftLimit, rightLimit + 1)
-                .filter(i -> (i >= 48 && i <= 57) || // digits 0-9
-                        (i >= 65 && i <= 90) || // uppercase A-Z
-                        (i >= 97 && i <= 122) || // lowercase a-z
-                        i == 95) // underscore '_'
+                .filter(i -> (i >= 48 && i <= 57) ||
+                        (i >= 65 && i <= 90) ||
+                        (i >= 97 && i <= 122) ||
+                        i == 95)
                 .limit(length)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
     }
 
     public static String randomStringEmail(int length) {
-        int leftLimit = 48; // numeral '0'
-        int rightLimit = 122; // letter 'z'
+        int leftLimit = 48;
+        int rightLimit = 122;
         Random random = new Random();
 
         return random.ints(leftLimit, rightLimit + 1)
-                .filter(i -> (i >= 48 && i <= 57) || // digits 0-9
-                        (i >= 65 && i <= 90) || // uppercase A-Z
-                        (i >= 97 && i <= 122)) // underscore '_'
+                .filter(i -> (i >= 48 && i <= 57) ||
+                        (i >= 65 && i <= 90) ||
+                        (i >= 97 && i <= 122))
                 .limit(length)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString() + "@example.com";

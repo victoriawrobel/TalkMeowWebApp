@@ -5,11 +5,6 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * @author Tomasz Zbroszczyk
- * @version 1.0
- * @since 02.10.2024
- */
 @Service
 public class GlobalAttributeService {
 

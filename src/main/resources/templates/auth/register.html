@@ -93,7 +93,7 @@
         <br>
         <input type="submit" class="submit-button" value="Submit">
     </form>
-    <!-- AJAX Script for dynamic avatar filtering -->
+
     <script src="/javascript/registerFilterAvatars.js"></script>
 
     <script>
@@ -101,14 +101,12 @@
             const params = new URLSearchParams(window.location.search);
             const errorMessageContainer = document.getElementById("error-message-container");
 
-            // Clear any existing error messages
             errorMessageContainer.innerHTML = "";
 
             if (params.has("error")) {
                 let errorMessage = "";
                 const error = params.get("error");
 
-                // Set error messages based on the error type
                 switch (error) {
                     case "username_format":
                         errorMessage = "Invalid username. It must be at least 6 characters long and contain only letters, numbers, or underscores.";
@@ -133,7 +131,6 @@
                         break;
                 }
 
-                // Display the error message
                 if (errorMessage) {
                     errorMessageContainer.innerHTML = `<div class="error-message">${errorMessage}</div>`;
                 }

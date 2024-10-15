@@ -1,11 +1,11 @@
     let pawPrints = [];
     const pawPrintSpacing = 75;
-    const animationDuration = 12000; // Duration of the animation in milliseconds
+    const animationDuration = 12000;
     const waveDelay = 1500;
 
     function createPawPrints() {
     const container = document.getElementById('paw-prints-container');
-    container.innerHTML = ''; // Clear existing paw prints
+    container.innerHTML = '';
     pawPrints = [];
 
     const containerWidth = container.offsetWidth;

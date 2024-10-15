@@ -7,11 +7,6 @@ import uni.projects.talkmeow.components.user.User;
 
 import java.util.List;
 
-/**
- * @author Tomasz Zbroszczyk
- * @version 1.0
- * @since 03.10.2024
- */
 public interface MessageRepository extends JpaRepository<Message, Long> {
     List<Message> findAllBySenderAndReceiver(User sender, User receiver);
 
@@ -23,7 +18,5 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     List<User> findAllUsersReceivedMessagesBy(User user);
 
     Message findTop1BySenderAndReceiverOrderByTimestampDesc(User sender, User receiver);
-
-    Message findTop1ByReceiverAndSenderOrderByTimestampDesc(User receiver, User sender);
 
 }

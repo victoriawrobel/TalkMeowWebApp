@@ -16,12 +16,6 @@ import uni.projects.talkmeow.repositories.AvatarRepository;
 import java.nio.ByteBuffer;
 import java.util.NoSuchElementException;
 
-/**
- * @author Tomasz Zbroszczyk
- * @version 1.0
- * @since 06.10.2024
- */
-
 @RestController
 @RequestMapping("/image")
 public class ImageRestController {

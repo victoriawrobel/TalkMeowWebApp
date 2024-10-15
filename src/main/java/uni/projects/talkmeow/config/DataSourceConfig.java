@@ -11,12 +11,6 @@ import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-/**
- * Author: Tomasz Zbroszczyk
- * Version: 1.0
- * Since: 07.10.2024
- */
-
 @Configuration
 public class DataSourceConfig {
 

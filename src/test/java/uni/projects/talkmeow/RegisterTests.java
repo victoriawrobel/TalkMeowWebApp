@@ -16,11 +16,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static uni.projects.talkmeow.Utility.*;
 
-/**
- * @author Tomasz Zbroszczyk
- * @version 1.0
- * @since 13.10.2024
- */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 public class RegisterTests {
@@ -57,7 +52,7 @@ public class RegisterTests {
     @DisplayName("Register with invalid username format")
     void registerWithInvalidUsernameFormat() throws Exception {
         this.mockMvc.perform(post("/register")
-                        .param("username", invalidUsernameReg) // Invalid username (contains special characters)
+                        .param("username", invalidUsernameReg)
                         .param("email", newEmail)
                         .param("password", newPassword)
                         .param("securityQuestion", newSecurityQuestion)
@@ -72,7 +67,7 @@ public class RegisterTests {
     void registerWithExistingUsername() throws Exception {
 
         this.mockMvc.perform(post("/register")
-                        .param("username", managerUsername) // Username already exists
+                        .param("username", managerUsername)
                         .param("email", newEmail)
                         .param("password", newPassword)
                         .param("securityQuestion", newSecurityQuestion)
@@ -87,7 +82,7 @@ public class RegisterTests {
     void registerWithInvalidEmailFormat() throws Exception {
         this.mockMvc.perform(post("/register")
                         .param("username", newUsername)
-                        .param("email", invalidEmailFormatReg) // Invalid email format
+                        .param("email", invalidEmailFormatReg)
                         .param("password", newPassword)
                         .param("securityQuestion", newSecurityQuestion)
                         .param("securityAnswer", newSecurityAnswer)
@@ -104,7 +99,7 @@ public class RegisterTests {
 
         this.mockMvc.perform(post("/register")
                         .param("username", newUsername)
-                        .param("email", email) // Email already exists
+                        .param("email", email)
                         .param("password", newPassword)
                         .param("securityQuestion", newSecurityQuestion)
                         .param("securityAnswer", newSecurityAnswer)
@@ -121,7 +116,7 @@ public class RegisterTests {
         this.mockMvc.perform(post("/register")
                         .param("username", newUsername)
                         .param("email", newEmail)
-                        .param("password", shortPassword) // Short password
+                        .param("password", shortPassword)
                         .param("securityQuestion", newSecurityQuestion)
                         .param("securityAnswer", newSecurityAnswer)
                         .param("selectedAvatarId", newAvatarId))
@@ -137,7 +132,7 @@ public class RegisterTests {
         this.mockMvc.perform(post("/register")
                         .param("username", newUsername)
                         .param("email", newEmail)
-                        .param("password", noUppercasePassword) // Missing uppercase letters
+                        .param("password", noUppercasePassword)
                         .param("securityQuestion", newSecurityQuestion)
                         .param("securityAnswer", newSecurityAnswer)
                         .param("selectedAvatarId", newAvatarId))
@@ -153,7 +148,7 @@ public class RegisterTests {
         this.mockMvc.perform(post("/register")
                         .param("username", newUsername)
                         .param("email", newEmail)
-                        .param("password", noSpecialCharPassword) // Missing special characters
+                        .param("password", noSpecialCharPassword)
                         .param("securityQuestion", newSecurityQuestion)
                         .param("securityAnswer", newSecurityAnswer)
                         .param("selectedAvatarId", newAvatarId))
@@ -169,7 +164,7 @@ public class RegisterTests {
         this.mockMvc.perform(post("/register")
                         .param("username", newUsername)
                         .param("email", newEmail)
-                        .param("password", noNumberPassword) // Missing numbers
+                        .param("password", noNumberPassword)
                         .param("securityQuestion", newSecurityQuestion)
                         .param("securityAnswer", newSecurityAnswer)
                         .param("selectedAvatarId", newAvatarId))
@@ -185,7 +180,7 @@ public class RegisterTests {
         this.mockMvc.perform(post("/register")
                         .param("username", newUsername)
                         .param("email", newEmail)
-                        .param("password", noLowercasePassword) // Missing lowercase letters
+                        .param("password", noLowercasePassword)
                         .param("securityQuestion", newSecurityQuestion)
                         .param("securityAnswer", newSecurityAnswer)
                         .param("selectedAvatarId", newAvatarId))
@@ -205,7 +200,7 @@ public class RegisterTests {
                         .param("password", newPassword)
                         .param("securityQuestion", newSecurityQuestion)
                         .param("securityAnswer", newSecurityAnswer)
-                        .param("selectedAvatarId", invalidAvatarId)) // Invalid avatar ID
+                        .param("selectedAvatarId", invalidAvatarId))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/register/form?error=avatar_not_found"));
         newUsername = randomStringUsername(16);
@@ -222,8 +217,8 @@ public class RegisterTests {
                         .param("password", newPassword)
                         .param("securityQuestion", newSecurityQuestion)
                         .param("securityAnswer", newSecurityAnswer)
-                        .param("selectedAvatarId", newAvatarId)) // Simulate selecting avatar with ID 4
-                .andExpect(status().is3xxRedirection()) // Assuming successful form submission redirects
+                        .param("selectedAvatarId", newAvatarId))
+                .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/login/form"));
 
         MockHttpSession session = login(newUsername, newPassword, mockMvc);

@@ -47,7 +47,6 @@ body {
     padding: 1em;
 }
 
-/* Styling the headers */
 h1 {
     font-family: Amaranth-Bold, sans-serif;
     font-size: 3em;
@@ -65,7 +64,6 @@ h3 {
     margin-left: 5vh;
 }
 
-/* Styling login/register buttons */
 .button {
     display: inline-block;
     background-color: black;
@@ -141,7 +139,6 @@ h3 {
     100% { opacity: 0; }
 }
 
-/* Styling for select elements */
 select {
     font-family: Amaranth-Regular, sans-serif;
     font-size: 1em;
@@ -153,7 +150,6 @@ select {
     margin: 5px 0;
 }
 
-/* Styling for label elements */
 label {
     font-family: Amaranth-Regular, sans-serif;
     font-size: 1em;

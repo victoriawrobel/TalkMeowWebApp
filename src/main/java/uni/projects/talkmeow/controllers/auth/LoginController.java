@@ -26,12 +26,6 @@ import java.time.LocalDateTime;
 
 import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
-/**
- * @author Tomasz Zbroszczyk
- * @version 1.0
- * @since 02.10.2024
- */
-
 @Controller
 public class LoginController {
 

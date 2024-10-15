@@ -23,17 +23,14 @@
         </tr>
         </thead>
         <tbody>
-        <!-- Loop through the messages that need verification -->
         <tr th:each="message : ${messages}">
             <td th:text="${message.messageContent}"></td>
             <td th:text="${message.sender.username}"></td>
             <td class="buttons-segment">
-                <!-- Approve Button -->
                 <form th:action="@{'/admin/suspicious_messages/approve/' + ${message.id}}" method="post" style="display:inline;">
                     <button type="submit" class="submit-button">Approve</button>
                 </form>
 
-                <!-- Inappropriate Button -->
                 <form th:action="@{'/admin/suspicious_messages/inappropriate/' + ${message.id}}" method="post" style="display:inline;">
                     <button type="submit" class="submit-button">Mark Inappropriate</button>
                 </form>

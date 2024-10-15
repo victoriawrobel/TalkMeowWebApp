@@ -20,7 +20,7 @@ function getCurrentUserAndSetClass() {
 
 loadScript('https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js', function() {
     loadScript('https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js', function() {
-        getCurrentUserAndSetClass(); // Call the function to set the class
+        getCurrentUserAndSetClass();
 
         const socket = new SockJS('/ws');
         const stompClient = Stomp.over(socket);
@@ -43,15 +43,12 @@ loadScript('https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.mi
                 return;
             }
 
-            // Create the popup element
             const popup = document.createElement('div');
             popup.className = 'message-popup';
             popup.innerText = 'New message from: ' + message;
 
-            // Add the popup to the body
             document.body.appendChild(popup);
 
-            // Remove the popup after 3 seconds
             setTimeout(() => {
                 popup.remove();
             }, 3000);

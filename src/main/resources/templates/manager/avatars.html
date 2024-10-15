@@ -15,11 +15,9 @@
     <form action="#" th:action="@{/manager/avatars}" method="get">
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                // Function to populate the filters based on query parameters
                 function setSelectedFilters() {
                     const params = new URLSearchParams(window.location.search);
 
-                    // Get each parameter from the URL and set it to the corresponding select element
                     document.getElementById('furColor').value = params.get('furColor') || '';
                     document.getElementById('eyeColor').value = params.get('eyeColor') || '';
                     document.getElementById('pattern').value = params.get('pattern') || '';
@@ -27,7 +25,6 @@
                     document.getElementById('age').value = params.get('age') || '';
                 }
 
-                // Call the function to set selected filters based on URL params when the page loads
                 setSelectedFilters();
             });
         </script>

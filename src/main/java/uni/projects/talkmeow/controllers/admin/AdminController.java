@@ -18,12 +18,6 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 
-/**
- * @author Tomasz Zbroszczyk
- * @version 1.0
- * @since 06.10.2024
- */
-
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -50,12 +44,10 @@ public class AdminController {
 
     @GetMapping("/user/{userId}/bans")
     public String userBans(@PathVariable Long userId, Model model) {
-        // Get the user with their bans
-        User user = customUserDetailsService.getUsernameByID(userId); // get the user with bans from the repository
+        User user = customUserDetailsService.getUsernameByID(userId);
         model.addAttribute("user", user);
         List<Banned> bans = bannedService.getBansByUser(user);
 
-        // Sort the bans by banTime and display them in descending order
         List<Banned> sortedBans = bans.stream()
                 .sorted(Comparator.comparing(Banned::getBanTime).reversed())
                 .toList();
@@ -70,18 +62,16 @@ public class AdminController {
         return "admin/suspicious_messages";
     }
 
-    // Approve a message (mark it as APPROVED)
     @PostMapping("/suspicious_messages/approve/{id}")
     public String approveMessage(@PathVariable Long id) {
         inappropriateMessageService.updateMessageApproval(id, MessageApproval.APPROVED);
-        return "redirect:/admin/suspicious_messages";  // Redirect back to the verification page after approval
+        return "redirect:/admin/suspicious_messages";
     }
 
-    // Mark a message as inappropriate (mark it as INAPPROPRIATE)
     @PostMapping("/suspicious_messages/inappropriate/{id}")
     public String markMessageInappropriate(@PathVariable Long id) {
         inappropriateMessageService.updateMessageApproval(id, MessageApproval.INAPPROPRIATE);
-        return "redirect:/admin/suspicious_messages";  // Redirect back to the verification page after marking inappropriate
+        return "redirect:/admin/suspicious_messages";
     }
 
     @GetMapping("/users")
@@ -93,7 +83,6 @@ public class AdminController {
         return "admin/user_list";
     }
 
-    // Show user's inappropriate messages (filtered by last ban)
     @GetMapping("/user/{userId}/messages")
     public String viewUserMessages(@PathVariable Long userId, Model model) {
         User user = customUserDetailsService.getUsernameByID(userId);
@@ -104,14 +93,12 @@ public class AdminController {
         } else {
             messages = inappropriateMessageService.getMessagesBySender(user);
         }
-        // Get only the inappropriate messages after the last ban
 
         model.addAttribute("user", user);
         model.addAttribute("messages", messages);
         return "admin/user_inappropriate_messages";
     }
 
-    // Ban a user from the inappropriate messages page
     @PostMapping("/user/{userId}/ban")
     public String banUser(@PathVariable Long userId, @RequestParam String reason, @RequestParam LocalDateTime banEndTime, HttpSession session) {
         bannedService.banUser(userId, reason, banEndTime, session);

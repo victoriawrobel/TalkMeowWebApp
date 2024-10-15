@@ -11,11 +11,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import uni.projects.talkmeow.components.user.User;
 import uni.projects.talkmeow.services.CustomUserDetailsService;
 
-/**
- * @author Tomasz Zbroszczyk
- * @version 1.0
- * @since 03.10.2024
- */
+import static uni.projects.talkmeow.utility.Defaults.passwordRegex;
 
 @Controller
 public class PasswordResetController {
@@ -67,7 +63,6 @@ public class PasswordResetController {
     public ModelAndView passwordResetChange(Model model, @RequestParam String newPassword, HttpSession session) {
         model.addAttribute("user", null);
         User user = (User) session.getAttribute("password-reset-user");
-        String passwordRegex = "^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*\\d.*\\d)(?=.*[a-z].*[a-z].*[a-z]).{8,}$";
         ModelAndView modelAndView = new ModelAndView();
         if (!newPassword.matches(passwordRegex)) {
             modelAndView.setViewName("auth/password-reset/password-reset-change");

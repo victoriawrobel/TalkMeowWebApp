@@ -7,12 +7,6 @@ import uni.projects.talkmeow.components.user.User;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * @author Tomasz Zbroszczyk
- * @version 1.0
- * @since 02.10.2024
- */
-
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 

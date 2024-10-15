@@ -17,12 +17,6 @@ import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-/**
- * @author Tomasz Zbroszczyk
- * @version 1.0
- * @since 05.10.2024
- */
-
 @Controller
 @RequestMapping("/image")
 public class ImageController {
@@ -37,10 +31,9 @@ public class ImageController {
                                 @RequestParam(value = "breed", required = false) Breed breed,
                                 @RequestParam(value = "age", required = false) Age age,
                                 Model model) {
-        // Fetch filtered avatars based on the provided filters
         List<Avatar> filteredAvatars = avatarService.getFilteredAvatars(age, breed, furColor, eyeColor, pattern);
         model.addAttribute("avatars", filteredAvatars);
-        return "fragments/avatarList :: avatarList";  // Return a fragment with the updated avatar list
+        return "fragments/avatarList :: avatarList";
     }
 
 }

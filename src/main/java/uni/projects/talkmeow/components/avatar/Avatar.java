@@ -9,12 +9,6 @@ import org.hibernate.annotations.JdbcTypeCode;
 
 import java.sql.Types;
 
-/**
- * @author Tomasz Zbroszczyk
- * @version 1.0
- * @since 05.10.2024
- */
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

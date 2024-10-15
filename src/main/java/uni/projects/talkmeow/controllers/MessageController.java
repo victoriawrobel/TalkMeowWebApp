@@ -25,11 +25,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-/**
- * @author Tomasz Zbroszczyk
- * @version 1.0
- * @since 03.10.2024
- */
 @Controller
 @RequestMapping("/api/messages")
 public class MessageController {
@@ -42,9 +37,6 @@ public class MessageController {
 
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
-
-    @Autowired
-    private MessageRepository messageRepository;
 
     private final MessageSupervisor messageSupervisor = new MessageSupervisor();
 
@@ -61,14 +53,12 @@ public class MessageController {
             @RequestParam(required = false) String username,
             @RequestParam String messageContent) {
 
-        // Check if either ID or username is provided
         if (id == null && (username == null || username.isEmpty())) {
             return ResponseEntity.badRequest().body("No user provided");
         }
 
         Optional<User> receiverOptional;
 
-        // Find the receiver by ID or username
         if (id != null) {
             receiverOptional = messageService.findUserById(id);
         } else {
@@ -82,11 +72,9 @@ public class MessageController {
             return ResponseEntity.badRequest().body("Message cannot be empty");
         }
 
-        // Get the currently authenticated user as the sender
         User sender = customUserDetailsService.getCurrentUser();
         User receiver = receiverOptional.get();
 
-        // Send the message
         Message message = messageService.sendMessage(sender, receiver, messageContent);
 
         if (!messageSupervisor.isMessageAppropriate(messageContent)) {
@@ -95,16 +83,13 @@ public class MessageController {
 
         Message strippedMessage = new Message(message.getId(), StrippedUser.getStrippedUser(sender), StrippedUser.getStrippedUser(receiver), messageContent, message.getTimestamp(), message.getStatus(), true);
 
-        // Send push notification
         String name = receiver.getUsername() + "-" + sender.getUsername();
         simpMessagingTemplate.convertAndSendToUser(name, "/specific", strippedMessage);
         simpMessagingTemplate.convertAndSendToUser(receiver.getUsername(), "/new-message", sender.getUsername());
 
-        // Return the rendered fragment with the message
         return ResponseEntity.ok(renderMessageFragment(strippedMessage, sender));
     }
 
-    // Method to render the message fragment
     private String renderMessageFragment(Message message, User currentUser) {
         Context context = new Context();
         context.setVariable("messageContent", message.getMessageContent());
@@ -114,7 +99,7 @@ public class MessageController {
         context.setVariable("status", message.getStatus());
         context.setVariable("otherUser", currentUser);
 
-        return templateEngine.process("fragments/messageFragment", context); // Use the proper template engine
+        return templateEngine.process("fragments/messageFragment", context);
     }
 
     @GetMapping("/conversation")
@@ -123,7 +108,6 @@ public class MessageController {
             @RequestParam(required = false) String username,
             Model model) {
 
-        // Check if either ID or username is provided
         if (id == null && (username == null || username.isEmpty())) {
             model.addAttribute("error", "No user provided");
             return "conversations/conversation";
@@ -131,7 +115,6 @@ public class MessageController {
 
         Optional<User> otherUserOptional;
 
-        // Find the other user by ID or username
         if (id != null) {
             otherUserOptional = messageService.findUserById(id);
         } else {
@@ -143,14 +126,11 @@ public class MessageController {
             return "conversations/conversation";
         }
 
-        // Get the currently authenticated user
         User currentUser = customUserDetailsService.getCurrentUser();
         User otherUser = otherUserOptional.get();
 
-        // Fetch messages between the two users
         List<Message> messages = messageService.getMessagesBetweenUsers(currentUser, otherUser);
 
-        // Convert messages to use StrippedUser and set sentByLoggedInUser flag
         List<Message> strippedMessages = messages.stream().map(message -> {
             Message strippedMessage = new Message();
             strippedMessage.setId(message.getId());

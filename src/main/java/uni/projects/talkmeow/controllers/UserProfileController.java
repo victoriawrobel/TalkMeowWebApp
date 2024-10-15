@@ -12,11 +12,8 @@ import uni.projects.talkmeow.repositories.AvatarRepository;
 import uni.projects.talkmeow.repositories.UserRepository;
 import uni.projects.talkmeow.services.CustomUserDetailsService;
 
-/**
- * @author Wiktoria Wróbel
- * @version 1.0
- * @since 10/5/2024
- */
+import static uni.projects.talkmeow.utility.Defaults.passwordRegex;
+import static uni.projects.talkmeow.utility.Defaults.usernameRegex;
 
 @Controller
 public class UserProfileController {
@@ -57,6 +54,7 @@ public class UserProfileController {
         return "redirect:/profile";
     }
 
+    //TODO check
     @PostMapping("/profile/change")
     public String changeUserAttributes(@ModelAttribute User user,
                                        @RequestParam(required = false) String newPassword,
@@ -65,21 +63,22 @@ public class UserProfileController {
         User currentUser = new User((User)session.getAttribute("user"));
         if((oldPassword.isEmpty() && !newPassword.isEmpty()) || (!oldPassword.isEmpty() && newPassword.isEmpty()))
             return "redirect:/profile?error=invalid_form";
-        //Change username
         if(user.getUsername() != null)
             if(customUserDetailsService.existsByUsername(user.getUsername()) &&
                     !(currentUser.getUsername().equals(user.getUsername())))
                 return "redirect:/profile?error=username_taken";
-            else
+            else if(user.getUsername().matches(usernameRegex) && user.getUsername().length() > 6)
                 currentUser.setUsername(user.getUsername());
+            else
+                return "redirect:/profile?error=wrong_username_format";
 
-        //Change password
         if (!newPassword.isEmpty() && !oldPassword.isEmpty())
             if (!customUserDetailsService.authenticateOldPassword(oldPassword, currentUser, passwordEncoder))
                 return "redirect:/profile?error=wrong_password";
-            else
+            else if(newPassword.matches(passwordRegex))
                 customUserDetailsService.changePassword(currentUser, newPassword, passwordEncoder);
-
+            else
+                return "redirect:/profile?error=wrong_password_format";
 
         userRepository.save(currentUser);
         session.setAttribute("user", currentUser);

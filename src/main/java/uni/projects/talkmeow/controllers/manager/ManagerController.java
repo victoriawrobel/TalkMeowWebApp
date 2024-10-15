@@ -17,12 +17,6 @@ import java.util.List;
 
 import static uni.projects.talkmeow.utility.ImageProcessor.*;
 
-/**
- * @author Tomasz Zbroszczyk
- * @version 1.0
- * @since 05.10.2024
- */
-
 @Controller
 @RequestMapping("/manager")
 public class ManagerController {
@@ -73,10 +67,8 @@ public class ManagerController {
                             @RequestParam("pattern") Pattern pattern,
                             @RequestParam("breed") Breed breed,
                             @RequestParam("age") Age age,
-                            @RequestParam("source") String source,
-                            Model model) throws IOException {
+                            @RequestParam("source") String source) {
 
-        // Validate fields
         if (image.isEmpty()) {
             return "redirect:/manager/add-avatar?error=image_required";
         }

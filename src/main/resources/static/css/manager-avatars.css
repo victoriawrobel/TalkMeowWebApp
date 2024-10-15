@@ -16,7 +16,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    align-items: stretch; /* This makes all avatars the same height */
+    align-items: stretch;
     gap: 15px;
 }
 
@@ -30,13 +30,12 @@
     margin-bottom: 10px;
     height: 100%;
     background-color: #e0f0d0;
-    /* Remove the height property if you had one */
 }
 
 .avatar .avatar-info {
     margin-top: 10px;
     text-align: center;
-    flex-grow: 1; /* This ensures that the content will stretch to fill the height */
+    flex-grow: 1;
 }
 
 .avatar .avatar-image img{

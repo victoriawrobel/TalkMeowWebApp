@@ -9,12 +9,6 @@ import uni.projects.talkmeow.components.message.Message;
 import uni.projects.talkmeow.components.message.MessageStatus;
 import uni.projects.talkmeow.components.user.User;
 
-/**
- * @author Tomasz Zbroszczyk
- * @version 1.0
- * @since 03.10.2024
- */
-
 @Controller
 public class MessagingController {
 
@@ -23,10 +17,8 @@ public class MessagingController {
 
     @MessageMapping("/private")
     public void sendToSpecificUser(@Payload Message message) {
-        // Send message to the receiver's personal topic
         simpMessagingTemplate.convertAndSendToUser(message.getReceiver().getUsername(), "/specific", message);
 
-        // Also send the message back to the sender's personal topic to update their own chat view
         simpMessagingTemplate.convertAndSendToUser(message.getSender().getUsername(), "/specific", message);
     }
 

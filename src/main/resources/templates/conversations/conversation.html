@@ -17,11 +17,9 @@
             stompClient.connect({}, function(frame) {
                 console.log('Connected: ' + frame);
 
-                // Get the logged-in user's username
                 const currentUser = document.getElementById('current-username').className;
                 const otherUser = document.getElementById('other-username').className;
 
-                // Subscribe to personal messages for the logged-in user
                 stompClient.subscribe('/user/' + currentUser + '-' + otherUser + '/specific', function(messageOutput) {
                     showMessageOutput(JSON.parse(messageOutput.body), true);  //TODO pass the message object and parse it correctly
                 });
@@ -35,10 +33,6 @@
                     }
                 });
 
-                // Subscribe to a shared conversation channel with the other user
-                stompClient.subscribe('/user/' + otherUser + '-' + currentUser + '/specific', function(messageOutput) {
-                    //showMessageOutput(JSON.parse(messageOutput.body), false);  // false means it's from the other user
-                });
             });
         }
 
@@ -75,22 +69,19 @@
                 });
             }
 
-            // Check if the message was received by the current user
             if (message.receiver.username === document.getElementById('current-username').className) {
-                // Ping the backend to update the status of the message to "SEEN"
                 fetch('/api/messages/status', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
                     body: new URLSearchParams({
-                        id: message.id  // Assuming message object contains message id
+                        id: message.id
                     })
                 })
                     .then(response => response.text())
                     .then(data => {
                         console.log('Message status updated to SEEN');
-                        // Optionally notify the sender via socket
                     })
                     .catch(error => {
                         console.error('Error updating message status:', error);
@@ -106,7 +97,6 @@
             const messageContent = document.querySelector('textarea[name="messageContent"]').value;
             const receiverUsername = document.querySelector('input[name="username"]').value;
 
-            // Optimistically append a placeholder message
             const placeholderMessage = document.createElement('div');
             placeholderMessage.className = 'message sent';
             placeholderMessage.innerHTML = `
@@ -132,12 +122,11 @@
             })
                 .then(response => response.text())
                 .then(data => {
-                    // Replace the placeholder message with the actual message fragment returned from the server
                     if (data) {
                         const newMessageElement = document.createElement('div');
-                        newMessageElement.innerHTML = data; // This contains the message HTML from the server
-                        messagesElement.replaceChild(newMessageElement.firstChild, placeholderMessage); // Replace the placeholder
-                        document.querySelector('textarea[name="messageContent"]').value = ''; // Clear input
+                        newMessageElement.innerHTML = data;
+                        messagesElement.replaceChild(newMessageElement.firstChild, placeholderMessage);
+                        document.querySelector('textarea[name="messageContent"]').value = '';
                     } else {
                         console.error('Failed to send message:', data);
                     }
@@ -154,7 +143,7 @@
             connect();
             const messageContent = document.querySelector('textarea[name="messageContent"]');
             messageContent.addEventListener('input', checkMessageContent);
-            checkMessageContent(); // Initial check
+            checkMessageContent();
 
             document.querySelector('form').addEventListener('submit', sendMessage);
         });
@@ -195,13 +184,12 @@
             scrollToBottom();
             const messageContent = document.querySelector('textarea[name="messageContent"]');
             messageContent.addEventListener('input', checkMessageContent);
-            checkMessageContent(); // Initial check
+            checkMessageContent();
 
             document.querySelector('form').addEventListener('submit', sendMessage);
 
             messageContent.addEventListener('keydown', function(event) {
                 if (event.key === 'Enter') {
-                    // Submit the form on Enter or Shift + Enter
                     event.preventDefault();
                     sendMessage(event);
                     sleep(100).then(() => scrollToBottom());

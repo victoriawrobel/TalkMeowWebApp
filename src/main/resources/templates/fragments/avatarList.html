@@ -1,6 +1,4 @@
-<!-- src/main/resources/templates/fragments/avatarList.html -->
 <div id="avatarList" th:fragment="avatarList">
-    <!--/*@thymesVar id="avatar" type="uni.projects.talkmeow.components.avatar"*/-->
     <div th:each="avatar : ${avatars}" class="avatar-item">
         <input type="radio" th:id="'avatar_' + ${avatar.id}" name="selectedAvatarId" th:value="${avatar.id}" style="display: none;">
         <label th:for="'avatar_' + ${avatar.id}">

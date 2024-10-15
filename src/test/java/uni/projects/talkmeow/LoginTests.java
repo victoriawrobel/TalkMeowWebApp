@@ -14,12 +14,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static uni.projects.talkmeow.Utility.*;
 
-/**
- * @author Tomasz Zbroszczyk
- * @version 1.0
- * @since 12.10.2024
- */
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 public class LoginTests {
@@ -27,7 +21,6 @@ public class LoginTests {
     @Autowired
     private MockMvc mockMvc;
 
-    //Login
     @Test
     @DisplayName("Login form is accessible")
     void loginFormIsAccessible() throws Exception {
@@ -58,7 +51,7 @@ public class LoginTests {
     @DisplayName("Login with missing username")
     void loginWithMissingUsername() throws Exception {
         this.mockMvc.perform(post("/login")
-                        .param("password", password))  // Missing username
+                        .param("password", password))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/login/form?error=missing_username"));
     }
@@ -67,9 +60,9 @@ public class LoginTests {
     @DisplayName("Login with missing password")
     void loginWithMissingPassword() throws Exception {
         this.mockMvc.perform(post("/login")
-                        .param("username", username))  // Missing password
-                .andExpect(status().is3xxRedirection())  // Expecting 400 Bad Request
-                .andExpect(redirectedUrl("/login/form?error=missing_password"));  // Expecting proper redirect with error message
+                        .param("username", username))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/login/form?error=missing_password"));
     }
 
 
@@ -78,11 +71,8 @@ public class LoginTests {
     void logoutSuccessfully() throws Exception {
         MockHttpSession session = login(username, password, mockMvc);
         this.mockMvc.perform(post("/logout").session(session))
-                .andExpect(status().is3xxRedirection())  // Typically, a redirect after logout
+                .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/login/form"));
     }
-
-    //Register
-
 
 }

@@ -6,12 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import uni.projects.talkmeow.components.user.User;
 
-/**
- * @author Tomasz Zbroszczyk
- * @version 1.0
- * @since 02.10.2024
- */
-
 @Controller
 public class HomeController {
 

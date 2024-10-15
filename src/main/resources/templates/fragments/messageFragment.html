@@ -1,6 +1,5 @@
 <div th:fragment="messageFragment">
     <div th:classappend="${sentByLoggedInUser} ? 'sent' : 'received'" class="message">
-        <!--/*@thymesVar id="otherUser" type="uni.projects.talkmeow.components.user.User"*/-->
         <div class="message-image">
             <img th:if="${!sentByLoggedInUser}" th:src="@{/image/avatar/{id}(id=${otherUser.avatar.id})}" alt="Profile picture"/>
         </div>

@@ -14,6 +14,26 @@
 <th:block th:insert="~{fragments/navbar :: navbar}"></th:block>
 
 <h2> User profile</h2>
+<div th:if="${param.error != null}">
+    <div th:if="${param.error[0] == 'invalid_form'}">
+        <p>You must enter both new and old password to change the password.</p>
+    </div>
+    <div th:if="${param.error[0] == 'username_taken'}">
+        <p>The username you are trying to use is already taken.</p>
+    </div>
+    <div th:if="${param.error[0] == 'wrong_username_format'}">
+        <p>Your username must contain only letters, numbers and '_' and must be at least 6 characters long.</p>
+    </div>
+    <div th:if="${param.error[0] == 'wrong_password'}">
+        <p>Incorrect old password.</p>
+    </div>
+    <div th:if="${param.error[0] == 'wrong_password_format'}">
+        <p>Your new password must be at least 8 characters long, contain at least 1 big letter, a special symbol and a number.</p>
+    </div>
+    <div th:if="${param.error[0] == 'invalid_avatar'}">
+        <p>Please select valid avatar.</p>
+    </div>
+</div>
 
 <div class="grid-container" id="settings-container">
     <div class="avatar-container">
@@ -71,7 +91,6 @@
                 </div>
 
                 <div class="avatar-selection-view">
-                    <!-- Avatar Selection -->
                     <p>Select Avatar:</p>
                     <th:block th:insert="~{fragments/avatarList :: avatarList}"></th:block>
                 </div>
@@ -86,7 +105,7 @@
     <script src="/javascript/registerFilterAvatars.js"></script>
 
 
-    <div> <!-- User profile settings div-->
+    <div>
         <form th:action="@{/profile/change}" method="post" th:object="${currentUser}" onsubmit="return validateForm()">
             <p>E-mail:
                 <label for="emailInput"></label><input type="text" id="emailInput" class="input" name="email" th:value="${currentUser.getEmail()}" disabled>

@@ -18,12 +18,6 @@ import java.util.List;
 
 import static uni.projects.talkmeow.utility.Defaults.MAX_BAN_STRIKES;
 
-/**
- * @author Tomasz Zbroszczyk
- * @version 1.0
- * @since 02.10.2024
- */
-
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -117,10 +111,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
-    }
-
-    public boolean existsById(Long id) {
-        return userRepository.existsById(id);
     }
 
     public boolean authenticateOldPassword(String oldPassword, User user, PasswordEncoder passwordEncoder) {

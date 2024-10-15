@@ -9,12 +9,6 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-/**
- * @author Tomasz Zbroszczyk
- * @version 1.0
- * @since 07.10.2024
- */
-
 @Component
 @Getter
 public class DatabaseHealthCheck {

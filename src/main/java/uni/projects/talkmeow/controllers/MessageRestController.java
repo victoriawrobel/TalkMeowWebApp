@@ -13,12 +13,6 @@ import uni.projects.talkmeow.services.MessageService;
 
 import java.util.List;
 
-/**
- * @author Tomasz Zbroszczyk
- * @version 1.0
- * @since 03.10.2024
- */
-
 @RestController
 @RequestMapping("/api/messages")
 public class MessageRestController {

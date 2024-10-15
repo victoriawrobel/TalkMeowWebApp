@@ -12,11 +12,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static uni.projects.talkmeow.Utility.*;
 
-/**
- * @author Tomasz Zbroszczyk
- * @version 1.0
- * @since 12.10.2024
- */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 public class UserTests {
