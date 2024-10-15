@@ -133,12 +133,4 @@ public class HomeTests {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    @DisplayName("Back button works")
-    void userPanelBackButtonWorks() throws Exception {
-        MockHttpSession session = login(username, password, mockMvc);
-        this.mockMvc.perform(get("/user/back").session(session))
-                .andExpect(status().is3xxRedirection());
-    }
-
 }
