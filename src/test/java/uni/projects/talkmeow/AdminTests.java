@@ -47,7 +47,7 @@ public class AdminTests {
         MockHttpSession session = login(adminUsername, adminPassword, mockMvc);
         this.mockMvc.perform(get("/manager/home").session(session))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Talk Meow - Home")));
+                .andExpect(xpath("//title").string("TalkMeow - Manager Panel"));
     }
 
     @Test
