@@ -33,7 +33,7 @@ public class UserProfileController {
     @GetMapping("/profile")
     public String getProfileAttributes(Model model, HttpSession session) {
         User user = (User)session.getAttribute("user");
-        model.addAttribute("currentUser", user);
+        model.addAttribute("currentUser", new User(user));
         model.addAttribute("age", Age.values());
         model.addAttribute("breed", Breed.values());
         model.addAttribute("color", Color.values());
@@ -54,21 +54,20 @@ public class UserProfileController {
         return "redirect:/profile";
     }
 
-    //TODO check
     @PostMapping("/profile/change")
-    public String changeUserAttributes(@ModelAttribute User user,
+    public String changeUserAttributes(@RequestParam(required = false) String newUsername,
                                        @RequestParam(required = false) String newPassword,
                                        @RequestParam (required = false) String oldPassword,
                                        HttpSession session) {
         User currentUser = new User((User)session.getAttribute("user"));
         if((oldPassword.isEmpty() && !newPassword.isEmpty()) || (!oldPassword.isEmpty() && newPassword.isEmpty()))
             return "redirect:/profile?error=invalid_form";
-        if(user.getUsername() != null)
-            if(customUserDetailsService.existsByUsername(user.getUsername()) &&
-                    !(currentUser.getUsername().equals(user.getUsername())))
+        if(newUsername != null)
+            if(customUserDetailsService.existsByUsername(newUsername) &&
+                    !(currentUser.getUsername().equals(newUsername)))
                 return "redirect:/profile?error=username_taken";
-            else if(user.getUsername().matches(usernameRegex) && user.getUsername().length() > 6)
-                currentUser.setUsername(user.getUsername());
+            else if(newUsername.matches(usernameRegex) && newUsername.length() > 6)
+                currentUser.setUsername(newUsername);
             else
                 return "redirect:/profile?error=wrong_username_format";
 

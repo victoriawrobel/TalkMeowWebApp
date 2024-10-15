@@ -106,14 +106,14 @@
 
 
     <div>
-        <form th:action="@{/profile/change}" method="post" th:object="${currentUser}" onsubmit="return validateForm()">
+        <form th:action="@{/profile/change}" method="post" onsubmit="return validateForm()">
             <p>E-mail:
                 <label for="emailInput"></label><input type="text" id="emailInput" class="input" name="email" th:value="${currentUser.getEmail()}" disabled>
                 <button type="button" class="edit-button" onclick="enableEditing()">&#9998;</button> <!-- Pencil icon -->
             </p>
 
             <p>Username:
-                <label for="usernameInput"></label><input type="text" id="usernameInput" class="input" name="username" th:value="${currentUser.getUsername()}" disabled>
+                <label for="usernameInput"></label><input type="text" id="usernameInput" class="input" name="newUsername" th:value="${currentUser.getUsername()}" disabled>
             </p>
             <div id="passwordEncrypted" >
                 <p>Password: ************</p>
