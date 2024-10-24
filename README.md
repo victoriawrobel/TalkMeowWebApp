@@ -1,7 +1,6 @@
 # TalkMeow
 
-TalkMeow is a web application built using Java, Spring Boot, and Maven. It allows users to communicate with each other through messages and manage their profiles. The application also includes an admin panel for managing users and monitoring inappropriate messages.
-
+TalkMeow is a web application built using Java, Spring Boot, and Maven. It allows users to communicate with each other through messages and manage their profiles. The application also includes an admin and manager panels for managing users therefore introducing multiple roles to the application. The main theme is of course cats :)
 ## Features
 
 ### User Registration and Login
